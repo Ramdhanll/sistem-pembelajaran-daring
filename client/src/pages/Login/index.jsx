@@ -1,17 +1,76 @@
-import { Box, Button, Flex, Image, Text, VStack } from '@chakra-ui/react'
-import React from 'react'
+import {
+   Box,
+   Button,
+   Flex,
+   Image,
+   Text,
+   useToast,
+   VStack,
+} from '@chakra-ui/react'
+import React, { useContext, useEffect } from 'react'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../../Formik/FormikControl'
+import AuthService from '../../services/AuthService'
+import { AuthContext } from '../../contexts/authContext/AuthContexts'
 
-const Login = () => {
+const Login = ({ history }) => {
+   const toast = useToast()
+   const { userState, userDispatch } = useContext(AuthContext)
+
+   useEffect(() => {
+      if (userState) history.push(localStorage.getItem('goto') || '/')
+   }, [])
+
    const validationSchema = Yup.object({
       username: Yup.string().required('Username diperlukan'),
       password: Yup.string().required('Password diperlukan'),
       role: Yup.string().required('Role diperlukan'),
    })
 
-   const handleSubmit = (values, actions) => {}
+   const handleSubmit = async (values, actions) => {
+      actions.setSubmitting(true)
+
+      let role
+      let goto
+
+      if (values.role === 'student') {
+         role = 'siswa'
+         goto = '/s'
+      } else if (values.role === 'teacher') {
+         role = 'guru'
+         goto = '/t'
+      } else {
+         role = 'admin'
+         goto = '/a'
+      }
+
+      localStorage.setItem('goto', goto)
+
+      try {
+         await AuthService.login(values, userDispatch)
+         actions.setSubmitting(false)
+         history.push(goto)
+         toast({
+            title: 'Login Berhasil',
+            description: `Berhasil login sebagai ${role}`,
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+            position: 'top-right',
+         })
+      } catch (error) {
+         actions.setSubmitting(false)
+         toast({
+            title: 'Login Tidak Berhasil',
+            description: `gagal masuk sebagai ${role}`,
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            position: 'top-right',
+         })
+      }
+   }
 
    return (
       <Box
@@ -64,7 +123,6 @@ const Login = () => {
                            label='Username'
                            required={true}
                            fontWeight='400'
-                           color='red'
                         />
 
                         <FormikControl
@@ -81,6 +139,7 @@ const Login = () => {
                            name='role'
                            label='Role'
                            required={true}
+                           placeholder='Pilih role'
                            options={[
                               { key: 1, value: 'student', name: 'Siswa' },
                               { key: 2, value: 'teacher', name: 'Guru' },

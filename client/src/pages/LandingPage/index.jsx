@@ -15,12 +15,15 @@ import {
    Input,
    useDisclosure,
    VStack,
+   Avatar,
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { MdMenu } from 'react-icons/md'
+import { AuthContext } from '../../contexts/authContext/AuthContexts'
 
 const LandingPage = () => {
+   const { userState } = useContext(AuthContext)
    const { isOpen, onOpen, onClose } = useDisclosure()
 
    return (
@@ -95,11 +98,24 @@ const LandingPage = () => {
                   </Link>
                </Flex>
 
-               <NavLink to='/login'>
-                  <Button variant='solid' bg='#E5E9F2'>
-                     Masuk
-                  </Button>
-               </NavLink>
+               {userState ? (
+                  <NavLink to={localStorage.getItem('goto')}>
+                     <Flex
+                        alignItems='center'
+                        justifyContent='space-between'
+                        bg='#fff'
+                     >
+                        <Text mr='30px'>{userState.name}</Text>
+                        <Avatar name='Dan Abrahmov' src={userState.photo} />
+                     </Flex>
+                  </NavLink>
+               ) : (
+                  <NavLink to='/login'>
+                     <Button variant='solid' bg='#E5E9F2'>
+                        Masuk
+                     </Button>
+                  </NavLink>
+               )}
             </Box>
          </Flex>
 

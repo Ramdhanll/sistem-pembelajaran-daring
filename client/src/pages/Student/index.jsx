@@ -1,5 +1,4 @@
 import {
-   Badge,
    Box,
    Button,
    Drawer,
@@ -14,7 +13,7 @@ import {
    useDisclosure,
    VStack,
 } from '@chakra-ui/react'
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { MdDashboard } from 'react-icons/md'
 import { SiGoogleclassroom } from 'react-icons/si'
 import {
@@ -24,12 +23,11 @@ import {
    Route,
 } from 'react-router-dom'
 import Navbar from '../../components/Navbar'
-import { AuthContext } from '../../contexts/authContext/AuthContexts'
-import Classroom from './Classroom'
-import ClassroomDetail from './ClassroomDetail'
+// import Classroom from './Classroom'
+// import ClassroomDetail from './ClassroomDetail'
 import Dashboard from './Dashboard'
 
-const Teacher = ({ history, location }) => {
+const Student = ({ history, location }) => {
    return (
       <>
          <Navbar>
@@ -80,13 +78,13 @@ const Teacher = ({ history, location }) => {
             </Flex>
          </Navbar>
          <Switch>
-            <Route path='/t' component={Dashboard} exact />
-            <Route path='/t/kelas' component={Classroom} exact />
-            <Route path='/t/kelas/:id' component={ClassroomDetail} />
-            <Route path='/t/*'>NOT FOUND</Route>
+            <Route path='/s' component={Dashboard} exact />
+            {/* <Route path='/s/kelas' component={Classroom} exact />
+            <Route path='/s/kelas/:id' component={ClassroomDetail} /> */}
+            <Route path='/s/*'>NOT FOUND</Route>
          </Switch>
       </>
    )
 }
 
-export default Teacher
+export default Student
