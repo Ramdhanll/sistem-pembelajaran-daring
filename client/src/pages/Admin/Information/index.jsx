@@ -48,8 +48,9 @@ import { NavLink } from 'react-router-dom'
 
 const Information = () => {
    const toast = useToast()
-   const [pageIndex, setPageIndex] = useState(1)
    const { userState, userDispatch } = useContext(AuthContext)
+   const [pageIndex, setPageIndex] = useState(1)
+   const [loading, setLoading] = useState(false)
    const { data, error } = useSWR(`/api/informations?page=${pageIndex}`)
 
    const handlePagination = (value) => {
@@ -67,9 +68,12 @@ const Information = () => {
    }
 
    const handleDelete = async () => {
+      setLoading(true)
       try {
          await InformationService.delete(idDelete)
          mutate(`/api/informations?page=${pageIndex}`)
+         setLoading(false)
+
          setIsOpenDelete(false)
          setIdDelete('')
          toast({
@@ -81,6 +85,8 @@ const Information = () => {
             position: 'top-right',
          })
       } catch (error) {
+         setLoading(false)
+
          toast({
             title: 'Gagal',
             description: 'gagat hapus informasi',
@@ -125,6 +131,7 @@ const Information = () => {
          }
          mutate(`/api/informations?page=${pageIndex}`)
          onClose()
+         setInformation({})
          actions.setSubmitting(false)
          toast({
             title: 'Berhasil',
@@ -247,6 +254,7 @@ const Information = () => {
             isOpen={isOpenDelete}
             onClose={onCloseDelete}
             handleConfirm={handleDelete}
+            isLoading={loading}
          />
 
          {/* Modal add and update */}

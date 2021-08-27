@@ -30,6 +30,7 @@ import Navbar from '../../components/Navbar'
 import { AuthContext } from '../../contexts/authContext/AuthContexts'
 import Dashboard from './Dashboard'
 import Information from './Information'
+import ManageAdmin from './ManageAdmin'
 
 const Admin = ({ history, location }) => {
    return (
@@ -144,6 +145,7 @@ const Admin = ({ history, location }) => {
                component={Information}
                exact
             />
+            <Route path='/a/admin' component={ManageAdmin} exact />
             <Route path='/a/*'>NOT FOUND</Route>
          </Switch>
       </>

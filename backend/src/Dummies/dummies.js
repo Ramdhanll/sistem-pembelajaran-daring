@@ -74,3 +74,31 @@ export const adminsDummy = [
       password: bcrypt.hashSync('password', salt),
    },
 ]
+
+export const informationsDummy = [
+   {
+      title: 'Pembayaran SPP',
+      // body: '<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse quis urna aliquet, cursus nunc nec, mattis ipsum. Nam laoreet libero et aliquam fringilla. Donec mauris felis, imperdiet ac orci scelerisque, scelerisque sollicitudin nunc. Mauris eu mauris tincidunt velit placerat euismod et ac augue. Proin nec ligula sapien. Quisque congue ipsum placerat libero laoreet, at ornare justo ultrices. Nulla sit amet porttitor dolor, non hendrerit arcu. Maecenas purus nisl, ornare varius vulputate sed, tempus in turpis. Quisque accumsan nisi et viverra vehicula. Nam viverra tortor orci, luctus bibendum leo faucibus ut. Morbi ultricies dui eu nisl hendrerit, rhoncus viverra lacus condimentum. Aenean tempus interdum ultricies. Duis odio tortor, mattis ut dapibus vel, euismod et magna. Vivamus justo mauris, vestibulum quis massa vitae, efficitur porta turpis</p>',
+      body: '<p>Aku </p>',
+   },
+   {
+      title: 'Pembukaan pendaftaran siswa baru',
+      // body: '<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse quis urna aliquet, cursus nunc nec, mattis ipsum. Nam laoreet libero et aliquam fringilla. Donec mauris felis, imperdiet ac orci scelerisque, scelerisque sollicitudin nunc. Mauris eu mauris tincidunt velit placerat euismod et ac augue. Proin nec ligula sapien. Quisque congue ipsum placerat libero laoreet, at ornare justo ultrices. Nulla sit amet porttitor dolor, non hendrerit arcu. Maecenas purus nisl, ornare varius vulputate sed, tempus in turpis. Quisque accumsan nisi et viverra vehicula. Nam viverra tortor orci, luctus bibendum leo faucibus ut. Morbi ultricies dui eu nisl hendrerit, rhoncus viverra lacus condimentum. Aenean tempus interdum ultricies. Duis odio tortor, mattis ut dapibus vel, euismod et magna. Vivamus justo mauris, vestibulum quis massa vitae, efficitur porta turpis</p>',
+      body: '<p>Aku </p>',
+   },
+   {
+      title: 'Ujian Nasional 2021',
+      // body: '<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse quis urna aliquet, cursus nunc nec, mattis ipsum. Nam laoreet libero et aliquam fringilla. Donec mauris felis, imperdiet ac orci scelerisque, scelerisque sollicitudin nunc. Mauris eu mauris tincidunt velit placerat euismod et ac augue. Proin nec ligula sapien. Quisque congue ipsum placerat libero laoreet, at ornare justo ultrices. Nulla sit amet porttitor dolor, non hendrerit arcu. Maecenas purus nisl, ornare varius vulputate sed, tempus in turpis. Quisque accumsan nisi et viverra vehicula. Nam viverra tortor orci, luctus bibendum leo faucibus ut. Morbi ultricies dui eu nisl hendrerit, rhoncus viverra lacus condimentum. Aenean tempus interdum ultricies. Duis odio tortor, mattis ut dapibus vel, euismod et magna. Vivamus justo mauris, vestibulum quis massa vitae, efficitur porta turpis</p>',
+      body: '<p>Aku </p>',
+   },
+   {
+      title: 'Studi Wisata ke Bandung',
+      // body: '<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse quis urna aliquet, cursus nunc nec, mattis ipsum. Nam laoreet libero et aliquam fringilla. Donec mauris felis, imperdiet ac orci scelerisque, scelerisque sollicitudin nunc. Mauris eu mauris tincidunt velit placerat euismod et ac augue. Proin nec ligula sapien. Quisque congue ipsum placerat libero laoreet, at ornare justo ultrices. Nulla sit amet porttitor dolor, non hendrerit arcu. Maecenas purus nisl, ornare varius vulputate sed, tempus in turpis. Quisque accumsan nisi et viverra vehicula. Nam viverra tortor orci, luctus bibendum leo faucibus ut. Morbi ultricies dui eu nisl hendrerit, rhoncus viverra lacus condimentum. Aenean tempus interdum ultricies. Duis odio tortor, mattis ut dapibus vel, euismod et magna. Vivamus justo mauris, vestibulum quis massa vitae, efficitur porta turpis</p>',
+      body: '<p>Aku </p>',
+   },
+   {
+      title: 'Sholat idul fitri bersama',
+      // body: '<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse quis urna aliquet, cursus nunc nec, mattis ipsum. Nam laoreet libero et aliquam fringilla. Donec mauris felis, imperdiet ac orci scelerisque, scelerisque sollicitudin nunc. Mauris eu mauris tincidunt velit placerat euismod et ac augue. Proin nec ligula sapien. Quisque congue ipsum placerat libero laoreet, at ornare justo ultrices. Nulla sit amet porttitor dolor, non hendrerit arcu. Maecenas purus nisl, ornare varius vulputate sed, tempus in turpis. Quisque accumsan nisi et viverra vehicula. Nam viverra tortor orci, luctus bibendum leo faucibus ut. Morbi ultricies dui eu nisl hendrerit, rhoncus viverra lacus condimentum. Aenean tempus interdum ultricies. Duis odio tortor, mattis ut dapibus vel, euismod et magna. Vivamus justo mauris, vestibulum quis massa vitae, efficitur porta turpis</p>',
+      body: '<p>Aku </p>',
+   },
+]

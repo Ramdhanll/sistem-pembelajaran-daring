@@ -1,6 +1,6 @@
 import { validationResult } from 'express-validator'
 import { informationsDummy } from '../../Dummies/dummies.js'
-import Informations from '../models/informationModel.js'
+import Informations from '../models/informationsModel.js'
 
 const pageSize = 10
 
@@ -107,7 +107,7 @@ export const updateInformation = async (req, res) => {
       const information = await Informations.findById(req.params.id)
 
       information.title = req.body.title
-      information.body = req.body.title
+      information.body = req.body.body
 
       const updatedInformation = await information.save()
 

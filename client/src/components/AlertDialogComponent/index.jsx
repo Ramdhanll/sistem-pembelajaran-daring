@@ -15,6 +15,7 @@ const AlertDialogComponent = ({
    header,
    body,
    handleConfirm,
+   isLoading,
 }) => {
    return (
       <AlertDialog isOpen={isOpen} onClose={onClose}>
@@ -30,7 +31,12 @@ const AlertDialogComponent = ({
                   <Button onClick={onClose} _focus={{ outline: 'none' }}>
                      Cancel
                   </Button>
-                  <Button colorScheme='red' onClick={handleConfirm} ml={3}>
+                  <Button
+                     colorScheme='red'
+                     onClick={handleConfirm}
+                     ml={3}
+                     isLoading={isLoading}
+                  >
                      Delete
                   </Button>
                </AlertDialogFooter>

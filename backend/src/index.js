@@ -4,6 +4,8 @@ import Database from './config/Database.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { authRouter, userRouter } from './api/routes/index.js'
+import informationRouter from './api/routes/informationRouter.js'
+import adminRouter from './api/routes/adminRouter.js'
 
 const PORT = process.env.PORT || 5000
 dotenv.config()
@@ -13,7 +15,10 @@ const app = express()
 app.use(
    cors({
       credentials: true,
-      origin: process.env.FRONT_END_URL || 'http://localhost:3000',
+      origin: [
+         process.env.FRONT_END_URL || 'http://localhost:3000',
+         'http://192.168.100.7:3000',
+      ],
    })
 )
 app.use(cookieParser())
@@ -26,6 +31,8 @@ Database()
 // Routes
 app.use('/api/auth', authRouter)
 app.use('/api/users', userRouter)
+app.use('/api/informations', informationRouter)
+app.use('/api/admins', adminRouter)
 
 app.use('/', (req, res) => {
    res.send('Server is on!')
