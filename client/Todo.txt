@@ -1,2 +1,44 @@
-- [] create modal add classroom
-- [] crate info classroom
+#SECTION Teacher
+- Login
+   - [x] slicing figma to react
+   - [x] request login to server
+   - [x] private route
+- Info
+   - [x] slicing figma to react
+   - [] get data from server
+- Silabus
+   - [x] slicing figma to react
+   - [] add silabus
+   - [] get data from server
+- Modul 
+   - [] Slicing figma to react
+   - [] add Modul
+   - [] get data from server
+
+Admin
+   - Login
+      - [x] request login to server
+      - [x] private route
+   - information
+      - [x] create information
+      - [x] read information
+      - [x] update information
+      - [x] delete information
+      - [x] display detail information
+   - teacher
+      - [] create teacher
+      - [] read teacher
+      - [] update teacher
+      - [] delete teacher
+   - student
+      - [] create student
+      - [] read student
+      - [] update student
+      - [] delete student
+   - admin
+      - [] create admin
+      - [] read admin
+      - [] update admin
+      - [] delete admin
+          
+- [x] crate info classroom
