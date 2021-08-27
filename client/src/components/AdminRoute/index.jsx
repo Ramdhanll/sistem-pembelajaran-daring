@@ -2,16 +2,17 @@ import React, { useContext } from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import { AuthContext } from '../../contexts/authContext/AuthContexts'
 
-const TeacherRoute = ({ component: Component, ...rest }) => {
+const AdminRoute = ({ component: Component, ...rest }) => {
    const { userState } = useContext(AuthContext)
 
    return (
       <Route
          {...rest}
          render={(props) =>
-            userState?.role === 'teacher' ? (
+            userState?.role === 'admin' ? (
                <Component {...props}></Component>
-            ) : userState?.role === 'student' || userState?.role === 'admin' ? (
+            ) : userState?.role === 'student' ||
+              userState?.role === 'teacher' ? (
                <Redirect to={localStorage.getItem('goto') || '/'} />
             ) : (
                <Redirect to='/login' />
@@ -21,4 +22,4 @@ const TeacherRoute = ({ component: Component, ...rest }) => {
    )
 }
 
-export default TeacherRoute
+export default AdminRoute

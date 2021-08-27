@@ -12,7 +12,7 @@ const StudentRoute = ({ component: Component, ...rest }) => {
             userState?.role === 'student' ? (
                <Component {...props}></Component>
             ) : userState?.role === 'teacher' || userState?.role === 'admin' ? (
-               <Redirect to={localStorage.getItem('goto')} />
+               <Redirect to={localStorage.getItem('goto') || '/'} />
             ) : (
                <Redirect to='/login' />
             )

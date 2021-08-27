@@ -99,12 +99,8 @@ const LandingPage = () => {
                </Flex>
 
                {userState ? (
-                  <NavLink to={localStorage.getItem('goto')}>
-                     <Flex
-                        alignItems='center'
-                        justifyContent='space-between'
-                        bg='#fff'
-                     >
+                  <NavLink to={localStorage.getItem('goto') || '/'}>
+                     <Flex alignItems='center' justifyContent='space-between'>
                         <Text mr='30px'>{userState.name}</Text>
                         <Avatar name='Dan Abrahmov' src={userState.photo} />
                      </Flex>
@@ -320,16 +316,19 @@ const LandingPage = () => {
                         Visi dan Misi
                      </Link>
 
-                     <NavLink to='/login'>
-                        <Button
-                           variant='solid'
-                           bg='primary'
-                           color='white'
-                           mt='30px'
-                        >
-                           Masuk
-                        </Button>
-                     </NavLink>
+                     {userState ? (
+                        <NavLink to={localStorage.getItem('goto') || '/'}>
+                           <Flex alignItems='center' justifyContent='center'>
+                              <Text fontWeight='700'>{userState.name}</Text>
+                           </Flex>
+                        </NavLink>
+                     ) : (
+                        <NavLink to='/login'>
+                           <Button variant='solid' bg='#E5E9F2'>
+                              Masuk
+                           </Button>
+                        </NavLink>
+                     )}
                   </VStack>
                </DrawerBody>
             </DrawerContent>

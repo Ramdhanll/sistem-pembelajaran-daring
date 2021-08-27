@@ -19,7 +19,7 @@ const Login = ({ history }) => {
    const { userState, userDispatch } = useContext(AuthContext)
 
    useEffect(() => {
-      if (userState) history.push(localStorage.getItem('goto') || '/')
+      if (userState?.role) history.push(localStorage.getItem('goto') || '/')
    }, [])
 
    const validationSchema = Yup.object({
