@@ -31,6 +31,8 @@ import { AuthContext } from '../../contexts/authContext/AuthContexts'
 import Dashboard from './Dashboard'
 import Information from './Information'
 import ManageAdmin from './ManageAdmin'
+import ManageStudents from './ManageStudents'
+import ManageTeachers from './ManageTeachers'
 
 const Admin = ({ history, location }) => {
    return (
@@ -146,6 +148,8 @@ const Admin = ({ history, location }) => {
                exact
             />
             <Route path='/a/admin' component={ManageAdmin} exact />
+            <Route path='/a/siswa' component={ManageStudents} exact />
+            <Route path='/a/guru' component={ManageTeachers} exact />
             <Route path='/a/*'>NOT FOUND</Route>
          </Switch>
       </>

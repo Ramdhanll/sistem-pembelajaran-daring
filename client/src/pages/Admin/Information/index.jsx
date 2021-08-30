@@ -1,6 +1,7 @@
 import {
    Box,
    Button,
+   CircularProgress,
    Flex,
    FormControl,
    FormLabel,
@@ -45,13 +46,17 @@ import * as Yup from 'yup'
 import InformationService from '../../../services/InformationService'
 import AlertDialogComponent from '../../../components/AlertDialogComponent'
 import { NavLink } from 'react-router-dom'
+import Search from '../../../components/Search'
 
 const Information = () => {
    const toast = useToast()
    const { userState, userDispatch } = useContext(AuthContext)
    const [pageIndex, setPageIndex] = useState(1)
    const [loading, setLoading] = useState(false)
-   const { data, error } = useSWR(`/api/informations?page=${pageIndex}`)
+   const [title, setTitle] = useState('')
+   const { data, error } = useSWR(
+      `/api/informations?page=${pageIndex}&title=${title}`
+   )
 
    const handlePagination = (value) => {
       setPageIndex(value)
@@ -71,7 +76,7 @@ const Information = () => {
       setLoading(true)
       try {
          await InformationService.delete(idDelete)
-         mutate(`/api/informations?page=${pageIndex}`)
+         mutate(`/api/informations?page=${pageIndex}&title=${title}`)
          setLoading(false)
 
          setIsOpenDelete(false)
@@ -129,7 +134,7 @@ const Information = () => {
          } else {
             await InformationService.update(information._id, values)
          }
-         mutate(`/api/informations?page=${pageIndex}`)
+         mutate(`/api/informations?page=${pageIndex}&title=${title}`)
          onClose()
          setInformation({})
          actions.setSubmitting(false)
@@ -162,17 +167,28 @@ const Information = () => {
 
          {/* Informasi */}
          <Box mt={['25px', '50px']} pb='30px'>
-            <Button
-               variant='solid'
-               bg='primary'
-               color='white'
-               onClick={(e) => handleModalInformation({ isAdd: true })}
-            >
-               <MdAdd size='24px' />{' '}
-               <Text ml='7px' display={['none', 'inline', 'inline', 'inline']}>
-                  Tambah Informasi dan berita
-               </Text>
-            </Button>
+            <HStack spacing={3}>
+               <Box>
+                  <Button
+                     variant='solid'
+                     bg='primary'
+                     color='white'
+                     onClick={(e) => handleModalInformation({ isAdd: true })}
+                  >
+                     <MdAdd size='24px' />{' '}
+                     <Text
+                        ml='7px'
+                        display={['none', 'inline', 'inline', 'inline']}
+                     >
+                        Tambah Informasi dan berita
+                     </Text>
+                  </Button>
+               </Box>
+               <Search
+                  placeholder='Pencarian dengan judul ...'
+                  setName={setTitle}
+               />
+            </HStack>
 
             {/* Table  */}
             <Box h={['60vh', '300px']} mt='20px' overflow='auto' mb='30px'>
@@ -187,64 +203,93 @@ const Information = () => {
                      </Tr>
                   </Thead>
                   <Tbody>
-                     {data?.informations.map((information, i) => (
-                        <Tr key={i}>
-                           <Td>{i + 1}</Td>
-                           <Td color='blue' textDecoration='underline'>
-                              <NavLink to={`/informasi/${information._id}`}>
-                                 {information.title}
-                              </NavLink>
-                           </Td>
-                           <Td>
-                              {' '}
-                              {new Date(
-                                 information.createdAt
-                              ).toLocaleDateString('id', {
-                                 weekday: 'long',
-                                 year: 'numeric',
-                                 month: 'long',
-                                 day: 'numeric',
-                                 hour: '2-digit',
-                                 minute: '2-digit',
-                              })}
-                              <Text display='inline'> WIB</Text>
-                           </Td>
+                     {data?.informations.length ? (
+                        data?.informations.map((information, i) => (
+                           <Tr key={i}>
+                              <Td>{i + 1}</Td>
+                              <Td color='blue' textDecoration='underline'>
+                                 <NavLink to={`/informasi/${information._id}`}>
+                                    {information.title}
+                                 </NavLink>
+                              </Td>
+                              <Td>
+                                 {' '}
+                                 {new Date(
+                                    information.createdAt
+                                 ).toLocaleDateString('id', {
+                                    weekday: 'long',
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                 })}
+                                 <Text display='inline'> WIB</Text>
+                              </Td>
 
-                           <Td>
-                              <HStack spacing={3}>
-                                 <Button
-                                    variant='solid'
-                                    colorScheme='yellow'
-                                    onClick={(e) =>
-                                       handleModalInformation({
-                                          isAdd: false,
-                                          information,
-                                       })
-                                    }
-                                 >
-                                    <MdEdit size='24px' />
-                                 </Button>
-                                 <Button
-                                    variant='solid'
-                                    colorScheme='red'
-                                    onClick={(e) =>
-                                       handleOpenAlertDelete(information._id)
-                                    }
-                                 >
-                                    <MdDelete size='24px' />
-                                 </Button>
-                              </HStack>
+                              <Td>
+                                 <HStack spacing={3}>
+                                    <Button
+                                       variant='solid'
+                                       colorScheme='yellow'
+                                       onClick={(e) =>
+                                          handleModalInformation({
+                                             isAdd: false,
+                                             information,
+                                          })
+                                       }
+                                    >
+                                       <MdEdit size='24px' />
+                                    </Button>
+                                    <Button
+                                       variant='solid'
+                                       colorScheme='red'
+                                       onClick={(e) =>
+                                          handleOpenAlertDelete(information._id)
+                                       }
+                                    >
+                                       <MdDelete size='24px' />
+                                    </Button>
+                                 </HStack>
+                              </Td>
+                           </Tr>
+                        ))
+                     ) : !data ? (
+                        <Tr>
+                           <Td
+                              colSpan='4'
+                              textAlign='center'
+                              backgroundColor='blue.300'
+                           >
+                              <CircularProgress
+                                 size='25px'
+                                 thickness='16px'
+                                 isIndeterminate
+                                 color='green.300'
+                              />
                            </Td>
                         </Tr>
-                     ))}
+                     ) : (
+                        <Tr>
+                           <Td
+                              colSpan='4'
+                              textAlign='center'
+                              backgroundColor='blue.300'
+                           >
+                              Data Kosong
+                           </Td>
+                        </Tr>
+                     )}
                   </Tbody>
                </Table>
             </Box>
-            <Pagination
-               page={data?.page}
-               pages={data?.pages}
-               handlePagination={handlePagination}
-            />
+            <Box display={data?.informations.length ? 'inline' : 'none'}>
+               <Pagination
+                  page={data?.page}
+                  pages={data?.pages}
+                  handlePagination={handlePagination}
+               />
+            </Box>
          </Box>
 
          {/* Alert Dialog */}

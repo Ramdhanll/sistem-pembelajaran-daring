@@ -10,6 +10,8 @@ export const studentsDummy = [
       photo: 'https://bit.ly/ryan-florence',
       email: 'student1@gmail.com',
       password: bcrypt.hashSync('password', salt),
+      gender: 'L',
+      year_of_entry: '2021/2022',
    },
    {
       nis: '1231231232',
@@ -17,6 +19,8 @@ export const studentsDummy = [
       photo: 'https://bit.ly/ryan-florence',
       email: 'student2@gmail.com',
       password: bcrypt.hashSync('password', salt),
+      gender: 'L',
+      year_of_entry: '2021/2022',
    },
    {
       nis: '1231231233',
@@ -24,6 +28,8 @@ export const studentsDummy = [
       photo: 'https://bit.ly/ryan-florence',
       email: 'student3@gmail.com',
       password: bcrypt.hashSync('password', salt),
+      gender: 'L',
+      year_of_entry: '2021/2022',
    },
 ]
 
@@ -33,18 +39,21 @@ export const teachersDummy = [
       photo: 'https://bit.ly/ryan-florence',
       email: 'teacher1@gmail.com',
       password: bcrypt.hashSync('password', salt),
+      gender: 'L',
    },
    {
       name: 'teacher 2',
       photo: 'https://bit.ly/ryan-florence',
       email: 'teacher2@gmail.com',
       password: bcrypt.hashSync('password', salt),
+      gender: 'L',
    },
    {
       name: 'teacher 3',
       photo: 'https://bit.ly/ryan-florence',
       email: 'teacher3@gmail.com',
       password: bcrypt.hashSync('password', salt),
+      gender: 'L',
    },
 ]
 

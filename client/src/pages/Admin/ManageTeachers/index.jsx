@@ -1,31 +1,21 @@
 import {
+   Avatar,
    Box,
    Button,
    CircularProgress,
-   Flex,
-   FormControl,
-   FormLabel,
    HStack,
-   Input,
-   InputGroup,
-   InputLeftElement,
-   Link,
    ListItem,
    Modal,
    ModalBody,
    ModalCloseButton,
    ModalContent,
-   ModalFooter,
    ModalHeader,
    ModalOverlay,
-   Skeleton,
-   SkeletonText,
    Table,
    TableCaption,
    Tbody,
    Td,
    Text,
-   Tfoot,
    Th,
    Thead,
    Tr,
@@ -34,42 +24,55 @@ import {
    useToast,
    VStack,
 } from '@chakra-ui/react'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
    MdAdd,
    MdDelete,
    MdEdit,
    MdLocalLibrary,
+   MdRemoveRedEye,
    MdSearch,
 } from 'react-icons/md'
-import { GiTeacher } from 'react-icons/gi'
-import { RiAdminFill } from 'react-icons/ri'
-import { IoMdPeople } from 'react-icons/io'
 
-import CardDashboard from '../../../components/CardDashboard'
 import { AuthContext } from '../../../contexts/authContext/AuthContexts'
 import Pagination from '../../../components/Pagination'
 import useSWR, { mutate } from 'swr'
 
-import { Formik, Form, setIn } from 'formik'
+import { Formik, Form } from 'formik'
 import FormikControl from '../../../Formik/FormikControl'
 
 import * as Yup from 'yup'
-import AdminService from '../../../services/AdminService'
+import TeacherService from '../../../services/TeacherService'
 import AlertDialogComponent from '../../../components/AlertDialogComponent'
-import { NavLink } from 'react-router-dom'
 import Search from '../../../components/Search'
 
-const ManageAdmin = () => {
+const ManageTeachers = () => {
    const toast = useToast()
    const { userState, userDispatch } = useContext(AuthContext)
-   const [name, setName] = useState('')
+   const [teacher, setTeacher] = useState({})
+   const [querySearch, setQuerySearch] = useState('')
    const [pageIndex, setPageIndex] = useState(1)
-   const { data, error } = useSWR(`/api/admins?page=${pageIndex}&name=${name}`)
+   const { data, error } = useSWR(
+      `/api/teachers?page=${pageIndex}&name=${querySearch}&nis=${querySearch}`
+   )
+
    const [loading, setLoading] = useState(false)
 
    const handlePagination = (value) => {
       setPageIndex(value)
+   }
+
+   // SECTION Detail Teacher
+   const {
+      isOpen: isOpenModalDetail,
+      onOpen: onOpenModalDetail,
+      onClose: onCloseModalDetail,
+   } = useDisclosure()
+
+   const handleOpenModalDetail = (teacher) => {
+      setTeacher(teacher)
+
+      onOpenModalDetail()
    }
 
    // SECTION Delete
@@ -85,14 +88,16 @@ const ManageAdmin = () => {
    const handleDelete = async () => {
       setLoading(true)
       try {
-         await AdminService.delete(idDelete)
+         await TeacherService.delete(idDelete)
          setLoading(false)
-         mutate(`/api/admins?page=${pageIndex}&name=${name}`)
+         mutate(
+            `/api/teachers?page=${pageIndex}&name=${querySearch}&nis=${querySearch}`
+         )
          setIsOpenDelete(false)
          setIdDelete('')
          toast({
             title: 'Berhasil',
-            description: 'berhasil hapus admin',
+            description: 'berhasil hapus guru',
             status: 'success',
             duration: 5000,
             isClosable: true,
@@ -102,7 +107,7 @@ const ManageAdmin = () => {
          setLoading(false)
          toast({
             title: 'Gagal',
-            description: 'gagat hapus admin',
+            description: 'gagat hapus guru',
             status: 'error',
             duration: 5000,
             isClosable: true,
@@ -113,23 +118,23 @@ const ManageAdmin = () => {
    }
 
    // SECTION Formik
-   const [admin, setAdmin] = useState({})
    const [isAdd, setIsAdd] = useState(true)
    const { isOpen, onOpen, onClose } = useDisclosure()
 
-   const handleModalAdmin = ({ isAdd, admin }) => {
+   const handleModalTeacher = ({ isAdd, teacher }) => {
       if (isAdd) {
          setIsAdd(true)
       } else {
          setIsAdd(false)
-         setAdmin(admin)
+         setTeacher(teacher)
       }
 
       onOpen()
    }
 
    const validationSchema = Yup.object({
-      name: Yup.string().required('Nama diperlukan!'),
+      name: Yup.string().required('Nama diperlukan'),
+      gender: Yup.string().required('Jenis kelamin diperlukan'),
       email: Yup.string()
          .required('Email diperlukan')
          .email('Email tidak valid'),
@@ -139,18 +144,24 @@ const ManageAdmin = () => {
       actions.setSubmitting(true)
 
       try {
+         let action
+
          if (isAdd) {
-            await AdminService.create(values)
+            await TeacherService.create(values)
+            action = 'menambahkan'
          } else {
-            await AdminService.update(admin._id, values)
+            await TeacherService.update(teacher._id, values)
+            action = 'mengubah'
          }
-         mutate(`/api/admins?page=${pageIndex}&name=${name}`)
+         mutate(
+            `/api/teachers?page=${pageIndex}&name=${querySearch}&nis=${querySearch}`
+         )
          onClose()
-         setAdmin({})
+         setTeacher({})
          actions.setSubmitting(false)
          toast({
             title: 'Berhasil',
-            description: 'berhasil menambahkan admin',
+            description: `berhasil ${action} guru`,
             status: 'success',
             duration: 5000,
             isClosable: true,
@@ -185,7 +196,7 @@ const ManageAdmin = () => {
       <Box pt={['25px', '50px']} px={['25px', '30px', '50px', '100px']}>
          {/* Header */}
          <Text fontSize={['md', 'lg', 'xl', '2xl']} fontWeight='600'>
-            Manage Admin
+            Manage Guru
          </Text>
 
          <Box mt={['25px', '50px']} pb='30px'>
@@ -195,34 +206,22 @@ const ManageAdmin = () => {
                      variant='solid'
                      bg='primary'
                      color='white'
-                     onClick={(e) => handleModalAdmin({ isAdd: true })}
+                     onClick={(e) => handleModalTeacher({ isAdd: true })}
                   >
                      <MdAdd size='24px' />{' '}
                      <Text
                         ml='7px'
                         display={['none', 'inline', 'inline', 'inline']}
                      >
-                        Tambah Admin
+                        Tambah Guru
                      </Text>
                   </Button>
                </Box>
 
                <Search
-                  setQuerySearch={setName}
+                  setQuerySearch={setQuerySearch}
                   placeholder='Pencarian dengan nama ...'
                />
-               {/* <InputGroup w={['100%', '30%']}>
-                  <InputLeftElement
-                     pointerEvents='none'
-                     children={<MdSearch color='#9da1a8' size='24px' />}
-                  />
-                  <Input
-                     type='text'
-                     placeholder='Pencarian dengan nama ...'
-                     color='textSecondary'
-                     onChange={(e) => setSearchTyping(e.target.value)}
-                  />
-               </InputGroup> */}
             </HStack>
 
             {/* Table  */}
@@ -238,28 +237,37 @@ const ManageAdmin = () => {
                      </Tr>
                   </Thead>
                   <Tbody>
-                     {data?.admins.length ? (
-                        data?.admins
-                           .filter((admin) => admin._id !== userState._id)
-                           .map((admin, i) => (
+                     {data?.teachers?.length ? (
+                        data?.teachers
+                           .filter((teacher) => teacher._id !== userState._id)
+                           .map((teacher, i) => (
                               <Tr key={i}>
                                  <Td>{i + 1}</Td>
                                  <Td>
-                                    <Text>{admin.name}</Text>
+                                    <Text>{teacher.name}</Text>
                                  </Td>
                                  <Td>
-                                    <Text>{admin.email}</Text>
+                                    <Text>{teacher.email}</Text>
                                  </Td>
 
                                  <Td>
                                     <HStack spacing={3}>
                                        <Button
                                           variant='solid'
+                                          colorScheme='blue'
+                                          onClick={(e) =>
+                                             handleOpenModalDetail(teacher)
+                                          }
+                                       >
+                                          <MdRemoveRedEye size='24px' />
+                                       </Button>
+                                       <Button
+                                          variant='solid'
                                           colorScheme='yellow'
                                           onClick={(e) =>
-                                             handleModalAdmin({
+                                             handleModalTeacher({
                                                 isAdd: false,
-                                                admin,
+                                                teacher,
                                              })
                                           }
                                        >
@@ -269,7 +277,7 @@ const ManageAdmin = () => {
                                           variant='solid'
                                           colorScheme='red'
                                           onClick={(e) =>
-                                             handleOpenAlertDelete(admin._id)
+                                             handleOpenAlertDelete(teacher._id)
                                           }
                                        >
                                           <MdDelete size='24px' />
@@ -281,7 +289,7 @@ const ManageAdmin = () => {
                      ) : !data ? (
                         <Tr>
                            <Td
-                              colSpan='4'
+                              colSpan='5'
                               textAlign='center'
                               backgroundColor='blue.300'
                            >
@@ -296,7 +304,7 @@ const ManageAdmin = () => {
                      ) : (
                         <Tr>
                            <Td
-                              colSpan='4'
+                              colSpan='5'
                               textAlign='center'
                               backgroundColor='blue.300'
                            >
@@ -307,7 +315,7 @@ const ManageAdmin = () => {
                   </Tbody>
                </Table>
             </Box>
-            <Box display={data?.admins.length ? 'inline' : 'none'}>
+            <Box display={data?.teachers.length ? 'inline' : 'none'}>
                <Pagination
                   page={data?.page}
                   pages={data?.pages}
@@ -318,7 +326,7 @@ const ManageAdmin = () => {
 
          {/* Alert Dialog */}
          <AlertDialogComponent
-            header='Hapus Admin'
+            header='Hapus Teacher'
             body='apakah anda yakin ingin menghapus?'
             isOpen={isOpenDelete}
             onClose={onCloseDelete}
@@ -332,30 +340,33 @@ const ManageAdmin = () => {
             onClose={onClose}
             size='md'
             onOverlayClick={() => {
-               setAdmin({})
+               setTeacher({})
             }}
          >
             <ModalOverlay />
             <ModalContent>
-               <ModalHeader>Tambah Admin</ModalHeader>
+               <ModalHeader>Tambah Guru</ModalHeader>
                <ModalCloseButton _focus={{ outline: 'none' }} />
                <ModalBody pb='30px'>
                   <Formik
                      initialValues={{
-                        name: admin.name || '',
-                        email: admin.email || '',
+                        name: teacher.name || '',
+                        gender: teacher.gender || '',
+                        year_of_entry: teacher.year_of_entry || '',
+                        email: teacher.email || '',
                      }}
                      onSubmit={handleSubmit}
                      validationSchema={validationSchema}
                   >
                      {(props) => (
                         <Form>
-                           <VStack spacing={3}>
+                           <VStack spacing={4}>
                               <FormikControl
                                  control='input'
                                  name='name'
                                  label='Nama'
                                  required={true}
+                                 autoComplete='off'
                               />
                               <FormikControl
                                  control='input'
@@ -363,6 +374,17 @@ const ManageAdmin = () => {
                                  label='Emal'
                                  type='email'
                                  required={true}
+                              />
+                              <FormikControl
+                                 control='radio'
+                                 name='gender'
+                                 label='Jenis Kelamin'
+                                 required={true}
+                                 placeholder='Pilih jenis kelamin'
+                                 options={[
+                                    { key: 1, value: 'L', name: 'Laki-laki' },
+                                    { key: 2, value: 'P', name: 'Perempuan' },
+                                 ]}
                               />
                            </VStack>
                            <Button
@@ -381,8 +403,57 @@ const ManageAdmin = () => {
                </ModalBody>
             </ModalContent>
          </Modal>
+
+         {/* Modal Detail */}
+         <Modal
+            isOpen={isOpenModalDetail}
+            onClose={onCloseModalDetail}
+            onOverlayClick={(e) => setTeacher({})}
+         >
+            <ModalOverlay />
+            <ModalContent>
+               <ModalHeader>Detail Guru</ModalHeader>
+               <ModalCloseButton _focus={{ outline: 'none' }} />
+               <ModalBody>
+                  <Box
+                     display='flex'
+                     alignItems='center'
+                     justifyContent='center'
+                     mb='15px'
+                  >
+                     <Avatar
+                        size='xl'
+                        name={teacher.name}
+                        src={teacher.photo}
+                     />
+                  </Box>
+
+                  <Table variant='simple'>
+                     <Tbody>
+                        <Tr>
+                           <Th>Nama</Th>
+
+                           <Td>{teacher.name}</Td>
+                        </Tr>
+                        <Tr>
+                           <Th>Email</Th>
+                           <Td>{teacher.email}</Td>
+                        </Tr>
+                        <Tr>
+                           <Th>Jenis Kelamin</Th>
+                           <Td>
+                              {teacher.gender === 'L'
+                                 ? 'Laki-laki'
+                                 : 'Perempuan'}
+                           </Td>
+                        </Tr>
+                     </Tbody>
+                  </Table>
+               </ModalBody>
+            </ModalContent>
+         </Modal>
       </Box>
    )
 }
 
-export default ManageAdmin
+export default ManageTeachers

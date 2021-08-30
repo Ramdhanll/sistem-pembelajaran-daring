@@ -9,7 +9,7 @@ import { Field } from 'formik'
 import React from 'react'
 
 const FormikRadioButton = (props) => {
-   const { name, label, values, required } = props
+   const { name, label, options, required } = props
    return (
       <Field name={name}>
          {({ field, form }) => {
@@ -22,9 +22,9 @@ const FormikRadioButton = (props) => {
                >
                   <FormLabel htmlFor={name}>{label}</FormLabel>
                   <RadioGroup {...rest} id={name} {...props}>
-                     {values.map((value) => (
+                     {options.map((value) => (
                         <Radio
-                           key={value.value}
+                           key={value.key}
                            onChange={onChange}
                            value={value.value}
                            mr={3}
