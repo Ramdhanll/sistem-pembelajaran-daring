@@ -20,4 +20,12 @@ export default {
          throw error
       }
    },
+   status: async (dispatch) => {
+      try {
+         await axios.get(`/api/auth/status`)
+      } catch (error) {
+         dispatch(logout())
+         throw error
+      }
+   },
 }

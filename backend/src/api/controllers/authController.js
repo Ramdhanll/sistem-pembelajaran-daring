@@ -71,50 +71,18 @@ export const login = async (req, res) => {
    res.status(401).json({ message: 'Invalid email or password!' })
 }
 
-export const register = async (req, res) => {
-   const errors = validationResult(req)
-   if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
-   }
-
-   const { name, email, password, photo } = req.body
-
-   const student = new Students({
-      name,
-      email,
-      password: bcrypt.hashSync(password, 8),
-      photo,
-   })
-
-   const createdStudent = await student.save()
-   res.status(200).json({
-      _id: createdStudent._id,
-      name: createdStudent.name,
-      email: createdStudent.email,
-      photo: createdStudent.photo,
-      token: generateToken(createdStudent),
-   })
-}
-
 export const logout = async (req, res) => {
    res.clearCookie('token')
    res.send({ success: true })
 }
 
-export const studentDetail = async (req, res) => {
-   const studentId = req.params.id
-   try {
-      const student = await Students.findById(studentId).select('-password')
-      if (studentId === req.student._id) {
-         return res.status(200).json(student)
-      } else {
-         throw e
-      }
-   } catch (error) {
-      return res.status(404).json({ message: 'Student not found!' })
-   }
+export const status = async (req, res) => {
+   res.status(200).json({
+      status: 'success',
+      user: req.user,
+      message: 'status login',
+   })
 }
-
 /**
  * Upload image from client to cloudinary
  * 

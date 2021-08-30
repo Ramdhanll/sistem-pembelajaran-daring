@@ -15,13 +15,18 @@ import TeacherRoute from './components/TeacherRoute'
 import Student from './pages/Student'
 import StudentRoute from './components/StudentRoute'
 import { AuthContext } from './contexts/authContext/AuthContexts'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import Admin from './pages/Admin'
 import AdminRoute from './components/AdminRoute'
 import Information from './pages/Information'
+import AuthService from './services/AuthService'
 
 function App() {
-   const { userState } = useContext(AuthContext)
+   const { userDispatch } = useContext(AuthContext)
+
+   useEffect(() => {
+      AuthService.status(userDispatch)
+   }, [])
 
    return (
       <Box className='App'>
