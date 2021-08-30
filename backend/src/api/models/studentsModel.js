@@ -11,9 +11,12 @@ const studentsSchema = new mongoose.Schema(
          type: String,
          required: true,
       },
+      gender: {
+         type: String,
+         enum: ['L', 'P'],
+      },
       photo: {
          type: String,
-         required: true,
       },
       email: {
          type: String,
@@ -21,6 +24,10 @@ const studentsSchema = new mongoose.Schema(
          unique: true,
       },
       password: {
+         type: String,
+         required: true,
+      },
+      year_of_entry: {
          type: String,
          required: true,
       },

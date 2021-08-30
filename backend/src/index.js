@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser'
 import { authRouter, userRouter } from './api/routes/index.js'
 import informationRouter from './api/routes/informationRouter.js'
 import adminRouter from './api/routes/adminRouter.js'
+import studentRouter from './api/routes/studentRouter.js'
+import teacherRouter from './api/routes/teacherRouter.js'
 
 const PORT = process.env.PORT || 5000
 dotenv.config()
@@ -30,9 +32,10 @@ Database()
 
 // Routes
 app.use('/api/auth', authRouter)
-app.use('/api/users', userRouter)
 app.use('/api/informations', informationRouter)
 app.use('/api/admins', adminRouter)
+app.use('/api/students', studentRouter)
+app.use('/api/teachers', teacherRouter)
 
 app.use('/', (req, res) => {
    res.send('Server is on!')
