@@ -12,7 +12,7 @@ export const ClassroomContextProvider = ({ children }) => {
 
    useEffect(() => {
       localStorage.setItem('classroom', JSON.stringify(state.classroomState))
-   }, [state.classroomState])
+   }, [state?.classroomState])
 
    return (
       <ClassroomContext.Provider

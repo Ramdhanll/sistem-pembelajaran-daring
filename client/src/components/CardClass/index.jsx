@@ -17,6 +17,7 @@ import {
    MdDateRange,
    MdDelete,
    MdPeople,
+   MdSchool,
 } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
 import { mutate } from 'swr'
@@ -113,24 +114,34 @@ const CardClass = ({ classroom }) => {
                         <Text fontWeight='600' fontSize={['sm', 'md', 'lg']}>
                            {classroom.teacher.name}
                         </Text>
-                        <HStack spacing={2} alignItems='center'>
-                           <MdDateRange size='24px' />
-                           <Text
-                              fontWeight='300'
-                              color='textSecondary'
-                              fontSize={['xs', 'sm', 'md']}
-                           >
-                              {classroom.day_schedule}
-                           </Text>
+                        <HStack>
+                           <HStack spacing={2} alignItems='center'>
+                              <MdDateRange size='24px' />
+                              <Text
+                                 fontWeight='300'
+                                 color='textSecondary'
+                                 fontSize={['xs', 'sm', 'md']}
+                              >
+                                 {classroom.day_schedule}
+                              </Text>
+
+                              <Text
+                                 fontWeight='300'
+                                 color='textSecondary'
+                                 fontSize={['xs', 'sm', 'md']}
+                              >
+                                 {`${classroom.from} - ${classroom.to}`} WIB
+                              </Text>
+                           </HStack>
                         </HStack>
                         <HStack spacing={2} alignItems='center'>
-                           <MdAccessTime size='24px' />
+                           <MdSchool size='24px' />
                            <Text
                               fontWeight='300'
                               color='textSecondary'
                               fontSize={['xs', 'sm', 'md']}
                            >
-                              {`${classroom.from} - ${classroom.to}`} WIB
+                              {classroom.school_year}
                            </Text>
                         </HStack>
                         <HStack spacing={2} alignItems='center'>

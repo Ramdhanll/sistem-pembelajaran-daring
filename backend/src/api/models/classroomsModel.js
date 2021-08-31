@@ -79,6 +79,9 @@ const classroomsSchema = mongoose.Schema({
       default: 'Active',
       enum: ['Active', 'InActive'],
    },
+   syllabus: {
+      type: String,
+   },
 })
 
 const Classrooms = mongoose.model('Classroom', classroomsSchema)

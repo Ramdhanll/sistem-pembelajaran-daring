@@ -1,10 +1,21 @@
-import { Badge, Box, Button, Flex, Text } from '@chakra-ui/react'
+import {
+   Badge,
+   Box,
+   Button,
+   Flex,
+   Skeleton,
+   SkeletonText,
+   Text,
+} from '@chakra-ui/react'
 import React, { useContext, useEffect } from 'react'
 import { Switch, Route, NavLink } from 'react-router-dom'
 import useSWR from 'swr'
 import CardClass from '../../../components/CardClass'
 import Navigation from '../../../components/Navigation'
-import { addClassroom } from '../../../contexts/classroomContext/ClassroomActions'
+import {
+   addClassroom,
+   clearClassroom,
+} from '../../../contexts/classroomContext/ClassroomActions'
 import { ClassroomContext } from '../../../contexts/classroomContext/classroomContext'
 import Info from './Info'
 import Modul from './Modul'
@@ -19,6 +30,10 @@ const ClassroomDetail = (props) => {
       if (data !== undefined) {
          classroomDispatch(addClassroom(data.classroom))
       }
+
+      return () => {
+         classroomDispatch(clearClassroom())
+      }
    }, [data])
 
    return (
@@ -30,21 +45,30 @@ const ClassroomDetail = (props) => {
             alignItems='center'
             gridGap='20px'
          >
-            <Box gridGap={['5px', '20px']} alignItems='center' display='flex'>
-               <Text fontSize={['2xl', '3xl', '4xl', '5xl']} fontWeight='700'>
-                  {classroomState.subject}
-               </Text>
-               <Badge
-                  colorScheme='green'
-                  textAlign='center'
-                  h='max-content'
-                  px='10px'
-                  py='5px'
-                  fontWeight='300'
+            <SkeletonText isLoaded={classroomState !== null}>
+               <Box
+                  gridGap={['5px', '20px']}
+                  alignItems='center'
+                  display='flex'
                >
-                  {classroomState.status}
-               </Badge>
-            </Box>
+                  <Text
+                     fontSize={['2xl', '3xl', '4xl', '5xl']}
+                     fontWeight='700'
+                  >
+                     {classroomState?.subject}
+                  </Text>
+                  <Badge
+                     colorScheme='green'
+                     textAlign='center'
+                     h='max-content'
+                     px='10px'
+                     py='5px'
+                     fontWeight='300'
+                  >
+                     {classroomState?.status}
+                  </Badge>
+               </Box>
+            </SkeletonText>
             <Box>
                <NavLink to='/t/kelas'>
                   <Button variant='outline' colorScheme='blackAlpha'>
@@ -55,13 +79,17 @@ const ClassroomDetail = (props) => {
          </Flex>
 
          {/* Navigation */}
-         <Navigation id={classId} />
+         <Skeleton isLoaded={classroomState !== null}>
+            <Navigation id={classId} />
+         </Skeleton>
 
-         <Switch>
-            <Route path='/t/kelas/:id' component={Info} exact />
-            <Route path='/t/kelas/:id/silabus' component={Silabus} />
-            <Route path='/t/kelas/:id/modul' component={Modul} />
-         </Switch>
+         <Skeleton isLoaded={classroomState !== null}>
+            <Switch>
+               <Route path='/t/kelas/:id' component={Info} exact />
+               <Route path='/t/kelas/:id/silabus' component={Silabus} />
+               <Route path='/t/kelas/:id/modul' component={Modul} />
+            </Switch>
+         </Skeleton>
       </Box>
    )
 }

@@ -43,14 +43,14 @@ const Info = (props) => {
    // SECTION Formik
 
    const initialValues = {
-      subject: classroomState.subject || '',
-      description: classroomState.description || '',
-      classroom: classroomState.classroom || '',
-      day_schedule: classroomState.day_schedule || '',
-      school_year: classroomState.school_year || '',
-      from: classroomState.from || '',
-      to: classroomState.to || '',
-      code: classroomState.code || '',
+      subject: classroomState?.subject || '',
+      description: classroomState?.description || '',
+      classroom: classroomState?.classroom || '',
+      day_schedule: classroomState?.day_schedule || '',
+      school_year: classroomState?.school_year || '',
+      from: classroomState?.from || '',
+      to: classroomState?.to || '',
+      code: classroomState?.code || '',
    }
 
    const validationSchema = Yup.object({

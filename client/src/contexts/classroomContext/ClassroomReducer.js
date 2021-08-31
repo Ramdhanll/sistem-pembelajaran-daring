@@ -7,9 +7,11 @@ const ClassroomReducer = (state, action) => {
       case 'UPDATE':
          return {
             classroomState: action.payload,
-
-            // ...state,
-            // ...action.payload,
+         }
+      case 'CLEAR':
+         localStorage.removeItem('classroom')
+         return {
+            classroomState: null,
          }
       default:
          return { ...state }

@@ -58,7 +58,7 @@ function FormikTextEditor(props) {
                      minHeight: '140px',
                   }}
                   onChange={(e) => {
-                     form.setFieldValue('body', editorHTML)
+                     form.setFieldValue(name, editorHTML)
                   }}
                   editorState={editorState}
                   toolbarClassName='toolbarClassName'

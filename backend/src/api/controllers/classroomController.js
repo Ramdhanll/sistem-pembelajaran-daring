@@ -65,6 +65,7 @@ export const updateClassroom = async (req, res) => {
       from,
       to,
       code,
+      syllabus,
    } = req.body
    try {
       const classroomDB = await Classrooms.findById(req.params.id)
@@ -83,6 +84,7 @@ export const updateClassroom = async (req, res) => {
       classroomDB.from = from ? from : classroomDB.from
       classroomDB.to = to ? to : classroomDB.to
       classroomDB.code = code ? code : classroomDB.code
+      classroomDB.syllabus = syllabus ? syllabus : classroomDB.syllabus
 
       const updatedClassroom = await classroomDB.save()
 

@@ -20,7 +20,7 @@ function FormikTextArea(props) {
                h={h}
             >
                {label && (
-                  <FormLabel color='primary' fontSize={['sm', 'md', 'lg']}>
+                  <FormLabel color='text' fontSize={['sm', 'md', 'lg']}>
                      {label}
                   </FormLabel>
                )}

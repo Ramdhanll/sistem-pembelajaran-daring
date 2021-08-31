@@ -11,12 +11,12 @@
       - [x] add date
       - [x] add time
    - [x] display info classroom
-   - [] edit classroom
-   - [] approved/disapproved join member
+   - [x] edit classroom
 - Silabus
    - [x] slicing figma to react
-   - [] add silabus
-   - [] get data from server
+   - [x] add silabus
+   - [x] get data from 
+   - [] add bobot nilai
 - Modul 
    - [] Slicing figma to react
    - [] add Modul
@@ -48,4 +48,4 @@ Admin
       - [x] update admin
       - [x] delete admin
           
-- [x] crate info classroom
+- [x] create info classroom

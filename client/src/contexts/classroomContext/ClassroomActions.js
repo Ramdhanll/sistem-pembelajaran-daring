@@ -7,3 +7,7 @@ export const updateClassroom = (classroom) => ({
    type: 'UPDATE',
    payload: classroom,
 })
+
+export const clearClassroom = () => ({
+   type: 'CLEAR',
+})
