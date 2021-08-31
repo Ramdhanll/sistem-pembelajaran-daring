@@ -7,6 +7,7 @@ import axios from 'axios'
 import { ChakraProvider } from '@chakra-ui/react'
 import { AuthContextProvider } from './contexts/authContext/AuthContexts'
 import swr, { SWRConfig } from 'swr'
+import { ClassroomContextProvider } from './contexts/classroomContext/classroomContext'
 
 axios.defaults.withCredentials = true
 
@@ -30,14 +31,16 @@ ReactDOM.render(
    <React.StrictMode>
       <ChakraProvider theme={theme}>
          <AuthContextProvider>
-            <SWRConfig
-               value={{
-                  fetcher: (url) => axios.get(url).then((res) => res.data),
-                  revalidateOnFocus: true,
-               }}
-            >
-               <App />
-            </SWRConfig>
+            <ClassroomContextProvider>
+               <SWRConfig
+                  value={{
+                     fetcher: (url) => axios.get(url).then((res) => res.data),
+                     revalidateOnFocus: true,
+                  }}
+               >
+                  <App />
+               </SWRConfig>
+            </ClassroomContextProvider>
          </AuthContextProvider>
       </ChakraProvider>
    </React.StrictMode>,

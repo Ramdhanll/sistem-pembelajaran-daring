@@ -232,7 +232,7 @@ const ManageStudents = () => {
             </HStack>
 
             {/* Table  */}
-            <Box h={['60vh', '300px']} mt='20px' overflow='auto' mb='30px'>
+            <Box h={['60vh', '340px']} mt='20px' overflow='auto' mb='30px'>
                <Table variant='striped' colorScheme='teal' mt='20px'>
                   <TableCaption>SMP Dharma Bhakti Tangerang</TableCaption>
                   <Thead>
@@ -250,7 +250,7 @@ const ManageStudents = () => {
                            .filter((student) => student._id !== userState._id)
                            .map((student, i) => (
                               <Tr key={i}>
-                                 <Td>{i + 1}</Td>
+                                 <Td>{i + 1 + 10 * (data?.page - 1)}</Td>
                                  <Td>
                                     <Text>{student.nis}</Text>
                                  </Td>

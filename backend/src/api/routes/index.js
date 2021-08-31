@@ -1,2 +1,7 @@
-export { default as userRouter } from "./userRouter.js"
-export { default as authRouter } from "./authRouter.js"
+export { default as userRouter } from './userRouter.js'
+export { default as authRouter } from './authRouter.js'
+export { default as classroomRouter } from './classroomRouter.js'
+export { default as informationRouter } from './informationRouter.js'
+export { default as studentRouter } from './studentRouter.js'
+export { default as teacherRouter } from './teacherRouter.js'
+export { default as adminRouter } from './adminRouter.js'

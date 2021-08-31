@@ -2,6 +2,7 @@ import { validationResult } from 'express-validator'
 import { teachersDummy } from '../../Dummies/dummies.js'
 import Teachers from '../models/teachersModel.js'
 import bcrypt from 'bcrypt'
+import Classrooms from '../models/classroomsModel.js'
 
 const pageSize = 10
 
@@ -23,7 +24,6 @@ export const seed = async (req, res) => {
 export const getTeachers = async (req, res) => {
    const page = Number(req.query.page) || 1
    const name = req.query.name || ''
-   const nis = req.query.nis || ''
 
    const nameFilter = name ? { name: { $regex: name, $options: 'i' } } : {}
 

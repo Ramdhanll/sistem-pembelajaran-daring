@@ -3,11 +3,14 @@ import dotenv from 'dotenv'
 import Database from './config/Database.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-import { authRouter, userRouter } from './api/routes/index.js'
-import informationRouter from './api/routes/informationRouter.js'
-import adminRouter from './api/routes/adminRouter.js'
-import studentRouter from './api/routes/studentRouter.js'
-import teacherRouter from './api/routes/teacherRouter.js'
+import {
+   adminRouter,
+   authRouter,
+   classroomRouter,
+   informationRouter,
+   studentRouter,
+   teacherRouter,
+} from './api/routes/index.js'
 
 const PORT = process.env.PORT || 5000
 dotenv.config()
@@ -36,6 +39,7 @@ app.use('/api/informations', informationRouter)
 app.use('/api/admins', adminRouter)
 app.use('/api/students', studentRouter)
 app.use('/api/teachers', teacherRouter)
+app.use('/api/classrooms', classroomRouter)
 
 app.use('/', (req, res) => {
    res.send('Server is on!')

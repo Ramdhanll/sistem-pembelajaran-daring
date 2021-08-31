@@ -3,9 +3,16 @@
    - [x] slicing figma to react
    - [x] request login to server
    - [x] private route
-- Info
+- information
    - [x] slicing figma to react
-   - [] get data from server
+   - [x] get data from server
+- classroom
+   - [x] create classroom
+      - [x] add date
+      - [x] add time
+   - [x] display info classroom
+   - [] edit classroom
+   - [] approved/disapproved join member
 - Silabus
    - [x] slicing figma to react
    - [] add silabus
@@ -26,19 +33,19 @@ Admin
       - [x] delete information
       - [x] display detail information
    - teacher
-      - [] create teacher
-      - [] read teacher
-      - [] update teacher
-      - [] delete teacher
+      - [x] create teacher
+      - [x] read teacher
+      - [x] update teacher
+      - [x] delete teacher
    - student
-      - [] create student
-      - [] read student
-      - [] update student
-      - [] delete student
+      - [x] create student
+      - [x] read student
+      - [x] update student
+      - [x] delete student
    - admin
-      - [] create admin
-      - [] read admin
-      - [] update admin
-      - [] delete admin
+      - [x] create admin
+      - [x] read admin
+      - [x] update admin
+      - [x] delete admin
           
 - [x] crate info classroom

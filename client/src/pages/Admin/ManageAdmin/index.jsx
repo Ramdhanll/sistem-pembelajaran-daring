@@ -211,22 +211,10 @@ const ManageAdmin = () => {
                   setQuerySearch={setName}
                   placeholder='Pencarian dengan nama ...'
                />
-               {/* <InputGroup w={['100%', '30%']}>
-                  <InputLeftElement
-                     pointerEvents='none'
-                     children={<MdSearch color='#9da1a8' size='24px' />}
-                  />
-                  <Input
-                     type='text'
-                     placeholder='Pencarian dengan nama ...'
-                     color='textSecondary'
-                     onChange={(e) => setSearchTyping(e.target.value)}
-                  />
-               </InputGroup> */}
             </HStack>
 
             {/* Table  */}
-            <Box h={['60vh', '300px']} mt='20px' overflow='auto' mb='30px'>
+            <Box h={['60vh', '340px']} mt='20px' overflow='auto' mb='30px'>
                <Table variant='striped' colorScheme='teal' mt='20px'>
                   <TableCaption>SMP Dharma Bhakti Tangerang</TableCaption>
                   <Thead>
@@ -243,7 +231,7 @@ const ManageAdmin = () => {
                            .filter((admin) => admin._id !== userState._id)
                            .map((admin, i) => (
                               <Tr key={i}>
-                                 <Td>{i + 1}</Td>
+                                 <Td>{i + 1 + 10 * (data?.page - 1)}</Td>
                                  <Td>
                                     <Text>{admin.name}</Text>
                                  </Td>

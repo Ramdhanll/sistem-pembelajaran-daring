@@ -186,12 +186,12 @@ const Information = () => {
                </Box>
                <Search
                   placeholder='Pencarian dengan judul ...'
-                  setName={setTitle}
+                  setQuerySearch={setTitle}
                />
             </HStack>
 
             {/* Table  */}
-            <Box h={['60vh', '300px']} mt='20px' overflow='auto' mb='30px'>
+            <Box h={['60vh', '340px']} mt='20px' overflow='auto' mb='30px'>
                <Table variant='striped' colorScheme='teal' mt='20px'>
                   <TableCaption>SMP Dharma Bhakti Tangerang</TableCaption>
                   <Thead>
@@ -206,7 +206,7 @@ const Information = () => {
                      {data?.informations.length ? (
                         data?.informations.map((information, i) => (
                            <Tr key={i}>
-                              <Td>{i + 1}</Td>
+                              <Td>{i + 1 + 10 * (data?.page - 1)}</Td>
                               <Td color='blue' textDecoration='underline'>
                                  <NavLink to={`/informasi/${information._id}`}>
                                     {information.title}

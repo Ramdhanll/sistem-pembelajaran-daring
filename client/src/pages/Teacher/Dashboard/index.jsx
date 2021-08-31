@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react'
 import React, { useContext } from 'react'
 import { MdLocalLibrary } from 'react-icons/md'
+import TableInformations from '../../../components/TableInformations'
 import { AuthContext } from '../../../contexts/authContext/AuthContexts'
 
 const Dashboard = () => {
@@ -69,27 +70,7 @@ const Dashboard = () => {
                Informasi
             </Text>
 
-            <Box h='300px' overflow='auto'>
-               <Table variant='striped' colorScheme='teal' mt='20px'>
-                  <TableCaption>SMP Dharma Bhakti Tangerang</TableCaption>
-                  <Thead>
-                     <Tr>
-                        <Th>No</Th>
-                        <Th>Judul</Th>
-                        <Th>Tanggal</Th>
-                     </Tr>
-                  </Thead>
-                  <Tbody>
-                     {[...Array(10).keys()].map((item, i) => (
-                        <Tr key={i}>
-                           <Td>{i + 1}</Td>
-                           <Td>Pendaftaran siswa barutahun ajaran 2021/2022</Td>
-                           <Td> 20 Desember 2020</Td>
-                        </Tr>
-                     ))}
-                  </Tbody>
-               </Table>
-            </Box>
+            <TableInformations />
          </Box>
       </Box>
    )
