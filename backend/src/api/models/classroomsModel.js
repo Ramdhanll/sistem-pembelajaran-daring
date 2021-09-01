@@ -84,6 +84,6 @@ const classroomsSchema = mongoose.Schema({
    },
 })
 
-const Classrooms = mongoose.model('Classroom', classroomsSchema)
+const Classrooms = mongoose.model('Classrooms', classroomsSchema)
 
 export default Classrooms
