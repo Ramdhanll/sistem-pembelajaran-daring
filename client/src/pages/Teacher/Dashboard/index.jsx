@@ -38,7 +38,7 @@ const Dashboard = () => {
                fontSize={['3xl', '4xl', '5xl', '6xl']}
                fontWeight='700'
             >
-               Selamat Datang, <br /> Aldi Alfiansyah
+               Selamat Datang, <br /> {userState.name}
             </Text>
             <Flex
                bg='white'

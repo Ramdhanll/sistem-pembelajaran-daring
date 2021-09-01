@@ -2,6 +2,9 @@ import express from 'express'
 import dotenv from 'dotenv'
 import Database from './config/Database.js'
 import cors from 'cors'
+import path from 'path'
+const __dirname = path.resolve()
+
 import cookieParser from 'cookie-parser'
 import {
    adminRouter,
@@ -10,6 +13,7 @@ import {
    informationRouter,
    studentRouter,
    teacherRouter,
+   moduleRouter,
 } from './api/routes/index.js'
 
 const PORT = process.env.PORT || 5000
@@ -29,6 +33,7 @@ app.use(
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use('/uploads', express.static(path.join(__dirname, '/src/modules')))
 
 // Setup mongoose database
 Database()
@@ -40,6 +45,7 @@ app.use('/api/admins', adminRouter)
 app.use('/api/students', studentRouter)
 app.use('/api/teachers', teacherRouter)
 app.use('/api/classrooms', classroomRouter)
+app.use('/api/modules', moduleRouter)
 
 app.use('/', (req, res) => {
    res.send('Server is on!')

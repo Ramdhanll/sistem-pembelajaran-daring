@@ -18,11 +18,33 @@
    - [x] get data from 
    - [] add bobot nilai
 - Modul 
-   - [] Slicing figma to react
-   - [] add Modul
-   - [] get data from server
+   - [x] Slicing figma to react
+   - [x] get data from server
+   - [x] add Modul
+   - [x] handle validation document / video
+   - [x] delete document
+   - [x] edit document
+- Task
+   - [] slicing figma to code
+   - [] create task
+   - [] read task
+   - [] update task  
+   - [] delete task
 
-Admin
+#SECTION Student
+   - Information
+      - [x] slicing figma to react
+      - [x] get data from server
+   - Classroom
+      - [] join class
+   - Modul
+      - [] display Modul
+   - Absen
+      - [] input Absen
+   - Task
+      - [] input Task
+      
+#SECTION Admin
    - Login
       - [x] request login to server
       - [x] private route

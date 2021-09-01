@@ -19,6 +19,7 @@ const FormikControl = (props) => {
          return <FormikSelect {...rest} />
       case 'radio':
          return <FormikRadioButton {...rest} />
+
       // case 'checkbox':
       //    return <Checkbox {...rest} />
       // case 'date':

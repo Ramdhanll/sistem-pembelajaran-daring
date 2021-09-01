@@ -10,7 +10,14 @@ import {
    ModalFooter,
    ModalHeader,
    ModalOverlay,
+   Table,
+   TableCaption,
+   Tbody,
+   Td,
    Text,
+   Th,
+   Thead,
+   Tr,
    useDisclosure,
    useToast,
    VStack,
@@ -27,11 +34,11 @@ const Silabus = () => {
    const toast = useToast()
    const { isOpen, onOpen, onClose } = useDisclosure()
    const { classroomState, classroomDispatch } = useContext(ClassroomContext)
-   console.log(classroomState)
+
    // SECTION Formik
    const handleSubmit = async (values, actions) => {
       try {
-         const res = await classroomService.update(
+         await classroomService.update(
             classroomState._id,
             values,
             classroomDispatch
@@ -47,7 +54,6 @@ const Silabus = () => {
             isClosable: true,
             position: 'top-right',
          })
-         console.log(res)
       } catch (error) {
          actions.setSubmitting(false)
 
@@ -95,12 +101,36 @@ const Silabus = () => {
             </Text>
          </Box>
 
-         {/* Bobot dan Penilaian */}
-         {/* <Box mt={['25px', '50px']}>
+         {/* Bobot dan Peniliaian */}
+         <Box mt={['25px', '50px']}>
             <Text fontWeight='600' fontSize={['md', 'lg', 'xl', '2xl']}>
                Penilaian dan Bobot
             </Text>
-         </Box> */}
+
+            <Table variant='striped' colorScheme='teal' mt='10px'>
+               <TableCaption>SMP DHARMA BHAKTI TANGERANG</TableCaption>
+               <Thead>
+                  <Tr>
+                     <Th>Penilaian</Th>
+                     <Th>Bobot</Th>
+                  </Tr>
+               </Thead>
+               <Tbody>
+                  <Tr>
+                     <Td>RH</Td>
+                     <Td>50%</Td>
+                  </Tr>
+                  <Tr>
+                     <Td>PTS</Td>
+                     <Td>25%</Td>
+                  </Tr>
+                  <Tr>
+                     <Td>PAS</Td>
+                     <Td>25%</Td>
+                  </Tr>
+               </Tbody>
+            </Table>
+         </Box>
 
          {/* Modal add or edit syllabus */}
          <Modal isOpen={isOpen} onClose={onClose} size='2xl'>
