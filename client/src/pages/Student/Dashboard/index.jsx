@@ -14,12 +14,15 @@ import {
 } from '@chakra-ui/react'
 import React, { useContext } from 'react'
 import { MdLocalLibrary } from 'react-icons/md'
+import useSWR from 'swr'
+import CardDashboard from '../../../components/CardDashboard'
+import TableInformations from '../../../components/TableInformations'
 import { AuthContext } from '../../../contexts/authContext/AuthContexts'
 
 const Dashboard = () => {
    const { userState, userDispatch } = useContext(AuthContext)
-
-   console.log(userState)
+   const { data, error } = useSWR(`/api/classrooms?members=${userState._id}`)
+   console.log(data)
    return (
       <Box pt={['25px', '50px']} px={['25px', '100px']}>
          {/* Header */}
@@ -33,33 +36,27 @@ const Dashboard = () => {
             alignItems={['flex-start', 'center']}
          >
             <Text
-               mt='50px'
+               w='max-content'
+               mt={['25px', '30px', '50px', '50px']}
                fontSize={['3xl', '4xl', '5xl', '6xl']}
                fontWeight='700'
             >
-               Selamat Datang, <br /> Aldi Alfiansyah
+               Selamat Datang, <br /> {userState.name}
             </Text>
+
             <Flex
-               bg='white'
-               borderRadius='lg'
-               boxShadow='lg'
-               p='30px'
-               alignItems='center'
-               height='max-content'
-               gridGap='30px'
+               flex='1'
+               wrap='wrap'
+               gridGap='15px'
+               align='center'
+               justifyContent={['flex-start', 'flex-end']}
             >
-               <Box bg='text' p='7px' borderRadius='lg'>
-                  <MdLocalLibrary size='40px' color='#FCAD3D' />
-               </Box>
-               <Box display='flex' flexDirection='column'>
-                  <Text fontSize={['sm', 'md', 'lg', 'xl']} fontWeight='700'>
-                     Kelas Terdaftar
-                  </Text>
-                  <Text fontSize={['xs', 'sm', 'md', 'lg']}>Kelas Terbuat</Text>
-               </Box>
-               <Text fontSize={['5xl']} color='text'>
-                  8
-               </Text>
+               <CardDashboard
+                  icon={<MdLocalLibrary size='40px' color='#FCAD3D' />}
+                  title='Kelas'
+                  description='kelas terdaftar'
+                  num={data?.classrooms?.length || 0}
+               />
             </Flex>
          </Flex>
 
@@ -69,27 +66,7 @@ const Dashboard = () => {
                Informasi
             </Text>
 
-            <Box h='300px' overflow='auto'>
-               <Table variant='striped' colorScheme='teal' mt='20px'>
-                  <TableCaption>SMP Dharma Bhakti Tangerang</TableCaption>
-                  <Thead>
-                     <Tr>
-                        <Th>No</Th>
-                        <Th>Judul</Th>
-                        <Th>Tanggal</Th>
-                     </Tr>
-                  </Thead>
-                  <Tbody>
-                     {[...Array(10).keys()].map((item, i) => (
-                        <Tr key={i}>
-                           <Td>{i + 1}</Td>
-                           <Td>Pendaftaran siswa barutahun ajaran 2021/2022</Td>
-                           <Td> 20 Desember 2020</Td>
-                        </Tr>
-                     ))}
-                  </Tbody>
-               </Table>
-            </Box>
+            <TableInformations />
          </Box>
       </Box>
    )

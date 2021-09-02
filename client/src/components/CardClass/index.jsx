@@ -74,7 +74,9 @@ const CardClass = ({ classroom }) => {
          minW={['330px', '360px', '380px']}
       >
          <Box display='flex' bg='white' boxShadow='lg' borderRadius='lg'>
-            <NavLink to={`/t/kelas/${classroom._id}`}>
+            <NavLink
+               to={`${localStorage.getItem('goto')}/kelas/${classroom._id}`}
+            >
                <Flex direction='column' borderRadius='lg'>
                   <Box
                      bg={classroom.banner}

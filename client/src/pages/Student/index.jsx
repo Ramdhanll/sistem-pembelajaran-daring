@@ -22,7 +22,10 @@ import {
    BrowserRouter as Router,
    Route,
 } from 'react-router-dom'
+import ClassroomDetail from '../../components/ClassroomDetail'
 import Navbar from '../../components/Navbar'
+import Classroom from './Classroom'
+// import ClassroomDetail from './ClassroomDetail'
 // import Classroom from './Classroom'
 // import ClassroomDetail from './ClassroomDetail'
 import Dashboard from './Dashboard'
@@ -37,7 +40,7 @@ const Student = ({ history, location }) => {
                </Text>
                <VStack spacing={3} alignItems='start'>
                   <NavLink
-                     to='/t'
+                     to='/s'
                      exact
                      style={{
                         marginTop: '20px',
@@ -57,7 +60,7 @@ const Student = ({ history, location }) => {
                   </NavLink>
 
                   <NavLink
-                     to='/t/kelas'
+                     to='/s/kelas'
                      style={{
                         marginTop: '20px',
                         display: 'flex',
@@ -79,8 +82,9 @@ const Student = ({ history, location }) => {
          </Navbar>
          <Switch>
             <Route path='/s' component={Dashboard} exact />
-            {/* <Route path='/s/kelas' component={Classroom} exact />
-            <Route path='/s/kelas/:id' component={ClassroomDetail} /> */}
+            <Route path='/s/kelas' component={Classroom} exact />
+            <Route path='/s/kelas/:id' component={ClassroomDetail} />
+
             <Route path='/s/*'>NOT FOUND</Route>
          </Switch>
       </>

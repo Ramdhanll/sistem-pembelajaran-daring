@@ -32,3 +32,11 @@ export const isTeacher = (req, res, next) => {
       res.status(401).json({ message: 'Invalid Teacher Token' })
    }
 }
+
+export const isStudent = (req, res, next) => {
+   if (req.user && req.user.role === 'student') {
+      next()
+   } else {
+      res.status(401).json({ message: 'Invalid Student Token' })
+   }
+}

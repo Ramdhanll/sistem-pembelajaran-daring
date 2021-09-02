@@ -153,6 +153,7 @@ const Login = ({ history }) => {
                            color='white'
                            w='100%'
                            type='submit'
+                           isLoading={props.isSubmitting}
                         >
                            Masuk
                         </Button>

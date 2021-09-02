@@ -23,10 +23,11 @@ import {
    BrowserRouter as Router,
    Route,
 } from 'react-router-dom'
+import ClassroomDetail from '../../components/ClassroomDetail'
 import Navbar from '../../components/Navbar'
 import { AuthContext } from '../../contexts/authContext/AuthContexts'
 import Classroom from './Classroom'
-import ClassroomDetail from './ClassroomDetail'
+// import ClassroomDetail from './ClassroomDetail'
 import Dashboard from './Dashboard'
 
 const Teacher = ({ history, location }) => {

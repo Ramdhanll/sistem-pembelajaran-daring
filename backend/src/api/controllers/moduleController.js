@@ -1,4 +1,4 @@
-import Modules from '../models/moduleModal.js'
+import Modules from '../models/moduleModel.js'
 
 export const getModules = async (req, res) => {
    try {

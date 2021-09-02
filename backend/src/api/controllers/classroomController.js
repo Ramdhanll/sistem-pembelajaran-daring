@@ -3,11 +3,15 @@ import Classrooms from '../models/classroomsModel.js'
 
 export const getClassrooms = async (req, res) => {
    const teacher = req.query.teacher
+   const members = req.query.members
+
    const teacherFilter = teacher ? { teacher: teacher } : {}
+   const membersFilter = members ? { members: { $in: [members] } } : {}
 
    try {
       const classrooms = await Classrooms.find({
          ...teacherFilter,
+         ...membersFilter,
       }).populate('teacher', 'name photo')
 
       res.status(200).json({
@@ -88,7 +92,6 @@ export const updateClassroom = async (req, res) => {
 
       const updatedClassroom = await classroomDB.save()
 
-      console.log(updatedClassroom)
       res.status(200).json({
          status: 'success',
          classroom: updatedClassroom,
@@ -108,5 +111,39 @@ export const deleteClassroom = async (req, res) => {
       })
    } catch (error) {
       res.status(500).json({ message: 'Failed delete classroom' })
+   }
+}
+
+export const join = async (req, res) => {
+   try {
+      const exist = await Classrooms.find({
+         code: req.body.code,
+         members: { $in: JSON.parse(req.body.id) },
+      })
+      console.log(exist)
+      if (exist.length) {
+         throw 'Siswa sudah bergabung'
+      }
+
+      const classroom = await Classrooms.updateOne(
+         { code: req.body.code },
+         {
+            $push: {
+               members: JSON.parse(req.body.id),
+            },
+         }
+      )
+
+      res.status(200).json({
+         status: 'success',
+         classroom,
+         message: 'Classroom has been updated',
+      })
+   } catch (error) {
+      res.status(400).json({
+         status: 'error',
+         errors: 'Kelas tidak ditemukan',
+         message: 'Classroom not found',
+      })
    }
 }

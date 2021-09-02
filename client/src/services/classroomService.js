@@ -27,4 +27,12 @@ export default {
          throw error
       }
    },
+   join: async (id, code) => {
+      try {
+         const { data } = await axios.put(`/api/classrooms/join`, { id, code })
+         return data
+      } catch (error) {
+         throw error
+      }
+   },
 }

@@ -73,7 +73,7 @@ const classroomsSchema = mongoose.Schema({
       type: String,
       required: true,
    },
-   members: [{ type: ObjectId, ref: 'Students' }],
+   members: [{ type: ObjectId, ref: 'Students', unique: true }],
    status: {
       type: String,
       default: 'Active',

@@ -4,12 +4,14 @@ import {
    deleteClassroom,
    getClassroom,
    getClassrooms,
+   join,
    updateClassroom,
 } from '../controllers/classroomController.js'
-import { isAuth, isTeacher } from '../middleware/jwt.js'
+import { isAuth, isStudent, isTeacher } from '../middleware/jwt.js'
 
 const classroomRouter = express.Router()
 
+classroomRouter.put(`/join`, isAuth, isStudent, join)
 classroomRouter.post('/', isAuth, isTeacher, create)
 classroomRouter.get('/', isAuth, getClassrooms)
 classroomRouter.get('/:id', isAuth, getClassroom)

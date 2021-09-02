@@ -24,6 +24,12 @@
    - [x] handle validation document / video
    - [x] delete document
    - [x] edit document
+- Absen 
+   - [] slicing figma to code
+   - [] create Absen
+   - [] read absen
+   - [] update absen
+   - [] delete absen
 - Task
    - [] slicing figma to code
    - [] create task
@@ -36,7 +42,9 @@
       - [x] slicing figma to react
       - [x] get data from server
    - Classroom
-      - [] join class
+      - [x] join class
+   - Info
+      - [] display info
    - Modul
       - [] display Modul
    - Absen

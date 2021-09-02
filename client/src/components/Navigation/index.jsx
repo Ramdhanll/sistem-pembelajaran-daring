@@ -15,25 +15,47 @@ const Navigation = ({ id }) => {
          boxShadow='lg'
          w={['', '', '', 'max-content']}
       >
-         <NavLink to={`/t/kelas/${id}`} activeStyle={styles.active} exact>
+         <NavLink
+            to={`${localStorage.getItem('goto')}/kelas/${id}`}
+            activeStyle={styles.active}
+            exact
+         >
             <Text fontSize={['lg', 'xl', '2xl']}>Info</Text>
          </NavLink>
-         <NavLink to={`/t/kelas/${id}/silabus`} activeStyle={styles.active}>
+         <NavLink
+            to={`${localStorage.getItem('goto')}/kelas/${id}/silabus`}
+            activeStyle={styles.active}
+         >
             <Text fontSize={['lg', 'xl', '2xl']}>Silabus</Text>
          </NavLink>
-         <NavLink to={`/t/kelas/${id}/modul`} activeStyle={styles.active}>
+         <NavLink
+            to={`${localStorage.getItem('goto')}/kelas/${id}/modul`}
+            activeStyle={styles.active}
+         >
             <Text fontSize={['lg', 'xl', '2xl']}>Modul</Text>
          </NavLink>
-         <NavLink to={`/t/kelas/${id}/absen`} activeStyle={styles.active}>
+         <NavLink
+            to={`${localStorage.getItem('goto')}/kelas/${id}/absen`}
+            activeStyle={styles.active}
+         >
             <Text fontSize={['lg', 'xl', '2xl']}>Absen</Text>
          </NavLink>
-         <NavLink to={`/t/kelas/${id}/tugas`} activeStyle={styles.active}>
+         <NavLink
+            to={`${localStorage.getItem('goto')}/kelas/${id}/tugas`}
+            activeStyle={styles.active}
+         >
             <Text fontSize={['lg', 'xl', '2xl']}>Tugas</Text>
          </NavLink>
-         <NavLink to={`/t/kelas/${id}/ujian`} activeStyle={styles.active}>
+         <NavLink
+            to={`${localStorage.getItem('goto')}/kelas/${id}/ujian`}
+            activeStyle={styles.active}
+         >
             <Text fontSize={['lg', 'xl', '2xl']}>Ujian</Text>
          </NavLink>
-         <NavLink to={`/t/kelas/${id}/rapor`} activeStyle={styles.active}>
+         <NavLink
+            to={`${localStorage.getItem('goto')}/kelas/${id}/rapor`}
+            activeStyle={styles.active}
+         >
             <Text fontSize={['lg', 'xl', '2xl']}>Rapor</Text>
          </NavLink>
       </HStack>

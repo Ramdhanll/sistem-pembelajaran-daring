@@ -10,17 +10,17 @@ import {
 import React, { useContext, useEffect } from 'react'
 import { Switch, Route, NavLink } from 'react-router-dom'
 import useSWR from 'swr'
-import CardClass from '../../../components/CardClass'
-import Navigation from '../../../components/Navigation'
+import CardClass from '../../components/CardClass'
+import Navigation from '../../components/Navigation'
 import {
    addClassroom,
    clearClassroom,
-} from '../../../contexts/classroomContext/ClassroomActions'
-import { ClassroomContext } from '../../../contexts/classroomContext/classroomContext'
+} from '../../contexts/classroomContext/ClassroomActions'
 import Attedance from './Attedance'
 import Info from './Info'
 import Modul from './Modul'
 import Silabus from './Silabus'
+import { ClassroomContext } from '../../contexts/classroomContext/classroomContext'
 
 const ClassroomDetail = (props) => {
    const classId = props.match.params.id
@@ -71,7 +71,7 @@ const ClassroomDetail = (props) => {
                </Box>
             </SkeletonText>
             <Box>
-               <NavLink to='/t/kelas'>
+               <NavLink to={`${localStorage.getItem('goto')}/kelas`}>
                   <Button variant='outline' colorScheme='blackAlpha'>
                      Kembali
                   </Button>
@@ -86,10 +86,23 @@ const ClassroomDetail = (props) => {
 
          <Skeleton isLoaded={classroomState !== null}>
             <Switch>
-               <Route path='/t/kelas/:id' component={Info} exact />
-               <Route path='/t/kelas/:id/silabus' component={Silabus} />
-               <Route path='/t/kelas/:id/modul' component={Modul} />
-               <Route path='/t/kelas/:id/absen' component={Attedance} />
+               <Route
+                  path={`${localStorage.getItem('goto')}/kelas/:id`}
+                  component={Info}
+                  exact
+               />
+               <Route
+                  path={`${localStorage.getItem('goto')}/kelas/:id/silabus`}
+                  component={Silabus}
+               />
+               <Route
+                  path={`${localStorage.getItem('goto')}/kelas/:id/modul`}
+                  component={Modul}
+               />
+               <Route
+                  path={`${localStorage.getItem('goto')}/kelas/:id/absen`}
+                  component={Attedance}
+               />
             </Switch>
          </Skeleton>
       </Box>
