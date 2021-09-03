@@ -90,7 +90,7 @@ const Classroom = () => {
       } catch (error) {
          toast({
             title: 'Gagal',
-            description: error.response.data.errors,
+            description: error.response.data.message,
             status: 'warning',
             duration: 5000,
             isClosable: true,

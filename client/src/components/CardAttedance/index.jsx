@@ -121,16 +121,39 @@ const CardAttedance = ({
                         ? `${attedance?.title.substring(0, 45)}...`
                         : attedance?.title}
                   </Text>
-                  <Text color='textSecondary' fontSize={['sm', 'md', 'lg']}>
-                     {new Date(attedance?.createdAt).toLocaleDateString('id', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                     })}
-                  </Text>
+                  <Flex justifyContent='space-between'>
+                     <Text color='textSecondary' fontSize={['sm', 'md', 'lg']}>
+                        {new Date(attedance?.createdAt).toLocaleDateString(
+                           'id',
+                           {
+                              weekday: 'long',
+                              year: 'numeric',
+                              month: '2-digit',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                           }
+                        )}
+                     </Text>
+                     <Flex
+                        alignItems='center'
+                        gridGap='5px'
+                        color='red'
+                        fontSize={['sm']}
+                     >
+                        <Text>Batas akhir</Text>
+                        <Text color='red' fontSize={['sm']}>
+                           {new Date(attedance?.due).toLocaleDateString('id', {
+                              weekday: 'long',
+                              year: 'numeric',
+                              month: '2-digit',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                           })}
+                        </Text>
+                     </Flex>
+                  </Flex>
                </Box>
             </Box>
             {userState?.role === 'teacher' && (

@@ -72,7 +72,7 @@ const Attedance = () => {
             setPresents((presents) => [...presents, item])
          } else if (item.attedance === 'sick') {
             setSicks((sicks) => [...sicks, item])
-         } else if (item.attedance === 'miss') {
+         } else if (item.attedance === 'missing') {
             setMissings((missings) => [...missings, item])
          } else if (item.attedance === 'permit') {
             setPermits((permits) => [...permits, item])
@@ -83,7 +83,7 @@ const Attedance = () => {
 
    useEffect(() => {
       const exist = attedanceSelected?.attedances?.find(
-         (item) => item.student === userState._id
+         (item) => item.student?._id === userState._id
       )
       if (exist) setattend(exist.attedance)
    }, [attedanceSelected])
@@ -93,6 +93,7 @@ const Attedance = () => {
 
    const validationSchema = Yup.object({
       title: Yup.string().required('Judul diperlukan'),
+      due: Yup.date().required('Batas akhir diperlukan'),
    })
 
    const handleOpenModalFormik = (isAdd) => {
@@ -120,7 +121,9 @@ const Attedance = () => {
          setAttedanceSelected({})
          toast({
             title: 'Berhasil',
-            description: 'berhasil membuat attedance',
+            description: `berhasil ${
+               isAdd ? 'menambahkan' : 'merubah'
+            } attedance`,
             status: 'success',
             duration: 5000,
             isClosable: true,
@@ -129,7 +132,7 @@ const Attedance = () => {
       } catch (error) {
          toast({
             title: 'Gagal',
-            description: 'gagal membuat attedance',
+            description: `gagal ${isAdd ? 'menambahkan' : 'merubah'} attedance`,
             status: 'error',
             duration: 5000,
             isClosable: true,
@@ -203,7 +206,7 @@ const Attedance = () => {
                         { key: 1, name: 'Hadir', value: 'present' },
                         { key: 2, name: 'Sakit', value: 'sick' },
                         { key: 3, name: 'Izin', value: 'permit' },
-                        { key: 4, name: 'Tanpa keterangan', value: 'miss' },
+                        { key: 4, name: 'Tanpa keterangan', value: 'missing' },
                      ]}
                      flexDirection='column'
                      gridGap='5px'
@@ -225,8 +228,6 @@ const Attedance = () => {
          </Formik>
       </Box>
    )
-
-   console.log('presents', presents)
 
    // SECTION TEACHER
    const RenderAttedanceTeacher = () => (
@@ -357,7 +358,6 @@ const Attedance = () => {
                </Badge>
             )}
          </VStack>
-
          {/* Modal add and edit */}
          <Modal
             isOpen={isOpen}
@@ -372,6 +372,9 @@ const Attedance = () => {
                   <Formik
                      initialValues={{
                         title: attedanceSelected?.title || '',
+                        due: attedanceSelected?.due
+                           ? attedanceSelected?.due?.substring(0, 16)
+                           : '',
                      }}
                      validationSchema={validationSchema}
                      onSubmit={handleSubmit}
@@ -385,6 +388,13 @@ const Attedance = () => {
                                  name='title'
                                  label='Judul'
                                  placeholder='e.g Pertemuan 1'
+                              />
+
+                              <FormikControl
+                                 control='input'
+                                 type='datetime-local'
+                                 name='due'
+                                 label='Batas akhir'
                               />
 
                               <Button
@@ -427,23 +437,41 @@ const Attedance = () => {
                   <Text fontSize={['lg', 'xl', '2xl']} fontWeight='600'>
                      {attedanceSelected?.title}
                   </Text>
-                  <Text
-                     color='textSecondary'
-                     fontSize={['xs', 'sm', 'md']}
-                     mt='5px'
-                  >
-                     {new Date(attedanceSelected?.createdAt).toLocaleDateString(
-                        'id',
-                        {
+                  <Flex justifyContent='space-between'>
+                     <Text color='textSecondary' fontSize={['sm', 'md', 'lg']}>
+                        {new Date(
+                           attedanceSelected?.createdAt
+                        ).toLocaleDateString('id', {
                            weekday: 'long',
                            year: 'numeric',
-                           month: 'long',
+                           month: '2-digit',
                            day: 'numeric',
                            hour: '2-digit',
                            minute: '2-digit',
-                        }
-                     )}
-                  </Text>
+                        })}
+                     </Text>
+                     <Flex
+                        alignItems='center'
+                        gridGap='5px'
+                        color='red'
+                        fontSize={['sm']}
+                     >
+                        <Text>Batas akhir</Text>
+                        <Text color='red' fontSize={['sm']}>
+                           {new Date(attedanceSelected?.due).toLocaleDateString(
+                              'id',
+                              {
+                                 weekday: 'long',
+                                 year: 'numeric',
+                                 month: '2-digit',
+                                 day: 'numeric',
+                                 hour: '2-digit',
+                                 minute: '2-digit',
+                              }
+                           )}
+                        </Text>
+                     </Flex>
+                  </Flex>
                </DrawerHeader>
 
                <DrawerBody>

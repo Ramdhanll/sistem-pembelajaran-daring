@@ -24,30 +24,10 @@ const attendancesSchema = mongoose.Schema(
             },
          },
       ],
-      // presents: [
-      //    {
-      //       type: ObjectId,
-      //       ref: 'Students',
-      //    },
-      // ],
-      // missings: [
-      //    {
-      //       type: ObjectId,
-      //       ref: 'Students',
-      //    },
-      // ],
-      // permits: [
-      //    {
-      //       type: ObjectId,
-      //       ref: 'Students',
-      //    },
-      // ],
-      // sicks: [
-      //    {
-      //       type: ObjectId,
-      //       ref: 'Students',
-      //    },
-      // ],
+      due: {
+         type: Date,
+         required: true,
+      },
    },
    {
       timestamps: true,

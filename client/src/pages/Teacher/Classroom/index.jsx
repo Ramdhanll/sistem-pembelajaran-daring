@@ -92,7 +92,6 @@ const Classroom = () => {
          const res = await classroomService.create(values)
          mutate(`/api/classrooms?teacher=${userState._id}`)
          onClose()
-         console.log(res)
          actions.setSubmitting(false)
          toast({
             title: 'Berhasil',
@@ -103,10 +102,9 @@ const Classroom = () => {
             position: 'top-right',
          })
       } catch (error) {
-         onClose()
          toast({
             title: 'Gagal',
-            description: 'classroom gagal dibuat',
+            description: error.response.data.message,
             status: 'error',
             duration: 5000,
             isClosable: true,

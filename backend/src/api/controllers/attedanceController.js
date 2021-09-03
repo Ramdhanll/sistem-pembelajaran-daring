@@ -1,4 +1,7 @@
 import Attedances from '../models/attedanceModel.js'
+import Classrooms from '../models/classroomsModel.js'
+
+import schedule from 'node-schedule'
 
 export const getAttedances = async (req, res) => {
    try {
@@ -20,11 +23,47 @@ export const getAttedances = async (req, res) => {
 
 export const createAttedance = async (req, res) => {
    try {
-      const attedance = new Attedances({
+      const createAttedance = new Attedances({
          ...req.body,
          classroom: JSON.parse(req.body.classroom),
       })
-      const createdAttedance = await attedance.save()
+      const createdAttedance = await createAttedance.save()
+
+      schedule.scheduleJob(new Date(req.body.due), async () => {
+         // query latest data atedance
+         const attedance = await Attedances.findById(createdAttedance._id)
+
+         const classroom = await Classrooms.findById(
+            JSON.parse(req.body.classroom)
+         )
+
+         // filter student who have not submitted
+         var result = classroom.members.filter(function (obj) {
+            return (
+               attedance.attedances.map((item) => item.student).indexOf(obj) ===
+               -1
+            )
+         })
+
+         // filter return to update many
+         const resultFilter = result.map((item) => {
+            return { student: item, attedance: 'missing' }
+         })
+
+         // update many
+         try {
+            await Attedances.update(
+               { _id: createdAttedance._id },
+               {
+                  $push: {
+                     attedances: resultFilter,
+                  },
+               }
+            )
+         } catch (error) {
+            console.log('e', error)
+         }
+      })
 
       res.status(201).json({
          status: 'success',
@@ -37,23 +76,26 @@ export const createAttedance = async (req, res) => {
 }
 
 export const updateAttedance = async (req, res) => {
-   console.log(req.body)
-   const { title } = req.body
+   const { title, due, student } = req.body
    try {
       const attedance = await Attedances.findById(req.params.id)
       attedance.title = title ? title : attedance.title
+      attedance.due = due ? due : attedance.due
+      console.log(attedance)
 
-      if (
-         attedance.attedances.some((item) => {
-            return item.student.toString() === req.body.student
-         })
-      ) {
-         throw 'Anda sudah melakukan absensi'
-      } else {
-         attedance.attedances.push({
-            ...req.body,
-            student: req.body.student,
-         })
+      if (student) {
+         if (
+            attedance.attedances.some((item) => {
+               return item.student.toString() === student
+            })
+         ) {
+            throw 'Anda sudah melakukan absensi'
+         } else {
+            attedance.attedances.push({
+               ...req.body,
+               student: student,
+            })
+         }
       }
 
       const updatedAttedance = await attedance.save()

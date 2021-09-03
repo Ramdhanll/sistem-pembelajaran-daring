@@ -19,7 +19,6 @@ function FormikInput(props) {
                isRequired={required}
             >
                {label && <FormLabel color='text'>{label}</FormLabel>}
-
                <Input {...field} {...rest} type={type} />
                <FormErrorMessage mt='10px' color='red'>
                   {form.errors[name]}

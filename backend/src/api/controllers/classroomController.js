@@ -46,6 +46,9 @@ export const create = async (req, res) => {
    }
 
    try {
+      const exist = await Classrooms.find({ code: req.body.code })
+      if (exist.length) throw 'Kode sudah dimiliki'
+
       const classroom = new Classrooms({ ...req.body, teacher: req.user._id })
 
       const createdClassroom = await classroom.save()
@@ -55,7 +58,11 @@ export const create = async (req, res) => {
          message: 'Classroom created successfully',
       })
    } catch (error) {
-      res.status(500).json({ message: 'Failed create classroom' })
+      let errMsg
+      typeof error !== 'object'
+         ? (errMsg = error)
+         : (errMsg = 'Gagal buat kelas')
+      res.status(500).json({ message: errMsg })
    }
 }
 
@@ -116,12 +123,10 @@ export const deleteClassroom = async (req, res) => {
 
 export const join = async (req, res) => {
    try {
-      const exist = await Classrooms.find({
-         code: req.body.code,
-         members: { $in: JSON.parse(req.body.id) },
-      })
-      console.log(exist)
-      if (exist.length) {
+      const exist = await Classrooms.find({ code: req.body.code })
+      if (!exist.length) throw 'Kelas tidak ditemukan'
+
+      if (exist[0].members.includes(JSON.parse(req.body.id))) {
          throw 'Siswa sudah bergabung'
       }
 
@@ -132,7 +137,7 @@ export const join = async (req, res) => {
                members: JSON.parse(req.body.id),
             },
          }
-      )
+      ).then((result) => console.log('r', result))
 
       res.status(200).json({
          status: 'success',
@@ -140,10 +145,15 @@ export const join = async (req, res) => {
          message: 'Classroom has been updated',
       })
    } catch (error) {
+      let errMsg
+      typeof error !== 'object'
+         ? (errMsg = error)
+         : (errMsg = 'Gabung kelas tidak berhasil')
+
       res.status(400).json({
          status: 'error',
-         errors: 'Kelas tidak ditemukan',
-         message: 'Classroom not found',
+         errors: error,
+         message: errMsg,
       })
    }
 }

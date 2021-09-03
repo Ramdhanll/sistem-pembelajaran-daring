@@ -161,8 +161,6 @@ const ManageAdmin = () => {
             data: { errors },
          } = error.response
 
-         console.log(errors)
-
          const renderError = (
             <UnorderedList>
                {errors.map((error, i) => (
