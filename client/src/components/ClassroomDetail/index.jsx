@@ -21,6 +21,7 @@ import Info from './Info'
 import Modul from './Modul'
 import Silabus from './Silabus'
 import { ClassroomContext } from '../../contexts/classroomContext/classroomContext'
+import Task from './Task'
 
 const ClassroomDetail = (props) => {
    const classId = props.match.params.id
@@ -102,6 +103,10 @@ const ClassroomDetail = (props) => {
                <Route
                   path={`${localStorage.getItem('goto')}/kelas/:id/absen`}
                   component={Attedance}
+               />
+               <Route
+                  path={`${localStorage.getItem('goto')}/kelas/:id/tugas`}
+                  component={Task}
                />
             </Switch>
          </Skeleton>

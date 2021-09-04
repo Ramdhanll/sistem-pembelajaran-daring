@@ -1,7 +1,7 @@
 import Attedances from '../models/attedanceModel.js'
 import Classrooms from '../models/classroomsModel.js'
 
-import schedule from 'node-schedule'
+import schedule, { scheduledJobs } from 'node-schedule'
 
 export const getAttedances = async (req, res) => {
    try {
@@ -29,41 +29,46 @@ export const createAttedance = async (req, res) => {
       })
       const createdAttedance = await createAttedance.save()
 
-      schedule.scheduleJob(new Date(req.body.due), async () => {
-         // query latest data atedance
-         const attedance = await Attedances.findById(createdAttedance._id)
+      schedule.scheduleJob(
+         JSON.stringify(createdAttedance._id),
+         new Date(req.body.due),
+         async () => {
+            // query latest data atedance
+            const attedance = await Attedances.findById(createdAttedance._id)
 
-         const classroom = await Classrooms.findById(
-            JSON.parse(req.body.classroom)
-         )
-
-         // filter student who have not submitted
-         var result = classroom.members.filter(function (obj) {
-            return (
-               attedance.attedances.map((item) => item.student).indexOf(obj) ===
-               -1
+            const classroom = await Classrooms.findById(
+               JSON.parse(req.body.classroom)
             )
-         })
 
-         // filter return to update many
-         const resultFilter = result.map((item) => {
-            return { student: item, attedance: 'missing' }
-         })
+            // filter student who have not submitted
+            var result = classroom.members.filter(function (obj) {
+               return (
+                  attedance.attedances
+                     .map((item) => item.student)
+                     .indexOf(obj) === -1
+               )
+            })
 
-         // update many
-         try {
-            await Attedances.update(
-               { _id: createdAttedance._id },
-               {
-                  $push: {
-                     attedances: resultFilter,
-                  },
-               }
-            )
-         } catch (error) {
-            console.log('e', error)
+            // filter return to update many
+            const resultFilter = result.map((item) => {
+               return { student: item, attedance: 'missing' }
+            })
+
+            // update many
+            try {
+               await Attedances.updateOne(
+                  { _id: createdAttedance._id },
+                  {
+                     $push: {
+                        attedances: resultFilter,
+                     },
+                  }
+               )
+            } catch (error) {
+               console.log('e', error)
+            }
          }
-      })
+      )
 
       res.status(201).json({
          status: 'success',
@@ -81,7 +86,6 @@ export const updateAttedance = async (req, res) => {
       const attedance = await Attedances.findById(req.params.id)
       attedance.title = title ? title : attedance.title
       attedance.due = due ? due : attedance.due
-      console.log(attedance)
 
       if (student) {
          if (

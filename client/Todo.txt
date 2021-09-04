@@ -25,17 +25,18 @@
    - [x] delete document
    - [x] edit document
 - Absen 
-   - [] slicing figma to code
-   - [] create Absen
-   - [] read absen
-   - [] update absen
-   - [] delete absen
+   - [x] slicing figma to code
+   - [x] create Absen
+   - [x] read absen
+   - [x] update absen
+   - [x] delete absen
 - Task
-   - [] slicing figma to code
-   - [] create task
-   - [] read task
+   - [x] slicing figma to code
+   - [x] create task
+   - [x] read task
    - [] update task  
-   - [] delete task
+      - [] update due from node-schedule
+   - [x] delete task
 
 #SECTION Student
    - Information
@@ -44,13 +45,13 @@
    - Classroom
       - [x] join class
    - Info
-      - [] display info
+      - [x] display info
    - Modul
-      - [] display Modul
+      - [x] display Modul
    - Absen
-      - [] input Absen
+      - [x] input Absen
    - Task
-      - [] input Task
+      - [] submited Task
       
 #SECTION Admin
    - Login

@@ -15,6 +15,7 @@ import {
    teacherRouter,
    moduleRouter,
    attedanceRouter,
+   taskRouter,
 } from './api/routes/index.js'
 
 const PORT = process.env.PORT || 5000
@@ -35,6 +36,7 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/uploads', express.static(path.join(__dirname, '/src/modules')))
+app.use('/uploads', express.static(path.join(__dirname, '/src/tasks')))
 
 // Setup mongoose database
 Database()
@@ -48,6 +50,7 @@ app.use('/api/teachers', teacherRouter)
 app.use('/api/classrooms', classroomRouter)
 app.use('/api/modules', moduleRouter)
 app.use('/api/attedances', attedanceRouter)
+app.use('/api/tasks', taskRouter)
 
 app.use('/', (req, res) => {
    res.send('Server is on!')
