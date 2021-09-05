@@ -160,7 +160,10 @@ const Attedance = () => {
             attedance: values.attedance,
          }
 
-         await AttedanceService.update(attedanceSelected._id, attedances)
+         await AttedanceService.submittedAttend(
+            attedanceSelected._id,
+            attedances
+         )
          mutate(`/api/attedances/${classroomState?._id}`)
          onCloseDrawerDetail()
          actions.setSubmitting(false)
@@ -173,10 +176,11 @@ const Attedance = () => {
             position: 'top-right',
          })
       } catch (error) {
+         console.log(error.response)
          actions.setSubmitting(false)
          toast({
             title: 'Gagal',
-            description: error.response.data.error,
+            description: error.response.data.message,
             status: 'error',
             duration: 5000,
             isClosable: true,
@@ -406,7 +410,6 @@ const Attedance = () => {
                                  type='datetime-local'
                                  name='due'
                                  label='Batas akhir'
-                                 disabled={!isAdd}
                               />
 
                               <Button

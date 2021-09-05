@@ -3,6 +3,7 @@ import {
    createAttedance,
    deleteAttedance,
    getAttedances,
+   submitAttendance,
    updateAttedance,
 } from '../controllers/attedanceController.js'
 import { isAuth, isTeacher } from '../middleware/jwt.js'
@@ -11,6 +12,7 @@ const attedanceRouter = express.Router()
 
 attedanceRouter.get('/:classroomId', isAuth, getAttedances)
 attedanceRouter.put('/:id', isAuth, updateAttedance)
+attedanceRouter.put('/:id/submit', isAuth, submitAttendance)
 
 attedanceRouter.post('/', isAuth, isTeacher, createAttedance)
 

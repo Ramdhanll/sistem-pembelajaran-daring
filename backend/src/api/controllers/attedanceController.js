@@ -64,6 +64,7 @@ export const createAttedance = async (req, res) => {
                      },
                   }
                )
+               console.log('run create')
             } catch (error) {
                console.log('e', error)
             }
@@ -81,28 +82,54 @@ export const createAttedance = async (req, res) => {
 }
 
 export const updateAttedance = async (req, res) => {
-   const { title, due, student } = req.body
+   const { title, due } = req.body
    try {
       const attedance = await Attedances.findById(req.params.id)
       attedance.title = title ? title : attedance.title
       attedance.due = due ? due : attedance.due
 
-      if (student) {
-         if (
-            attedance.attedances.some((item) => {
-               return item.student.toString() === student
-            })
-         ) {
-            throw 'Anda sudah melakukan absensi'
-         } else {
-            attedance.attedances.push({
-               ...req.body,
-               student: student,
-            })
-         }
-      }
-
       const updatedAttedance = await attedance.save()
+      // reschedule due
+      const jobPrev = schedule.scheduledJobs[JSON.stringify(attedance._id)]
+      if (jobPrev) {
+         jobPrev.cancel()
+      }
+      const job = schedule.scheduleJob(
+         JSON.stringify(attedance._id),
+         new Date(updatedAttedance.due),
+         async () => {
+            // query classroom
+            const classroom = await Classrooms.findById(attedance.classroom)
+            // filter student who have not submitted
+            var result = classroom.members.filter(function (obj) {
+               return (
+                  attedance.attedances
+                     .map((item) => item.student)
+                     .indexOf(obj) === -1
+               )
+            })
+
+            // filter return to update many
+            const resultFilter = result.map((item) => {
+               return { student: item, attedance: 'missing' }
+            })
+
+            // update many
+            try {
+               await Attedances.updateOne(
+                  { _id: attedance._id },
+                  {
+                     $push: {
+                        attedances: resultFilter,
+                     },
+                  }
+               )
+               console.log('run edit')
+            } catch (error) {
+               console.log('e', error)
+            }
+         }
+      )
 
       res.status(200).json({
          status: 'success',
@@ -123,5 +150,46 @@ export const deleteAttedance = async (req, res) => {
       })
    } catch (error) {
       res.status(500).json({ message: 'Failed delete attedance', error })
+   }
+}
+
+export const submitAttendance = async (req, res) => {
+   const { student } = req.body
+   console.log(req.body)
+
+   try {
+      const attedance = await Attedances.findById(req.params.id)
+
+      if (
+         attedance.attedances.some((item) => {
+            return item.student.toString() === student
+         })
+      ) {
+         attedance.attedances.map((item) => {
+            if (JSON.stringify(item.student) === JSON.stringify(student)) {
+               item.attedance = req.body.attedance
+            }
+         })
+      } else {
+         attedance.attedances.push({
+            ...req.body,
+            student: student,
+         })
+      }
+
+      const updatedAttedance = await attedance.save()
+
+      res.status(200).json({
+         status: 'success',
+         attedance: updatedAttedance,
+         message: 'Success submitted',
+      })
+   } catch (error) {
+      let errMsg
+      typeof error !== 'object'
+         ? (errMsg = error)
+         : (errMsg = 'Failed submit attedance')
+
+      res.status(500).json({ status: 'error', errors: error, message: errMsg })
    }
 }
