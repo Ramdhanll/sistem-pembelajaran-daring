@@ -205,28 +205,13 @@ export const submitTask = async (req, res) => {
 }
 
 export const givingGrades = async (req, res) => {
-   console.log(req.body)
    try {
-      // const updatedScore = await Tasks.updateOne(
-      //    {
-      //       _id: req.params.id,
-      //       'tasks.student': JSON.parse(req.body.student),
-      //    },
-      //    {
-      //       $set: {
-      //          'tasks.$.score': Number.parseInt(req.body.score),
-      //       },
-      //    }
-      // )
-
       const updatedScore = await Tasks.findByIdAndUpdate(
          JSON.parse(req.params.id),
          {
             ...req.body,
          }
       )
-
-      console.log(updatedScore)
 
       res.status(200).json({ status: 'success', message: 'ok' })
    } catch (error) {

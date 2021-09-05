@@ -34,10 +34,30 @@
    - [x] slicing figma to code
    - [x] create task
    - [x] read task
-      - [] display task detail
+      - [x] display task detail
    - [x] update task  
       - [x] update due from node-schedule
    - [x] delete task
+- Exam
+   - [x] slicing figma to code
+   - [x] create Exam
+   - [x] read Exam
+      - [x] display Exam detail
+   - [x] update Exam  
+      - [x] update due from node-schedule
+   - [x] delete Exam
+- Report
+   - [] slicing figma to code
+   - [] create Report
+   - [] read Report
+      - [] display Report detail
+   - [] update Report  
+      - [] update due from node-schedule
+   - [] delete Report
+- Profile
+   - [] slicing figma to code
+   - [] display Profile
+   - [] edit profile
 
 #SECTION Student
    - Information
@@ -52,8 +72,24 @@
    - Absen
       - [x] input Absen
    - Task
-      - [] display task detail
-      - [] submited Task
+      - [x] display task detail
+      - [x] submited Task
+   - Exam
+      - [x] display Exam detail
+      - [x] submited Exam
+   - Report
+      - [] slicing figma to code
+      - [] create Report
+      - [] read Report
+         - [] display Report detail
+      - [] update Report  
+         - [] update due from node-schedule
+      - [] delete Report
+   - Profile
+      - [] slicing figma to code
+      - [] display Profile
+      - [] edit profile
+
 #SECTION Admin
    - Login
       - [x] request login to server
@@ -86,3 +122,13 @@
 db.tasks.find({
    "tasks.student": "6134a88ac9a1c6881a4afd98"
 })
+
+- perkenalan
+- lulusan 
+- kegiatan selama pendidikan
+
+perkenalkan nama saya ramadhani, lulusan universitas muhammadiyah tangerang
+teknik informatika 2021, selama menempuh pendidikan saya sering berlatih membuat 
+aplikasi, dalam membuat aplikasi saya lebih fokus memperdalam bahasa javascript.
+stack technologi yang sering saya gunakan dalam membangun aplikasi 
+yaitu menggunakan MERN stack

@@ -22,6 +22,7 @@ import Modul from './Modul'
 import Silabus from './Silabus'
 import { ClassroomContext } from '../../contexts/classroomContext/classroomContext'
 import Task from './Task'
+import Exam from './Exam'
 
 const ClassroomDetail = (props) => {
    const classId = props.match.params.id
@@ -107,6 +108,10 @@ const ClassroomDetail = (props) => {
                <Route
                   path={`${localStorage.getItem('goto')}/kelas/:id/tugas`}
                   component={Task}
+               />
+               <Route
+                  path={`${localStorage.getItem('goto')}/kelas/:id/ujian`}
+                  component={Exam}
                />
             </Switch>
          </Skeleton>

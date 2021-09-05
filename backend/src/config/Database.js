@@ -5,7 +5,7 @@ const Mongoose = () =>
       .connect(process.env.MONGODB_URI || 'mongodb://localhost/aldi-siakad', {
          useUnifiedTopology: true,
          useNewUrlParser: true,
-         useFindAndModify: true,
+         useFindAndModify: false,
          useCreateIndex: true,
       })
       .then(() => console.log('DB Connected'))
