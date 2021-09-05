@@ -5,7 +5,6 @@ import {
    ModalBody,
    ModalCloseButton,
    ModalContent,
-   ModalFooter,
    ModalHeader,
    ModalOverlay,
    useDisclosure,
@@ -19,7 +18,6 @@ import {
    DrawerBody,
    DrawerCloseButton,
    DrawerContent,
-   DrawerFooter,
    DrawerHeader,
    DrawerOverlay,
    Text,
@@ -29,6 +27,14 @@ import {
    Flex,
    HStack,
    Avatar,
+   Divider,
+   Table,
+   TableCaption,
+   Thead,
+   Tbody,
+   Td,
+   Th,
+   Tr,
 } from '@chakra-ui/react'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import CardTask from '../../CardTask'
@@ -39,7 +45,6 @@ import FormikControl from '../../../Formik/FormikControl'
 import { ClassroomContext } from '../../../contexts/classroomContext/classroomContext'
 import TaskService from '../../../services/TaskService'
 import useSWR, { mutate } from 'swr'
-import ReactPlayer from 'react-player'
 import { AuthContext } from '../../../contexts/authContext/AuthContexts'
 
 const Task = () => {
@@ -58,26 +63,11 @@ const Task = () => {
    const { data, error } = useSWR(`/api/tasks/${classroomState?._id}`)
 
    // SECTION Drawer detail
-   const [attend, setattend] = useState('')
-   const [presents, setPresents] = useState([])
-   const [missings, setMissings] = useState([])
-   const [permits, setPermits] = useState([])
-   const [sicks, setSicks] = useState([])
+   const [myTask, setMyTask] = useState({})
 
    const handleOpenDrawerDetail = (task) => {
       setTaskSelected(task)
 
-      task.tasks.map((item) => {
-         if (item.task === 'present') {
-            setPresents((presents) => [...presents, item])
-         } else if (item.task === 'sick') {
-            setSicks((sicks) => [...sicks, item])
-         } else if (item.task === 'missing') {
-            setMissings((missings) => [...missings, item])
-         } else if (item.task === 'permit') {
-            setPermits((permits) => [...permits, item])
-         }
-      })
       onOpenDrawerDetail()
    }
 
@@ -85,7 +75,7 @@ const Task = () => {
       const exist = taskSelected?.tasks?.find(
          (item) => item.student?._id === userState._id
       )
-      if (exist) setattend(exist.task)
+      if (exist) setMyTask(exist)
    }, [taskSelected])
 
    // SECTION Formik Teacher
@@ -185,91 +175,116 @@ const Task = () => {
    }
 
    // SECTION Formik Student
-   const validationSchemaStudent = Yup.object({
-      task: Yup.string().required('Kehadiran diperlukan'),
-   })
+   const answerRef = useRef(null)
+   const [answerUpload, setAnswerUpload] = useState(null)
+   const [isLoadingAnswer, setIsLoadingAnswer] = useState(false)
+   const [isLoadingUpdateScore, setIsLoadingUpdateScore] = useState(false)
 
-   const handleSubmitStudent = async (values, actions) => {
+   const handleUploadAnswer = (e) => {
+      const file = e.target.files[0]
+      const extension = file.name.slice(file.name.indexOf('.') + 1)
+
+      if (extension !== 'pdf') {
+         answerRef.current.value = ''
+         return toast({
+            title: 'Gagal upload',
+            description: 'File harus berupa PDF',
+            status: 'warning',
+            duration: 5000,
+            isClosable: true,
+            position: 'top-right',
+         })
+      }
+
+      if (file?.size > 5_000_000) {
+         // answerRef.current.value = ''
+
+         return toast({
+            title: 'Gagal upload',
+            description: 'File lebih dari 5mb',
+            status: 'warning',
+            duration: 5000,
+            isClosable: true,
+            position: 'top-right',
+         })
+      } else {
+         setAnswerUpload(file)
+      }
+   }
+
+   const handleSubmitAnswer = async () => {
+      setIsLoadingAnswer(true)
+
+      if (!answerUpload) {
+         setIsLoadingAnswer(false)
+
+         return toast({
+            title: 'Gagal submit jawaban',
+            description: 'File masih kosong',
+            status: 'warning',
+            duration: 5000,
+            isClosable: true,
+            position: 'top-right',
+         })
+      }
+
       try {
-         let tasks = {
-            student: userState._id,
-            task: values.task,
-         }
+         const reqData = new FormData()
 
-         await TaskService.update(taskSelected._id, tasks)
+         reqData.append('student', JSON.stringify(userState._id))
+         reqData.append('answer', answerUpload)
+
+         await TaskService.submittedTask(taskSelected._id, reqData)
          mutate(`/api/tasks/${classroomState?._id}`)
+         setIsLoadingAnswer(false)
+         setAnswerUpload(null)
          onCloseDrawerDetail()
-         actions.setSubmitting(false)
+         answerRef.current.value = ''
          toast({
             title: 'Berhasil',
-            description: 'berhasil submit kehadiran',
+            description: 'berhasil submit tugas',
             status: 'success',
             duration: 5000,
             isClosable: true,
             position: 'top-right',
          })
       } catch (error) {
-         actions.setSubmitting(false)
+         setIsLoadingAnswer(false)
          toast({
             title: 'Gagal',
-            description: error.response.data.error,
+            description: 'gagal submit tugas',
             status: 'error',
             duration: 5000,
             isClosable: true,
             position: 'top-right',
          })
       }
+
+      setIsLoadingAnswer(false)
+   }
+
+   const handleChangeScores = async (student, score) => {
+      const scoresUpdate = taskSelected.tasks.map((item) => {
+         if (item.student._id === student) {
+            item.score = score
+         }
+
+         return item
+      })
+
+      const changeTask = taskSelected
+      changeTask.tasks = scoresUpdate
+
+      setTaskSelected(changeTask)
    }
 
    const RenderTaskStudent = () => (
       <Box>
-         <Formik
-            initialValues={{
-               task: attend || '',
-            }}
-            onSubmit={handleSubmitStudent}
-            validationSchema={validationSchemaStudent}
-            enableReinitialize
-         >
-            {(props) => (
-               <Form>
-                  <FormikControl
-                     disabled={attend !== '' && true}
-                     control='radio'
-                     name='task'
-                     label='Pilih kehadiran anda'
-                     options={[
-                        { key: 1, name: 'Hadir', value: 'present' },
-                        { key: 2, name: 'Sakit', value: 'sick' },
-                        { key: 3, name: 'Izin', value: 'permit' },
-                        { key: 4, name: 'Tanpa keterangan', value: 'missing' },
-                     ]}
-                     flexDirection='column'
-                     gridGap='5px'
-                  />
-
-                  <Button
-                     mt='20px'
-                     variant='solid'
-                     bg='primary'
-                     color='white'
-                     type='submit'
-                     isLoading={props.isSubmitting}
-                     isDisabled={attend !== '' && true}
-                  >
-                     Submit
-                  </Button>
-               </Form>
-            )}
-         </Formik>
-      </Box>
-   )
-
-   // SECTION TEACHER
-   const RenderTaskTeacher = () => (
-      <Box>
          <VStack spacing={4} alignItems='self-start'>
-            <Box dangerouslySetInnerHTML={{ __html: taskSelected?.body }} />
+            <Box
+               ml='20px'
+               dangerouslySetInnerHTML={{ __html: taskSelected?.body }}
+            />
 
             {taskSelected.document && (
                <VStack spacing={4} alignItems='flex-start' mt='20px'>
@@ -287,6 +302,224 @@ const Task = () => {
                </VStack>
             )}
          </VStack>
+         <Divider h='8px' />
+         <Box py='10px'>
+            <VStack alignItems='flex-start' spacing={3} mb='10px'>
+               <Badge
+                  colorScheme={Object.keys(myTask).length ? 'green' : 'yellow'}
+                  fontWeight='600'
+               >
+                  {Object.keys(myTask).length
+                     ? 'Diserahkan'
+                     : 'Belum diserahkan'}
+               </Badge>
+               {!Object.keys(myTask).length ? (
+                  <>
+                     <FormControl id='answer'>
+                        <FormLabel>answer</FormLabel>
+                        <Input
+                           type='file'
+                           onChange={(e) => handleUploadAnswer(e)}
+                           ref={answerRef}
+                        />
+                        <FormHelperText>PDF only.</FormHelperText>
+                     </FormControl>
+                     {answerUpload && (
+                        <HStack spacing={3}>
+                           <Image
+                              w='25px'
+                              h='25px'
+                              src={'http://localhost:5000/uploads/pdf-icon.png'}
+                           />
+                           <Text>{answerUpload.name}</Text>
+                        </HStack>
+                     )}
+                     <Button
+                        variant='solid'
+                        bg='primary'
+                        color='white'
+                        size='sm'
+                        onClick={handleSubmitAnswer}
+                        isLoading={isLoadingAnswer}
+                     >
+                        Kirim Jawaban
+                     </Button>
+                  </>
+               ) : (
+                  <VStack spacing={3}>
+                     <Table variant='simple'>
+                        <Thead>
+                           <Tr>
+                              <Th>Jawaban</Th>
+                              <Th>Nilai</Th>
+                           </Tr>
+                        </Thead>
+                        <Tbody>
+                           <Tr>
+                              <Td>
+                                 {myTask.answer ? (
+                                    <Link href={myTask?.answer} isExternal>
+                                       <Image
+                                          w='25px'
+                                          h='25px'
+                                          src={
+                                             'http://localhost:5000/uploads/pdf-icon.png'
+                                          }
+                                       />
+                                    </Link>
+                                 ) : (
+                                    <Text>Tidak menyerahkan tugas</Text>
+                                 )}
+                              </Td>
+                              <Td>
+                                 {myTask?.score
+                                    ? myTask?.score
+                                    : myTask.score === 0
+                                    ? '0'
+                                    : 'Belum di nilai'}
+                              </Td>
+                           </Tr>
+                        </Tbody>
+                     </Table>
+                  </VStack>
+               )}
+            </VStack>
+         </Box>
+      </Box>
+   )
+
+   // SECTION TEACHER
+   const RenderTaskTeacher = () => (
+      <Box>
+         <VStack spacing={4} alignItems='self-start'>
+            <Box
+               ml='20px'
+               dangerouslySetInnerHTML={{ __html: taskSelected?.body }}
+            />
+
+            {taskSelected.document && (
+               <VStack spacing={4} alignItems='flex-start' mt='20px'>
+                  <Badge variant='subtle' colorScheme='green'>
+                     Lampiran
+                  </Badge>
+                  <Link href={taskSelected?.document} isExternal>
+                     <Image
+                        w='70px'
+                        h='70px'
+                        src={'http://localhost:5000/uploads/pdf-icon.png'}
+                     />
+                     click me
+                  </Link>
+               </VStack>
+            )}
+         </VStack>
+         <Divider h='8px' />
+         <Box py='10px'>
+            <HStack spacing={3} mb='10px'>
+               <Text fontSize={['sm', 'md', 'lg', 'xl']} fontWeight='600'>
+                  Diserahkan
+               </Text>
+               <Button
+                  variant='solid'
+                  bg='primary'
+                  color='white'
+                  size='sm'
+                  onClick={handleSubmitScores}
+                  isLoading={isLoadingUpdateScore}
+               >
+                  Update nilai
+               </Button>
+            </HStack>
+            <Table variant='simple'>
+               <TableCaption>TABEL NILAI TUGAS</TableCaption>
+               <Thead>
+                  <Tr>
+                     <Th>No</Th>
+                     <Th>Nama</Th>
+                     <Th>Jawaban</Th>
+                     <Th>Nilai</Th>
+                  </Tr>
+               </Thead>
+               <Tbody>
+                  {Object.keys(taskSelected.tasks).length ? (
+                     taskSelected.tasks.map((task, i) => (
+                        <Tr key={i}>
+                           <Td>{i + 1}</Td>
+                           <Td>
+                              <HStack spacing={3}>
+                                 <Avatar
+                                    size='sm'
+                                    name='Dan Abrahmov'
+                                    src='https://bit.ly/dan-abramov'
+                                 />
+                                 <Text> {task.student.name} </Text>
+                              </HStack>
+                           </Td>
+                           <Td>
+                              {task.answer ? (
+                                 <Link href={task?.answer} isExternal>
+                                    <Image
+                                       w='25px'
+                                       h='25px'
+                                       src={
+                                          'http://localhost:5000/uploads/pdf-icon.png'
+                                       }
+                                    />
+                                 </Link>
+                              ) : (
+                                 <Text>Tidak menyerahkan tugas</Text>
+                              )}
+                           </Td>
+                           <Td w='110px'>
+                              <Input
+                                 textAlign='center'
+                                 type='number'
+                                 min='0'
+                                 max='100'
+                                 // value={task.score || ''}
+                                 defaultValue={task.score}
+                                 onChange={(e) => {
+                                    if (e.target.value === '') {
+                                       handleChangeScores(
+                                          task.student._id,
+                                          e.target.value
+                                       )
+                                    } else if (e.target.valueAsNumber > 100) {
+                                       e.target.value = e.target.value.slice(
+                                          0,
+                                          -1
+                                       )
+                                    } else if (e.target.valueAsNumber < 0) {
+                                       e.target.value = Math.abs(
+                                          e.target.valueAsNumber
+                                       )
+                                    }
+
+                                    if (
+                                       e.target.value.length === 2 ||
+                                       e.target.valueAsNumber === 0 ||
+                                       e.target.valueAsNumber === 100
+                                    ) {
+                                       handleChangeScores(
+                                          task.student._id,
+                                          e.target.value
+                                       )
+                                    }
+                                 }}
+                              />
+                           </Td>
+                        </Tr>
+                     ))
+                  ) : (
+                     <Tr alignItems='center'>
+                        <Td colSpan='4' textAlign='center' bg='yellow'>
+                           Data tidak ada
+                        </Td>
+                     </Tr>
+                  )}
+               </Tbody>
+            </Table>
+         </Box>
       </Box>
    )
 
@@ -298,6 +531,46 @@ const Task = () => {
          return false
       } else {
          return true
+      }
+   }
+
+   const convertDueToLocalTime = (time) => {
+      '2021-09-05T08:19:37'
+      const indexT = time.indexOf('T')
+      const result = time.split(' ')
+   }
+
+   const handleSubmitScores = async () => {
+      setIsLoadingUpdateScore(true)
+
+      try {
+         await TaskService.givingGrades(
+            JSON.stringify(taskSelected._id),
+            taskSelected
+         )
+         setIsLoadingUpdateScore(false)
+
+         mutate(`/api/tasks/${classroomState?._id}`)
+         setIsLoadingAnswer(false)
+         onCloseDrawerDetail()
+         toast({
+            title: 'Berhasil',
+            description: 'berhasil memberi nilai',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+            position: 'top-right',
+         })
+      } catch (error) {
+         setIsLoadingUpdateScore(false)
+         toast({
+            title: 'Gagal',
+            description: 'gagal memberi nilai',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            position: 'top-right',
+         })
       }
    }
 
@@ -347,7 +620,7 @@ const Task = () => {
                         title: taskSelected?.title || '',
                         body: taskSelected?.body || '',
                         due: taskSelected?.due
-                           ? taskSelected?.due?.substring(0, 16)
+                           ? taskSelected?.due.substring(0, 16)
                            : '',
                      }}
                      validationSchema={validationSchema}
@@ -386,7 +659,7 @@ const Task = () => {
                                  type='datetime-local'
                                  name='due'
                                  label='Batas akhir'
-                                 disabled={!isAdd}
+                                 // disabled={!isAdd}
                               />
 
                               <Button
@@ -414,12 +687,8 @@ const Task = () => {
             onClose={onCloseDrawerDetail}
             size='lg'
             onOverlayClick={() => {
-               setTaskSelected({})
-               setattend('')
-               setPresents([])
-               setPermits([])
-               setMissings([])
-               setSicks([])
+               setTaskSelected(null)
+               setMyTask({})
             }}
          >
             <DrawerOverlay />

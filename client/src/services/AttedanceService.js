@@ -25,4 +25,15 @@ export default {
          throw error
       }
    },
+   submittedAttend: async (id, values) => {
+      try {
+         const { data } = await axios.put(
+            `/api/attedances/${id}/submit`,
+            values
+         )
+         return data
+      } catch (error) {
+         throw error
+      }
+   },
 }

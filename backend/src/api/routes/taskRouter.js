@@ -4,8 +4,10 @@ import {
    deleteTask,
    getTasks,
    updateTask,
+   submitTask,
+   givingGrades,
 } from '../controllers/taskController.js'
-import { isAuth, isTeacher } from '../middleware/jwt.js'
+import { isAuth, isStudent, isTeacher } from '../middleware/jwt.js'
 
 import multer from 'multer'
 
@@ -24,7 +26,21 @@ const uploadMulter = multer({ storage })
 const taskRouter = express.Router()
 
 taskRouter.get('/:classroomId', isAuth, getTasks)
-taskRouter.put('/:id', uploadMulter.single('document'), isAuth, updateTask)
+taskRouter.put(
+   '/:id',
+   uploadMulter.single('document'),
+   isAuth,
+   isTeacher,
+   updateTask
+)
+taskRouter.put(
+   '/:id/submit',
+   uploadMulter.single('answer'),
+   isAuth,
+   isStudent,
+   submitTask
+)
+taskRouter.put('/:id/grades', isAuth, isTeacher, givingGrades)
 
 taskRouter.post(
    '/',

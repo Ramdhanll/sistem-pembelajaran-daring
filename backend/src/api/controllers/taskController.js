@@ -52,7 +52,7 @@ export const createTask = async (req, res) => {
 
             // filter return to update many
             const resultFilter = result.map((item) => {
-               return { student: item, submitted: true, score: 0 }
+               return { student: item, submitted: false, score: 0 }
             })
 
             // update many
@@ -65,6 +65,7 @@ export const createTask = async (req, res) => {
                      },
                   }
                )
+               console.log('run from create')
             } catch (error) {
                console.log('e', error)
             }
@@ -94,6 +95,47 @@ export const updateTask = async (req, res) => {
 
       const updatedTask = await task.save()
 
+      // reschedule due
+      const jobPrev = schedule.scheduledJobs[JSON.stringify(task._id)]
+
+      if (jobPrev) {
+         jobPrev.cancel()
+      }
+
+      schedule.scheduleJob(
+         JSON.stringify(task._id),
+         new Date(due),
+         async () => {
+            // query classroom
+            const classroom = await Classrooms.findById(task.classroom)
+
+            // filter student who have not submitted
+            var result = classroom.members.filter(function (obj) {
+               return task.tasks.map((item) => item.student).indexOf(obj) === -1
+            })
+
+            // filter return to update many
+            const resultFilter = result.map((item) => {
+               return { student: item, submitted: false, score: 0 }
+            })
+
+            // update many
+            try {
+               await Tasks.updateOne(
+                  { _id: task._id },
+                  {
+                     $push: {
+                        tasks: resultFilter,
+                     },
+                  }
+               )
+               console.log('run from edit')
+            } catch (error) {
+               console.log('e', error)
+            }
+         }
+      )
+
       res.status(200).json({
          status: 'success',
          task: updatedTask,
@@ -113,5 +155,86 @@ export const deleteTask = async (req, res) => {
       })
    } catch (error) {
       res.status(500).json({ message: 'Failed delete task', error })
+   }
+}
+
+export const submitTask = async (req, res) => {
+   const { answer, ...data } = req.body
+
+   try {
+      if (req.file) {
+         data.answer = `http://localhost:5000/uploads/${req.file.filename}`
+      }
+
+      const task = await Tasks.findById(req.params.id)
+
+      // search if there student in the tasks db
+      if (
+         task.tasks.some((item) => {
+            return item.student.toString() === student
+         })
+      ) {
+         task.tasks.map((item) => {
+            if (JSON.stringify(item.student) === JSON.stringify(student)) {
+               item.answer = req.body.task
+            }
+         })
+      } else {
+         task.tasks.push({
+            ...data,
+            student: JSON.parse(data.student),
+            submitted: true,
+         })
+      }
+
+      const updatedtask = await task.save()
+
+      res.status(200).json({
+         status: 'success',
+         task: updatedtask,
+         message: 'Success submitted',
+      })
+   } catch (error) {
+      let errMsg
+      typeof error !== 'object'
+         ? (errMsg = error)
+         : (errMsg = 'Something wrong')
+
+      res.status(500).json({ status: 'error', errors: error, message: errMsg })
+   }
+}
+
+export const givingGrades = async (req, res) => {
+   console.log(req.body)
+   try {
+      // const updatedScore = await Tasks.updateOne(
+      //    {
+      //       _id: req.params.id,
+      //       'tasks.student': JSON.parse(req.body.student),
+      //    },
+      //    {
+      //       $set: {
+      //          'tasks.$.score': Number.parseInt(req.body.score),
+      //       },
+      //    }
+      // )
+
+      const updatedScore = await Tasks.findByIdAndUpdate(
+         JSON.parse(req.params.id),
+         {
+            ...req.body,
+         }
+      )
+
+      console.log(updatedScore)
+
+      res.status(200).json({ status: 'success', message: 'ok' })
+   } catch (error) {
+      let errMsg
+      typeof error !== 'object'
+         ? (errMsg = error)
+         : (errMsg = 'something wrong')
+
+      res.status(500).json({ status: 'error', errors: error, message: errMsg })
    }
 }

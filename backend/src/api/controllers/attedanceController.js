@@ -155,7 +155,6 @@ export const deleteAttedance = async (req, res) => {
 
 export const submitAttendance = async (req, res) => {
    const { student } = req.body
-   console.log(req.body)
 
    try {
       const attedance = await Attedances.findById(req.params.id)

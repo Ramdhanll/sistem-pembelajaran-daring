@@ -34,8 +34,9 @@
    - [x] slicing figma to code
    - [x] create task
    - [x] read task
-   - [] update task  
-      - [] update due from node-schedule
+      - [] display task detail
+   - [x] update task  
+      - [x] update due from node-schedule
    - [x] delete task
 
 #SECTION Student
@@ -51,8 +52,8 @@
    - Absen
       - [x] input Absen
    - Task
+      - [] display task detail
       - [] submited Task
-      
 #SECTION Admin
    - Login
       - [x] request login to server
@@ -80,3 +81,8 @@
       - [x] delete admin
           
 - [x] create info classroom
+
+
+db.tasks.find({
+   "tasks.student": "6134a88ac9a1c6881a4afd98"
+})

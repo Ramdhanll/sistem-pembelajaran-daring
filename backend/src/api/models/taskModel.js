@@ -24,10 +24,7 @@ const attendancesSchema = mongoose.Schema(
                type: ObjectId,
                ref: 'Students',
             },
-            body: {
-               type: String,
-            },
-            document: {
+            answer: {
                type: String,
             },
             score: {
