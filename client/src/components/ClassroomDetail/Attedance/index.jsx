@@ -29,6 +29,7 @@ import {
    Flex,
    HStack,
    Avatar,
+   Divider,
 } from '@chakra-ui/react'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import CardAttedance from '../../../components/CardAttedance'
@@ -80,6 +81,8 @@ const Attedance = () => {
       })
       onOpenDrawerDetail()
    }
+
+   console.log(attedanceSelected)
 
    useEffect(() => {
       const exist = attedanceSelected?.attedances?.find(
@@ -245,9 +248,61 @@ const Attedance = () => {
    )
 
    // SECTION TEACHER
+   const [isLoadingTeacher, setIsLoadingTeacher] = useState(false)
+
+   const handleEndAttedance = async () => {
+      setIsLoadingTeacher(true)
+
+      try {
+         await AttedanceService.endAttend(attedanceSelected._id)
+         setAttedanceSelected({})
+         mutate(`/api/attedances/${classroomState?._id}`)
+         setIsLoadingTeacher(false)
+         setPresents([])
+         setPermits([])
+         setMissings([])
+         setSicks([])
+         toast({
+            title: 'Berhasil',
+            description: 'berhasil akhiri absensi',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+            position: 'top-right',
+         })
+      } catch (error) {
+         setIsLoadingTeacher(false)
+         toast({
+            title: 'Gagal',
+            description: 'gagal akhiri absensi',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            position: 'top-right',
+         })
+      }
+   }
+
    const RenderAttedanceTeacher = () => (
       <Box>
          <VStack spacing={4} alignItems='self-start'>
+            <VStack spacing={3} alignItems='flex-start'>
+               <Text fontSize={['sm', 'md', 'lg', 'xl']} fontWeight='600'>
+                  Diserahkan {attedanceSelected?.attedances?.length} dari{' '}
+                  {classroomState?.members?.length} orang
+               </Text>
+               <Button
+                  variant='solid'
+                  bg='primary'
+                  color='white'
+                  size='sm'
+                  onClick={handleEndAttedance}
+                  isLoading={isLoadingTeacher}
+               >
+                  Akhiri Absensi
+               </Button>
+            </VStack>
+            <Divider />
             {/* Presents */}
             <Box>
                <Text fontSize={['sm', 'md', 'lg', 'xl']} mb='20px'>

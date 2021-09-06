@@ -36,4 +36,12 @@ export default {
          throw error
       }
    },
+   endAttend: async (id) => {
+      try {
+         const { data } = await axios.put(`/api/attedances/${id}/end`)
+         return data
+      } catch (error) {
+         throw error
+      }
+   },
 }

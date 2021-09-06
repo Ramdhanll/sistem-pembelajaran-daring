@@ -192,3 +192,53 @@ export const submitAttendance = async (req, res) => {
       res.status(500).json({ status: 'error', errors: error, message: errMsg })
    }
 }
+
+export const endAttendance = async (req, res) => {
+   try {
+      const attedance = await Attedances.findById(req.params.id)
+
+      // reschedule due
+      const jobPrev = schedule.scheduledJobs[JSON.stringify(attedance._id)]
+      if (jobPrev) {
+         jobPrev.cancel()
+      }
+
+      // query classroom
+      const classroom = await Classrooms.findById(attedance.classroom)
+
+      // filter student who have not submitted
+      var result = classroom.members.filter(function (obj) {
+         return (
+            attedance.attedances.map((item) => item.student).indexOf(obj) === -1
+         )
+      })
+
+      // filter return to update many
+      const resultFilter = result.map((item) => {
+         return { student: item, attedance: 'missing' }
+      })
+
+      // update many
+      await Attedances.updateOne(
+         { _id: attedance._id },
+         {
+            due: new Date(),
+            $push: {
+               attedances: resultFilter,
+            },
+         }
+      )
+
+      res.status(200).json({
+         status: 'success',
+         message: 'Success end attedance',
+      })
+   } catch (error) {
+      let errMsg
+      typeof error !== 'object'
+         ? (errMsg = error)
+         : (errMsg = 'something wrong')
+
+      res.status(500).json({ status: 'error', errors: error, message: errMsg })
+   }
+}
