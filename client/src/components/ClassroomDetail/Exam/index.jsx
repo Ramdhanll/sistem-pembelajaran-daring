@@ -389,6 +389,38 @@ const Exam = () => {
    )
 
    // SECTION TEACHER
+   const [isLoadingTeacher, setIsLoadingTeacher] = useState(false)
+
+   const handleEndExam = async () => {
+      setIsLoadingTeacher(true)
+
+      try {
+         await ExamService.endExam(examSelected._id)
+         setIsLoadingTeacher(false)
+         onCloseDrawerDetail()
+         setExamSelected({})
+         mutate(`/api/exams/${classroomState?._id}`)
+         toast({
+            title: 'Berhasil',
+            description: 'berhasil akhiri tugas',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+            position: 'top-right',
+         })
+      } catch (error) {
+         setIsLoadingTeacher(false)
+         toast({
+            title: 'Gagal',
+            description: 'gagal akhiri tugas',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            position: 'top-right',
+         })
+      }
+   }
+
    const RenderExamTeacher = () => (
       <Box>
          <VStack spacing={4} alignItems='self-start'>
@@ -415,21 +447,33 @@ const Exam = () => {
          </VStack>
          <Divider h='8px' />
          <Box py='10px'>
-            <HStack spacing={3} mb='10px'>
+            <VStack spacing={3} mb='10px' alignItems='flex-start'>
                <Text fontSize={['sm', 'md', 'lg', 'xl']} fontWeight='600'>
-                  Diserahkan
+                  Diserahkan {examSelected?.tasks?.length} dari{' '}
+                  {classroomState?.members?.length} orang
                </Text>
-               <Button
-                  variant='solid'
-                  bg='primary'
-                  color='white'
-                  size='sm'
-                  onClick={handleSubmitScores}
-                  isLoading={isLoadingUpdateScore}
-               >
-                  Update nilai
-               </Button>
-            </HStack>
+               <HStack>
+                  <Button
+                     variant='solid'
+                     bg='primary'
+                     color='white'
+                     size='sm'
+                     onClick={handleSubmitScores}
+                     isLoading={isLoadingUpdateScore}
+                  >
+                     Update nilai
+                  </Button>
+                  <Button
+                     variant='outline'
+                     colorScheme='blackAlpha'
+                     size='sm'
+                     onClick={handleEndExam}
+                     isLoading={isLoadingTeacher}
+                  >
+                     Akhiri tugas
+                  </Button>
+               </HStack>
+            </VStack>
             <Table variant='simple'>
                <TableCaption>TABEL NILAI UJIAN</TableCaption>
                <Thead>

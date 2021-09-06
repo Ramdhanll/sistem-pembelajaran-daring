@@ -43,4 +43,12 @@ export default {
          throw error
       }
    },
+   endExam: async (id) => {
+      try {
+         const { data } = await axios.put(`/api/exams/${id}/end`)
+         return data
+      } catch (error) {
+         throw error
+      }
+   },
 }

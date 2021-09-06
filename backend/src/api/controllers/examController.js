@@ -223,3 +223,52 @@ export const givingGrades = async (req, res) => {
       res.status(500).json({ status: 'error', errors: error, message: errMsg })
    }
 }
+
+export const endExam = async (req, res) => {
+   try {
+      const exam = await Exams.findById(req.params.id)
+
+      // delete schedule due
+      const jobPrev = schedule.scheduledJobs[JSON.stringify(exam._id)]
+
+      if (jobPrev) {
+         jobPrev.cancel()
+      }
+
+      // query classroom
+      const classroom = await Classrooms.findById(exam.classroom)
+
+      // filter student who have not submitted
+      var result = classroom.members.filter(function (obj) {
+         return exam.exams.map((item) => item.student).indexOf(obj) === -1
+      })
+
+      // filter return to update many
+      const resultFilter = result.map((item) => {
+         return { student: item, submitted: false, score: 0 }
+      })
+
+      // update many
+      await Exams.updateOne(
+         { _id: exam._id },
+         {
+            due: new Date(),
+            $push: {
+               exams: resultFilter,
+            },
+         }
+      )
+
+      res.status(200).json({
+         status: 'success',
+         message: 'Exam has been end',
+      })
+   } catch (error) {
+      let errMsg
+      typeof error !== 'object'
+         ? (errMsg = error)
+         : (errMsg = 'something wrong')
+
+      res.status(500).json({ status: 'error', errors: error, message: errMsg })
+   }
+}

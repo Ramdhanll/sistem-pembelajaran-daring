@@ -6,6 +6,7 @@ import {
    updateExam,
    submitExam,
    givingGrades,
+   endExam,
 } from '../controllers/examController.js'
 import { isAuth, isStudent, isTeacher } from '../middleware/jwt.js'
 
@@ -41,6 +42,7 @@ examRouter.put(
    submitExam
 )
 examRouter.put('/:id/grades', isAuth, isTeacher, givingGrades)
+examRouter.put('/:id/end', isAuth, endExam)
 
 examRouter.post(
    '/',
