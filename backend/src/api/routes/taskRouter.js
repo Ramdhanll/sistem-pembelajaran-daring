@@ -6,6 +6,7 @@ import {
    updateTask,
    submitTask,
    givingGrades,
+   endTask,
 } from '../controllers/taskController.js'
 import { isAuth, isStudent, isTeacher } from '../middleware/jwt.js'
 
@@ -41,6 +42,7 @@ taskRouter.put(
    submitTask
 )
 taskRouter.put('/:id/grades', isAuth, isTeacher, givingGrades)
+taskRouter.put('/:id/end', isAuth, endTask)
 
 taskRouter.post(
    '/',

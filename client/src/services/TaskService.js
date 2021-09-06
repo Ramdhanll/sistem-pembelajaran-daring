@@ -42,5 +42,13 @@ export default {
       } catch (error) {
          throw error
       }
-   }
+   },
+   endTask: async (id) => {
+      try {
+         const { data } = await axios.put(`/api/tasks/${id}/end`)
+         return data
+      } catch (error) {
+         throw error
+      }
+   },
 }
