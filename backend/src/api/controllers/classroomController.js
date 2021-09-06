@@ -1,5 +1,8 @@
 import { validationResult } from 'express-validator'
 import Classrooms from '../models/classroomsModel.js'
+import Attedances from '../models/attedanceModel.js'
+import Tasks from '../models/taskModel.js'
+import Exams from '../models/examModel.js'
 
 export const getClassrooms = async (req, res) => {
    const teacher = req.query.teacher
@@ -155,5 +158,87 @@ export const join = async (req, res) => {
          errors: error,
          message: errMsg,
       })
+   }
+}
+
+export const getRapor = async (req, res) => {
+   // validation if studentId === undefined
+   if (req.params.studentId === 'undefined') {
+      return res
+         .status(200)
+         .json({ status: 'success', message: 'student id kosong' })
+   }
+
+   try {
+      // GET ATTEDANCES
+      const studentAttedances = {
+         present: 0,
+         sick: 0,
+         permit: 0,
+         missing: 0,
+      }
+
+      const attedance = await Attedances.find({
+         classroom: req.params.classroomId,
+      })
+
+      attedance.map((item) => {
+         const exist = item.attedances.find(
+            (item) => item.student.toString() === req.params.studentId
+         )
+
+         if (exist) {
+            if (exist.attedance === 'present') {
+               studentAttedances.present = studentAttedances.present + 1
+            } else if (exist.attedance === 'sick') {
+               studentAttedances.sick = studentAttedances.sick + 1
+            } else if (exist.attedance === 'permit') {
+               studentAttedances.permit = studentAttedances.permit + 1
+            } else if (exist.attedance === 'missing') {
+               studentAttedances.missing = studentAttedances.missing + 1
+            }
+         }
+      })
+
+      // GET TASKS
+      const task = await Tasks.find({
+         classroom: req.params.classroomId,
+      })
+
+      const studentTasks = task.map((item) => {
+         const exist = item.tasks.find(
+            (item) => item.student.toString() === req.params.studentId
+         )
+         return { _id: item._id, title: item.title, tasks: exist }
+      })
+
+      // GET EXAM
+      const exam = await Exams.find({
+         classroom: req.params.classroomId,
+      })
+
+      const studentExams = exam.map((item) => {
+         const exist = item.exams.find(
+            (item) => item.student.toString() === req.params.studentId
+         )
+         return { _id: item._id, title: item.title, exams: exist }
+      })
+
+      console.log(studentExams)
+
+      res.status(200).json({
+         status: 'success',
+         attedances: studentAttedances,
+         tasks: studentTasks,
+         exams: studentExams,
+         message: 'ok',
+      })
+   } catch (error) {
+      let errMsg
+      typeof error !== 'object'
+         ? (errMsg = error)
+         : (errMsg = 'something wrong')
+
+      res.status(500).json({ status: 'error', errors: error, message: errMsg })
    }
 }

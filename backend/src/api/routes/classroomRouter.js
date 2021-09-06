@@ -6,6 +6,7 @@ import {
    getClassrooms,
    join,
    updateClassroom,
+   getRapor,
 } from '../controllers/classroomController.js'
 import { isAuth, isStudent, isTeacher } from '../middleware/jwt.js'
 
@@ -17,5 +18,5 @@ classroomRouter.get('/', isAuth, getClassrooms)
 classroomRouter.get('/:id', isAuth, getClassroom)
 classroomRouter.put('/:id', isAuth, isTeacher, updateClassroom)
 classroomRouter.delete('/:id', isAuth, isTeacher, deleteClassroom)
-
+classroomRouter.get('/:classroomId/rapor/:studentId', isAuth, getRapor)
 export default classroomRouter
