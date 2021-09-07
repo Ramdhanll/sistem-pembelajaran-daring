@@ -63,6 +63,7 @@ export const login = async (req, res) => {
                email: user.email,
                photo: user.photo,
                role: user.role,
+               year_of_entry: user.year_of_entry || null,
             })
       }
    }

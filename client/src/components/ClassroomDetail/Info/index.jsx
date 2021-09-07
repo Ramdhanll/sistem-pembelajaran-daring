@@ -8,18 +8,9 @@ import {
    ModalBody,
    ModalCloseButton,
    ModalContent,
-   ModalFooter,
    ModalHeader,
    ModalOverlay,
-   Table,
-   TableCaption,
-   Tbody,
-   Td,
    Text,
-   Tfoot,
-   Th,
-   Thead,
-   Tr,
    useDisclosure,
    useToast,
    VStack,
@@ -27,17 +18,18 @@ import {
 import { Form, Formik } from 'formik'
 import React, { useContext } from 'react'
 import { MdModeEdit } from 'react-icons/md'
-import useSWR from 'swr'
 import { ClassroomContext } from '../../../contexts/classroomContext/classroomContext'
 import randomString from 'randomstring'
 import FormikControl from '../../../Formik/FormikControl'
 
 import * as Yup from 'yup'
 import classroomService from '../../../services/classroomService'
+import { AuthContext } from '../../../contexts/authContext/AuthContexts'
 
 const Info = (props) => {
    const toast = useToast()
    const { isOpen, onOpen, onClose } = useDisclosure()
+   const { userState } = useContext(AuthContext)
    const { classroomState, classroomDispatch } = useContext(ClassroomContext)
    // const { data, error } = useSWR(`/api/classrooms/${props.match.params.id}`)
 
@@ -150,16 +142,18 @@ const Info = (props) => {
                   </Text>
                </VStack>
             </HStack>
-            <Box>
-               <Button
-                  variant='solid'
-                  colorScheme='yellow'
-                  _focus={{ outline: 'none' }}
-                  onClick={onOpen}
-               >
-                  <MdModeEdit size='24px' />
-               </Button>
-            </Box>
+            {userState?.role === 'teacher' && (
+               <Box>
+                  <Button
+                     variant='solid'
+                     colorScheme='yellow'
+                     _focus={{ outline: 'none' }}
+                     onClick={onOpen}
+                  >
+                     <MdModeEdit size='24px' />
+                  </Button>
+               </Box>
+            )}
          </Flex>
 
          {/* Teacher */}

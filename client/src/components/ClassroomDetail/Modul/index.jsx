@@ -5,7 +5,6 @@ import {
    ModalBody,
    ModalCloseButton,
    ModalContent,
-   ModalFooter,
    ModalHeader,
    ModalOverlay,
    useDisclosure,
@@ -19,7 +18,6 @@ import {
    DrawerBody,
    DrawerCloseButton,
    DrawerContent,
-   DrawerFooter,
    DrawerHeader,
    DrawerOverlay,
    Text,
@@ -49,9 +47,9 @@ const Modul = () => {
    } = useDisclosure()
    const [moduleSelected, setModuleSelected] = useState({})
    const { userState } = useContext(AuthContext)
-   const { classroomState, classroomDispatch } = useContext(ClassroomContext)
+   const { classroomState } = useContext(ClassroomContext)
 
-   const { data, error } = useSWR(`/api/modules/${classroomState?._id}`)
+   const { data } = useSWR(`/api/modules/${classroomState?._id}`)
 
    // SECTION Drawer detail
 

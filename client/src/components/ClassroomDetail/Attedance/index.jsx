@@ -5,33 +5,25 @@ import {
    ModalBody,
    ModalCloseButton,
    ModalContent,
-   ModalFooter,
    ModalHeader,
    ModalOverlay,
    useDisclosure,
    useToast,
    VStack,
-   FormControl,
-   FormLabel,
-   Input,
-   FormHelperText,
    Drawer,
    DrawerBody,
    DrawerCloseButton,
    DrawerContent,
-   DrawerFooter,
    DrawerHeader,
    DrawerOverlay,
    Text,
    Badge,
-   Link,
-   Image,
    Flex,
    HStack,
    Avatar,
    Divider,
 } from '@chakra-ui/react'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import CardAttedance from '../../../components/CardAttedance'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
@@ -40,7 +32,6 @@ import FormikControl from '../../../Formik/FormikControl'
 import { ClassroomContext } from '../../../contexts/classroomContext/classroomContext'
 import AttedanceService from '../../../services/AttedanceService'
 import useSWR, { mutate } from 'swr'
-import ReactPlayer from 'react-player'
 import { AuthContext } from '../../../contexts/authContext/AuthContexts'
 
 const Attedance = () => {
@@ -54,9 +45,9 @@ const Attedance = () => {
    const [attedanceSelected, setAttedanceSelected] = useState({})
 
    const { userState } = useContext(AuthContext)
-   const { classroomState, classroomDispatch } = useContext(ClassroomContext)
+   const { classroomState } = useContext(ClassroomContext)
 
-   const { data, error } = useSWR(`/api/attedances/${classroomState?._id}`)
+   const { data } = useSWR(`/api/attedances/${classroomState?._id}`)
 
    // SECTION Drawer detail
    const [attend, setattend] = useState('')
@@ -78,18 +69,18 @@ const Attedance = () => {
          } else if (item.attedance === 'permit') {
             setPermits((permits) => [...permits, item])
          }
+
+         return item
       })
       onOpenDrawerDetail()
    }
-
-   console.log(attedanceSelected)
 
    useEffect(() => {
       const exist = attedanceSelected?.attedances?.find(
          (item) => item.student?._id === userState._id
       )
       if (exist) setattend(exist.attedance)
-   }, [attedanceSelected])
+   }, [attedanceSelected, userState._id])
 
    // SECTION Formik Teacher
    const [isAdd, setIsAdd] = useState(true)

@@ -16,7 +16,7 @@ import Pagination from '../Pagination'
 
 const TableInformations = () => {
    const [pageIndex, setPageIndex] = useState(1)
-   const { data: dataInformation, error } = useSWR(
+   const { data: dataInformation } = useSWR(
       `/api/informations?page=${pageIndex}`
    )
 

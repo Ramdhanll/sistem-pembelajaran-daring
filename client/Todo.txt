@@ -16,7 +16,7 @@
    - [x] slicing figma to react
    - [x] add silabus
    - [x] get data from 
-   - [] add bobot nilai
+   - [x] add bobot nilai
 - Modul 
    - [x] Slicing figma to react
    - [x] get data from server
@@ -47,13 +47,11 @@
       - [x] update due from node-schedule
    - [x] delete Exam
 - Report
-   - [] slicing figma to code
-   - [] create Report
-   - [] read Report
-      - [] display Report detail
-   - [] update Report  
-      - [] update due from node-schedule
-   - [] delete Report
+   - [x] slicing figma to code
+   - [x] create Report
+   - [x] read Report
+      - [x] display Report detail
+   - [x] update Report  
 - Profile
    - [] slicing figma to code
    - [] display Profile

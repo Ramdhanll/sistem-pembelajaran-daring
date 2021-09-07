@@ -2,17 +2,11 @@ import {
    Box,
    Button,
    CircularProgress,
-   Flex,
-   FormControl,
-   FormLabel,
    HStack,
-   Input,
-   Link,
    Modal,
    ModalBody,
    ModalCloseButton,
    ModalContent,
-   ModalFooter,
    ModalHeader,
    ModalOverlay,
    Table,
@@ -20,7 +14,6 @@ import {
    Tbody,
    Td,
    Text,
-   Tfoot,
    Th,
    Thead,
    Tr,
@@ -28,18 +21,13 @@ import {
    useToast,
    VStack,
 } from '@chakra-ui/react'
-import React, { useContext, useState } from 'react'
-import { MdAdd, MdDelete, MdEdit, MdLocalLibrary } from 'react-icons/md'
-import { GiTeacher } from 'react-icons/gi'
-import { RiAdminFill } from 'react-icons/ri'
-import { IoMdPeople } from 'react-icons/io'
+import React, { useState } from 'react'
+import { MdAdd, MdDelete, MdEdit } from 'react-icons/md'
 
-import CardDashboard from '../../../components/CardDashboard'
-import { AuthContext } from '../../../contexts/authContext/AuthContexts'
 import Pagination from '../../../components/Pagination'
 import useSWR, { mutate } from 'swr'
 
-import { Formik, Form, setIn } from 'formik'
+import { Formik, Form } from 'formik'
 import FormikControl from '../../../Formik/FormikControl'
 
 import * as Yup from 'yup'
@@ -50,13 +38,10 @@ import Search from '../../../components/Search'
 
 const Information = () => {
    const toast = useToast()
-   const { userState, userDispatch } = useContext(AuthContext)
    const [pageIndex, setPageIndex] = useState(1)
    const [loading, setLoading] = useState(false)
    const [title, setTitle] = useState('')
-   const { data, error } = useSWR(
-      `/api/informations?page=${pageIndex}&title=${title}`
-   )
+   const { data } = useSWR(`/api/informations?page=${pageIndex}&title=${title}`)
 
    const handlePagination = (value) => {
       setPageIndex(value)

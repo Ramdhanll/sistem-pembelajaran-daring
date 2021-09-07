@@ -133,6 +133,7 @@ export const join = async (req, res) => {
          throw 'Siswa sudah bergabung'
       }
 
+      console.log(exist)
       const classroom = await Classrooms.updateOne(
          { code: req.body.code },
          {
@@ -148,6 +149,7 @@ export const join = async (req, res) => {
          message: 'Classroom has been updated',
       })
    } catch (error) {
+      console.log(error)
       let errMsg
       typeof error !== 'object'
          ? (errMsg = error)

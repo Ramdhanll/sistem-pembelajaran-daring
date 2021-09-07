@@ -1,14 +1,8 @@
-import { Box, Text } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import './App.css'
 
-import {
-   BrowserRouter as Router,
-   Switch,
-   Route,
-   NavLink,
-} from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Login from './pages/Login'
-import Dashboard from './pages/LandingPage'
 import LandingPage from './pages/LandingPage'
 import Teacher from './pages/Teacher'
 import TeacherRoute from './components/TeacherRoute'
@@ -26,7 +20,7 @@ function App() {
 
    useEffect(() => {
       AuthService.status(userDispatch)
-   }, [])
+   }, [userDispatch])
 
    return (
       <Box className='App'>

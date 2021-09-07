@@ -1,28 +1,13 @@
 import {
-   AspectRatio,
-   Avatar,
-   Badge,
    Box,
    Button,
-   Drawer,
-   DrawerBody,
-   DrawerCloseButton,
-   DrawerContent,
-   DrawerFooter,
-   DrawerHeader,
-   DrawerOverlay,
    Flex,
-   Image,
-   Input,
-   Link,
    Text,
    useDisclosure,
    useToast,
-   VStack,
 } from '@chakra-ui/react'
 import React, { useContext, useState } from 'react'
 import { MdDelete, MdEdit, MdLibraryBooks } from 'react-icons/md'
-import ReactPlayer from 'react-player'
 import { mutate } from 'swr'
 import { AuthContext } from '../../contexts/authContext/AuthContexts'
 import { ClassroomContext } from '../../contexts/classroomContext/classroomContext'
@@ -186,70 +171,6 @@ const CardAttedance = ({
                </>
             )}
          </Flex>
-
-         {/* Drawer
-         <Drawer isOpen={isOpen} placement='right' onClose={onClose} size='lg'>
-            <DrawerOverlay />
-            <DrawerContent>
-               <DrawerCloseButton _focus={{ outline: 'none' }} />
-               <DrawerHeader>
-                  <Text fontSize={['lg', 'xl', '2xl']} fontWeight='600'>
-                     {attedance?.title}
-                  </Text>
-                  <Text
-                     color='textSecondary'
-                     fontSize={['xs', 'sm', 'md']}
-                     mt='5px'
-                  >
-                     {new Date(attedance?.createdAt).toLocaleDateString('id', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                     })}
-                  </Text>
-               </DrawerHeader>
-
-               <DrawerBody>
-                  <Box
-                     fontSize={['sm', 'md', 'lg']}
-                     mt='10px'
-                     fontWeight='100'
-                     dangerouslySetInnerHTML={{ __html: attedance?.body }}
-                  />
-
-                  {attedance.video && (
-                     <VStack spacing={4} alignItems='flex-start' mt='20px'>
-                        <Badge variant='subtle' colorScheme='green'>
-                           Materi Vidio
-                        </Badge>
-
-                        <Box>
-                           <ReactPlayer url={attedance?.video} controls={true} />
-                        </Box>
-                     </VStack>
-                  )}
-
-                  {attedance.document && (
-                     <VStack spacing={4} alignItems='flex-start' mt='20px'>
-                        <Badge variant='subtle' colorScheme='green'>
-                           Lampiran
-                        </Badge>
-                        <Link href={attedance?.document} isExternal>
-                           <Image
-                              w='70px'
-                              h='70px'
-                              src={'http://localhost:5000/uploads/pdf-icon.png'}
-                           />
-                           click me
-                        </Link>
-                     </VStack>
-                  )}
-               </DrawerBody>
-            </DrawerContent>
-         </Drawer> */}
       </Box>
    )
 }

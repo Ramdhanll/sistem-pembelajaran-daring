@@ -1,33 +1,12 @@
-import {
-   Badge,
-   Box,
-   Button,
-   Drawer,
-   DrawerBody,
-   DrawerCloseButton,
-   DrawerContent,
-   DrawerFooter,
-   DrawerHeader,
-   DrawerOverlay,
-   Flex,
-   Text,
-   useDisclosure,
-   VStack,
-} from '@chakra-ui/react'
-import React, { useContext, useEffect } from 'react'
+import { Flex, Text, VStack } from '@chakra-ui/react'
+import React from 'react'
 import { GiTeacher } from 'react-icons/gi'
 import { IoMdPeople } from 'react-icons/io'
 import { MdDashboard } from 'react-icons/md'
 import { RiAdminFill } from 'react-icons/ri'
 import { BiNews } from 'react-icons/bi'
-import {
-   NavLink,
-   Switch,
-   BrowserRouter as Router,
-   Route,
-} from 'react-router-dom'
+import { NavLink, Switch, Route } from 'react-router-dom'
 import Navbar from '../../components/Navbar'
-import { AuthContext } from '../../contexts/authContext/AuthContexts'
 import Dashboard from './Dashboard'
 import Information from './Information'
 import ManageAdmin from './ManageAdmin'

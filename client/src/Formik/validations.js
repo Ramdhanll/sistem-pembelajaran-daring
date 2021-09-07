@@ -1,11 +1,3 @@
-// export const validateNIS = (value) => {
-//    let error
-//    if (!value) {
-//       error = 'NIS/Email diperlukan!'
-//    }
-//    return error
-// }
-
 export const validatePassword = (value) => {
    console.log('asd', value)
    let error

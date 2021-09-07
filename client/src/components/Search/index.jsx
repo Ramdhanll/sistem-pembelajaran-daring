@@ -15,7 +15,7 @@ const Search = ({ placeholder, setQuerySearch }) => {
          timeoutRef.current = null
          setQuerySearch(searchTyping)
       }, 500)
-   }, [searchTyping])
+   }, [searchTyping, setQuerySearch])
 
    return (
       <InputGroup w={['100%', '30%']}>

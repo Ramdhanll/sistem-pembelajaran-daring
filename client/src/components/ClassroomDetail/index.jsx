@@ -10,7 +10,6 @@ import {
 import React, { useContext, useEffect } from 'react'
 import { Switch, Route, NavLink } from 'react-router-dom'
 import useSWR from 'swr'
-import CardClass from '../../components/CardClass'
 import Navigation from '../../components/Navigation'
 import {
    addClassroom,
@@ -23,10 +22,15 @@ import Silabus from './Silabus'
 import { ClassroomContext } from '../../contexts/classroomContext/classroomContext'
 import Task from './Task'
 import Exam from './Exam'
+import Rapor from './Rapor'
+import { AuthContext } from '../../contexts/authContext/AuthContexts'
+import Report from '../../pages/Student/Report'
 
 const ClassroomDetail = (props) => {
    const classId = props.match.params.id
-   const { data, error } = useSWR(`/api/classrooms/${classId}`)
+   const { data } = useSWR(`/api/classrooms/${classId}`)
+
+   const { userState } = useContext(AuthContext)
    const { classroomState, classroomDispatch } = useContext(ClassroomContext)
 
    useEffect(() => {
@@ -37,7 +41,7 @@ const ClassroomDetail = (props) => {
       return () => {
          classroomDispatch(clearClassroom())
       }
-   }, [data])
+   }, [data, classroomDispatch])
 
    return (
       <Box px={['25px', '50px', '100px', '150px']} py={['20px', '50px']}>
@@ -113,6 +117,17 @@ const ClassroomDetail = (props) => {
                   path={`${localStorage.getItem('goto')}/kelas/:id/ujian`}
                   component={Exam}
                />
+               {userState?.role === 'teacher' ? (
+                  <Route
+                     path={`${localStorage.getItem('goto')}/kelas/:id/rapor`}
+                     component={Rapor}
+                  />
+               ) : (
+                  <Route
+                     path={`${localStorage.getItem('goto')}/kelas/:id/rapor`}
+                     component={Report}
+                  />
+               )}
             </Switch>
          </Skeleton>
       </Box>

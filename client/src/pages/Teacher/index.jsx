@@ -1,33 +1,11 @@
-import {
-   Badge,
-   Box,
-   Button,
-   Drawer,
-   DrawerBody,
-   DrawerCloseButton,
-   DrawerContent,
-   DrawerFooter,
-   DrawerHeader,
-   DrawerOverlay,
-   Flex,
-   Text,
-   useDisclosure,
-   VStack,
-} from '@chakra-ui/react'
-import React, { useContext, useEffect } from 'react'
+import { Flex, Text, VStack } from '@chakra-ui/react'
+import React from 'react'
 import { MdDashboard } from 'react-icons/md'
 import { SiGoogleclassroom } from 'react-icons/si'
-import {
-   NavLink,
-   Switch,
-   BrowserRouter as Router,
-   Route,
-} from 'react-router-dom'
+import { NavLink, Switch, Route } from 'react-router-dom'
 import ClassroomDetail from '../../components/ClassroomDetail'
 import Navbar from '../../components/Navbar'
-import { AuthContext } from '../../contexts/authContext/AuthContexts'
 import Classroom from './Classroom'
-// import ClassroomDetail from './ClassroomDetail'
 import Dashboard from './Dashboard'
 
 const Teacher = ({ history, location }) => {

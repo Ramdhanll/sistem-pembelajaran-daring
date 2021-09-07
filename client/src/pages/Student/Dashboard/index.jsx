@@ -1,17 +1,4 @@
-import {
-   Box,
-   Flex,
-   HStack,
-   Table,
-   TableCaption,
-   Tbody,
-   Td,
-   Text,
-   Tfoot,
-   Th,
-   Thead,
-   Tr,
-} from '@chakra-ui/react'
+import { Box, Flex, Text } from '@chakra-ui/react'
 import React, { useContext } from 'react'
 import { MdLocalLibrary } from 'react-icons/md'
 import useSWR from 'swr'
@@ -20,9 +7,8 @@ import TableInformations from '../../../components/TableInformations'
 import { AuthContext } from '../../../contexts/authContext/AuthContexts'
 
 const Dashboard = () => {
-   const { userState, userDispatch } = useContext(AuthContext)
-   const { data, error } = useSWR(`/api/classrooms?members=${userState._id}`)
-   console.log(data)
+   const { userState } = useContext(AuthContext)
+   const { data } = useSWR(`/api/classrooms?members=${userState._id}`)
    return (
       <Box pt={['25px', '50px']} px={['25px', '100px']}>
          {/* Header */}

@@ -17,6 +17,7 @@ import {
    attedanceRouter,
    taskRouter,
    examRouter,
+   reportRouter,
 } from './api/routes/index.js'
 
 const PORT = process.env.PORT || 5000
@@ -53,6 +54,7 @@ app.use('/api/modules', moduleRouter)
 app.use('/api/attedances', attedanceRouter)
 app.use('/api/tasks', taskRouter)
 app.use('/api/exams', examRouter)
+app.use('/api/reports', reportRouter)
 
 app.use('/', (req, res) => {
    res.send('Server is on!')

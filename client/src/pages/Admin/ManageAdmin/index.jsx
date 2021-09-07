@@ -2,30 +2,19 @@ import {
    Box,
    Button,
    CircularProgress,
-   Flex,
-   FormControl,
-   FormLabel,
    HStack,
-   Input,
-   InputGroup,
-   InputLeftElement,
-   Link,
    ListItem,
    Modal,
    ModalBody,
    ModalCloseButton,
    ModalContent,
-   ModalFooter,
    ModalHeader,
    ModalOverlay,
-   Skeleton,
-   SkeletonText,
    Table,
    TableCaption,
    Tbody,
    Td,
    Text,
-   Tfoot,
    Th,
    Thead,
    Tr,
@@ -34,38 +23,27 @@ import {
    useToast,
    VStack,
 } from '@chakra-ui/react'
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import {
-   MdAdd,
-   MdDelete,
-   MdEdit,
-   MdLocalLibrary,
-   MdSearch,
-} from 'react-icons/md'
-import { GiTeacher } from 'react-icons/gi'
-import { RiAdminFill } from 'react-icons/ri'
-import { IoMdPeople } from 'react-icons/io'
+import React, { useContext, useState } from 'react'
+import { MdAdd, MdDelete, MdEdit } from 'react-icons/md'
 
-import CardDashboard from '../../../components/CardDashboard'
 import { AuthContext } from '../../../contexts/authContext/AuthContexts'
 import Pagination from '../../../components/Pagination'
 import useSWR, { mutate } from 'swr'
 
-import { Formik, Form, setIn } from 'formik'
+import { Formik, Form } from 'formik'
 import FormikControl from '../../../Formik/FormikControl'
 
 import * as Yup from 'yup'
 import AdminService from '../../../services/AdminService'
 import AlertDialogComponent from '../../../components/AlertDialogComponent'
-import { NavLink } from 'react-router-dom'
 import Search from '../../../components/Search'
 
 const ManageAdmin = () => {
    const toast = useToast()
-   const { userState, userDispatch } = useContext(AuthContext)
+   const { userState } = useContext(AuthContext)
    const [name, setName] = useState('')
    const [pageIndex, setPageIndex] = useState(1)
-   const { data, error } = useSWR(`/api/admins?page=${pageIndex}&name=${name}`)
+   const { data } = useSWR(`/api/admins?page=${pageIndex}&name=${name}`)
    const [loading, setLoading] = useState(false)
 
    const handlePagination = (value) => {

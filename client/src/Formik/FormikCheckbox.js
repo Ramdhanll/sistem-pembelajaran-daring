@@ -1,14 +1,9 @@
 import React from 'react'
 import { Field } from 'formik'
-import {
-   FormControl,
-   FormErrorMessage,
-   FormLabel,
-   Input,
-} from '@chakra-ui/react'
+import { FormControl, FormErrorMessage, Checkbox } from '@chakra-ui/react'
 
-function FormikInput(props) {
-   const { label, name, type = 'text', validate, required, ...rest } = props
+function FormikCheckbox(props) {
+   const { label, name, validate, required, ...rest } = props
    return (
       <Field name={name} validate={validate}>
          {({ field, form }) => (
@@ -17,8 +12,13 @@ function FormikInput(props) {
                isInvalid={form.errors[name] && form.touched[name]}
                isRequired={required}
             >
-               {label && <FormLabel color='text'>{label}</FormLabel>}
-               <Input {...field} {...rest} type={type} />
+               <Checkbox
+                  {...field}
+                  {...rest}
+                  isChecked={field.value.includes(props.value)}
+               >
+                  {label}
+               </Checkbox>
                <FormErrorMessage mt='10px' color='red'>
                   {form.errors[name]}
                </FormErrorMessage>
@@ -28,4 +28,4 @@ function FormikInput(props) {
    )
 }
 
-export default FormikInput
+export default FormikCheckbox

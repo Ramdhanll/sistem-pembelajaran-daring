@@ -58,9 +58,9 @@ const Exam = () => {
    const [examSelected, setExamSelected] = useState({})
 
    const { userState } = useContext(AuthContext)
-   const { classroomState, classroomDispatch } = useContext(ClassroomContext)
+   const { classroomState } = useContext(ClassroomContext)
 
-   const { data, error } = useSWR(`/api/exams/${classroomState?._id}`)
+   const { data } = useSWR(`/api/exams/${classroomState?._id}`)
 
    // SECTION Drawer detail
    const [myExam, setMyExam] = useState({})
@@ -76,7 +76,7 @@ const Exam = () => {
          (item) => item.student?._id === userState._id
       )
       if (exist) setMyExam(exist)
-   }, [examSelected])
+   }, [examSelected, userState._id])
 
    // SECTION Formik Teacher
    const [documentUpload, setDocumentUpload] = useState(null)
@@ -566,23 +566,6 @@ const Exam = () => {
          </Box>
       </Box>
    )
-
-   const handleDisabledFromDue = (due) => {
-      const dueTime = new Date(due)
-      const now = new Date()
-
-      if (now - dueTime < 0) {
-         return false
-      } else {
-         return true
-      }
-   }
-
-   const convertDueToLocalTime = (time) => {
-      '2021-09-05T08:19:37'
-      const indexT = time.indexOf('T')
-      const result = time.split(' ')
-   }
 
    const handleSubmitScores = async () => {
       setIsLoadingUpdateScore(true)

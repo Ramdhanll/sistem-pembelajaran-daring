@@ -6,7 +6,7 @@ import theme from './chakra-ui/theme'
 import axios from 'axios'
 import { ChakraProvider } from '@chakra-ui/react'
 import { AuthContextProvider } from './contexts/authContext/AuthContexts'
-import swr, { SWRConfig } from 'swr'
+import { SWRConfig } from 'swr'
 import { ClassroomContextProvider } from './contexts/classroomContext/classroomContext'
 
 axios.defaults.withCredentials = true

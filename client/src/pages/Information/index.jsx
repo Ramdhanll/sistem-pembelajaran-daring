@@ -1,32 +1,10 @@
-import {
-   Box,
-   Button,
-   Flex,
-   HStack,
-   Image,
-   Table,
-   TableCaption,
-   Tbody,
-   Td,
-   Text,
-   Tfoot,
-   Th,
-   Thead,
-   Tr,
-   Avatar,
-   Link,
-   useDisclosure,
-} from '@chakra-ui/react'
-import React, { useContext } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Box, Flex, Text } from '@chakra-ui/react'
+import React from 'react'
 import useSWR from 'swr'
-import { MdMenu } from 'react-icons/md'
-import { AuthContext } from '../../contexts/authContext/AuthContexts'
 import NavbarLandingPage from '../../components/NavbarLandingPage'
 
 const Information = (props) => {
-   const { isOpen, onOpen, onClose } = useDisclosure()
-   const { data, error } = useSWR(`/api/informations/${props.match.params.id}`)
+   const { data } = useSWR(`/api/informations/${props.match.params.id}`)
 
    if (!data) return 'Loading'
 

@@ -7,13 +7,11 @@ import {
    DrawerBody,
    DrawerCloseButton,
    DrawerContent,
-   DrawerFooter,
    DrawerHeader,
    DrawerOverlay,
    Flex,
    Menu,
    MenuButton,
-   MenuDivider,
    MenuGroup,
    MenuItem,
    MenuList,
@@ -23,7 +21,7 @@ import {
 } from '@chakra-ui/react'
 import React, { useContext } from 'react'
 import { MdMenu } from 'react-icons/md'
-import { useHistory } from 'react-router-dom'
+import { NavLink, useHistory } from 'react-router-dom'
 import { AuthContext } from '../../contexts/authContext/AuthContexts'
 import AuthService from '../../services/AuthService'
 
@@ -77,10 +75,13 @@ const Navbar = ({ children }) => {
                </Flex>
             </MenuButton>
             <MenuList>
-               <MenuGroup title='Profile'>
-                  <MenuItem>My Account</MenuItem>
-                  <MenuItem onClick={handleLogout}>Logout </MenuItem>
-               </MenuGroup>
+               <NavLink to='/'>
+                  <MenuItem>Home</MenuItem>
+               </NavLink>
+               <NavLink to={`${localStorage.getItem('goto')}/profile`}>
+                  <MenuItem>Profile</MenuItem>
+               </NavLink>
+               <MenuItem onClick={handleLogout}>Logout </MenuItem>
             </MenuList>
          </Menu>
 

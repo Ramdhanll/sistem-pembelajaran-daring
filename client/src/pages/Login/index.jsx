@@ -20,7 +20,7 @@ const Login = ({ history }) => {
 
    useEffect(() => {
       if (userState?.role) history.push(localStorage.getItem('goto') || '/')
-   }, [])
+   }, [userState?.role, history])
 
    const validationSchema = Yup.object({
       username: Yup.string().required('Username diperlukan'),

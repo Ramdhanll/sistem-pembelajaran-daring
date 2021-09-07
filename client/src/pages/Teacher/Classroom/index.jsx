@@ -3,15 +3,11 @@ import {
    Box,
    Button,
    Flex,
-   FormControl,
-   FormLabel,
    HStack,
-   Input,
    Modal,
    ModalBody,
    ModalCloseButton,
    ModalContent,
-   ModalFooter,
    ModalHeader,
    ModalOverlay,
    Text,
@@ -29,7 +25,6 @@ import randomString from 'randomstring'
 import classroomService from '../../../services/classroomService'
 import useSWR, { mutate } from 'swr'
 import { AuthContext } from '../../../contexts/authContext/AuthContexts'
-import { TimePickerComponent } from '@syncfusion/ej2-react-calendars'
 
 const Classroom = () => {
    const toast = useToast()
@@ -47,7 +42,7 @@ const Classroom = () => {
       Sabtu: 6,
       Minggu: 7,
    }
-   const { data, error } = useSWR(`/api/classrooms?teacher=${userState._id}`)
+   const { data } = useSWR(`/api/classrooms?teacher=${userState._id}`)
 
    useEffect(() => {
       setClassroom7(
@@ -89,7 +84,7 @@ const Classroom = () => {
       actions.setSubmitting(true)
 
       try {
-         const res = await classroomService.create(values)
+         await classroomService.create(values)
          mutate(`/api/classrooms?teacher=${userState._id}`)
          onClose()
          actions.setSubmitting(false)

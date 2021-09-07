@@ -22,7 +22,7 @@ import { AuthContext } from '../../contexts/authContext/AuthContexts'
 
 const NavbarLandingPage = ({ navVisible }) => {
    const { isOpen, onOpen, onClose } = useDisclosure()
-   const { userState, userDispatch } = useContext(AuthContext)
+   const { userState } = useContext(AuthContext)
 
    return (
       <>

@@ -3,15 +3,10 @@ import {
    Box,
    Button,
    Flex,
-   FormControl,
-   FormLabel,
-   HStack,
-   Input,
    Modal,
    ModalBody,
    ModalCloseButton,
    ModalContent,
-   ModalFooter,
    ModalHeader,
    ModalOverlay,
    Text,
@@ -25,11 +20,9 @@ import { MdAdd } from 'react-icons/md'
 import CardClass from '../../../components/CardClass'
 import * as Yup from 'yup'
 import FormikControl from '../../../Formik/FormikControl'
-import randomString from 'randomstring'
 import classroomService from '../../../services/classroomService'
 import useSWR, { mutate } from 'swr'
 import { AuthContext } from '../../../contexts/authContext/AuthContexts'
-import { TimePickerComponent } from '@syncfusion/ej2-react-calendars'
 
 const Classroom = () => {
    const toast = useToast()
@@ -47,7 +40,7 @@ const Classroom = () => {
       Sabtu: 6,
       Minggu: 7,
    }
-   const { data, error } = useSWR(`/api/classrooms?members=${userState._id}`)
+   const { data } = useSWR(`/api/classrooms?members=${userState._id}`)
 
    useEffect(() => {
       setClassroom7(
@@ -71,13 +64,9 @@ const Classroom = () => {
       actions.setSubmitting(true)
 
       try {
-         const res = await classroomService.join(
-            JSON.stringify(userState._id),
-            values.code
-         )
+         await classroomService.join(JSON.stringify(userState._id), values.code)
          mutate(`/api/classrooms?members=${userState._id}`)
          onClose()
-         console.log(res)
          actions.setSubmitting(false)
          toast({
             title: 'Berhasil',

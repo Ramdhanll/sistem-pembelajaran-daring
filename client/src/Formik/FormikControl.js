@@ -4,6 +4,7 @@ import FormikRadioButton from './FormikRadioButton'
 import FormikSelect from './FormikSelect'
 import FormikTextArea from './FormikTextArea'
 import FormikTextEditor from './FormikTextEditor'
+import FormikCheckbox from './FormikCheckbox'
 
 const FormikControl = (props) => {
    const { control, ...rest } = props
@@ -20,8 +21,8 @@ const FormikControl = (props) => {
       case 'radio':
          return <FormikRadioButton {...rest} />
 
-      // case 'checkbox':
-      //    return <Checkbox {...rest} />
+      case 'checkbox':
+         return <FormikCheckbox {...rest} />
       // case 'date':
       //    return <DatePicker {...rest} />
       // case 'chakrainput':

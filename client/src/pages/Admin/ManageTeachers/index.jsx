@@ -25,14 +25,7 @@ import {
    VStack,
 } from '@chakra-ui/react'
 import React, { useContext, useState } from 'react'
-import {
-   MdAdd,
-   MdDelete,
-   MdEdit,
-   MdLocalLibrary,
-   MdRemoveRedEye,
-   MdSearch,
-} from 'react-icons/md'
+import { MdAdd, MdDelete, MdEdit, MdRemoveRedEye } from 'react-icons/md'
 
 import { AuthContext } from '../../../contexts/authContext/AuthContexts'
 import Pagination from '../../../components/Pagination'
@@ -48,11 +41,11 @@ import Search from '../../../components/Search'
 
 const ManageTeachers = () => {
    const toast = useToast()
-   const { userState, userDispatch } = useContext(AuthContext)
+   const { userState } = useContext(AuthContext)
    const [teacher, setTeacher] = useState({})
    const [querySearch, setQuerySearch] = useState('')
    const [pageIndex, setPageIndex] = useState(1)
-   const { data, error } = useSWR(
+   const { data } = useSWR(
       `/api/teachers?page=${pageIndex}&name=${querySearch}&nis=${querySearch}`
    )
 

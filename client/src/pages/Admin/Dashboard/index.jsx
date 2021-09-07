@@ -1,18 +1,5 @@
-import {
-   Box,
-   Flex,
-   HStack,
-   Table,
-   TableCaption,
-   Tbody,
-   Td,
-   Text,
-   Tfoot,
-   Th,
-   Thead,
-   Tr,
-} from '@chakra-ui/react'
-import React, { useContext, useState } from 'react'
+import { Box, Flex, Text } from '@chakra-ui/react'
+import React, { useContext } from 'react'
 import { MdLocalLibrary } from 'react-icons/md'
 import { GiTeacher } from 'react-icons/gi'
 import { RiAdminFill } from 'react-icons/ri'
@@ -20,22 +7,10 @@ import { IoMdPeople } from 'react-icons/io'
 
 import CardDashboard from '../../../components/CardDashboard'
 import { AuthContext } from '../../../contexts/authContext/AuthContexts'
-import useSWR from 'swr'
-import { NavLink } from 'react-router-dom'
-import Pagination from '../../../components/Pagination'
 import TableInformations from '../../../components/TableInformations'
 
 const Dashboard = () => {
-   const { userState, userDispatch } = useContext(AuthContext)
-
-   const [pageIndex, setPageIndex] = useState(1)
-   const { data: dataInformation, error } = useSWR(
-      `/api/informations?page=${pageIndex}`
-   )
-
-   const handlePagination = (value) => {
-      setPageIndex(value)
-   }
+   const { userState } = useContext(AuthContext)
 
    return (
       <Box pt={['25px', '50px']} px={['25px', '30px', '50px', '100px']}>

@@ -11,14 +11,7 @@ import {
    VStack,
 } from '@chakra-ui/react'
 import React, { useContext, useState } from 'react'
-import {
-   MdAccessTime,
-   MdCode,
-   MdDateRange,
-   MdDelete,
-   MdPeople,
-   MdSchool,
-} from 'react-icons/md'
+import { MdCode, MdDateRange, MdPeople, MdSchool } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
 import { mutate } from 'swr'
 import { AuthContext } from '../../contexts/authContext/AuthContexts'
@@ -207,7 +200,6 @@ const CardClass = ({ classroom }) => {
          )}
       </Flex>
    )
-   // display={showDeleted ? 'inline' : 'none'}
 }
 
 export default CardClass
