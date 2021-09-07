@@ -1,6 +1,8 @@
 node_modules
-modules/*
-tasks/*
-exams/*
-photos/*
+modules
+tasks
+exams
+photos
+
+backend
 .env
