@@ -57,13 +57,18 @@ export const login = async (req, res) => {
             .status(200)
             .cookie('token', token, { httpOnly: true })
             .json({
-               _id: user._id,
-               nis: user.nis || null,
-               name: user.name,
-               email: user.email,
-               photo: user.photo,
-               role: user.role,
-               year_of_entry: user.year_of_entry || null,
+               status: 'success',
+               user: {
+                  _id: user._id,
+                  nis: user.nis || null,
+                  name: user.name,
+                  email: user.email,
+                  photo: user.photo,
+                  role: user.role,
+                  gender: user.gender,
+                  year_of_entry: user.year_of_entry || null,
+               },
+               message: 'Login successfully',
             })
       }
    }
@@ -79,10 +84,20 @@ export const logout = async (req, res) => {
 export const status = async (req, res) => {
    res.status(200).json({
       status: 'success',
-      user: req.user,
+      user: {
+         _id: req.user._id,
+         nis: req.user.nis || null,
+         name: req.user.name,
+         email: req.user.email,
+         photo: req.user.photo,
+         role: req.user.role,
+         gender: req.user.gender,
+         year_of_entry: req.user.year_of_entry || null,
+      },
       message: 'status login',
    })
 }
+
 /**
  * Upload image from client to cloudinary
  * 

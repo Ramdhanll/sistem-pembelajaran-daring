@@ -5,7 +5,7 @@ export default {
    login: async (values, dispatch) => {
       try {
          const { data } = await axios.post('/api/auth/login', values)
-         dispatch(loginSuccess(data))
+         dispatch(loginSuccess(data.user))
       } catch (error) {
          throw error
       }

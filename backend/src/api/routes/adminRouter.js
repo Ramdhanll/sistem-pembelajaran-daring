@@ -6,12 +6,36 @@ import {
    getAdmins,
    seed,
    updateAdmin,
+   updatePhoto,
 } from '../controllers/adminController.js'
 import { isAdmin, isAuth } from '../middleware/jwt.js'
 import { body } from 'express-validator'
 import Admins from '../models/adminsModel.js'
 
+import multer from 'multer'
+
 const adminRouter = express.Router()
+
+const storage = multer.diskStorage({
+   destination(req, file, cb) {
+      cb(null, 'src/photos')
+   },
+   filename(req, file, cb) {
+      const { originalname } = file
+      const format = originalname.slice(originalname.indexOf('.'))
+      cb(null, `${Date.now()}${format}`)
+   },
+})
+
+const uploadMulter = multer({ storage })
+
+adminRouter.put(
+   '/:id/photo',
+   isAuth,
+   isAdmin,
+   uploadMulter.single('photo'),
+   updatePhoto
+)
 
 adminRouter.get('/seed', seed)
 adminRouter.get('/', isAuth, getAdmins)

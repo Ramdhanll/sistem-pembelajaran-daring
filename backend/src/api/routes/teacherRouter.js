@@ -6,12 +6,35 @@ import {
    getTeachers,
    seed,
    updateTeacher,
+   updatePhoto,
 } from '../controllers/teacherController.js'
-import { isAdmin, isAuth } from '../middleware/jwt.js'
+import { isAdmin, isAuth, isTeacher } from '../middleware/jwt.js'
 import { body } from 'express-validator'
 import Teachers from '../models/teachersModel.js'
+import multer from 'multer'
 
 const teacherRouter = express.Router()
+
+const storage = multer.diskStorage({
+   destination(req, file, cb) {
+      cb(null, 'src/photos')
+   },
+   filename(req, file, cb) {
+      const { originalname } = file
+      const format = originalname.slice(originalname.indexOf('.'))
+      cb(null, `${Date.now()}${format}`)
+   },
+})
+
+const uploadMulter = multer({ storage })
+
+teacherRouter.put(
+   '/:id/photo',
+   isAuth,
+   isTeacher,
+   uploadMulter.single('photo'),
+   updatePhoto
+)
 
 teacherRouter.get('/seed', seed)
 teacherRouter.get('/', isAuth, getTeachers)

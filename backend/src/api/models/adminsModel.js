@@ -9,6 +9,10 @@ const AdminsSchema = new mongoose.Schema(
       photo: {
          type: String,
       },
+      gender: {
+         type: String,
+         enum: ['L', 'P'],
+      },
       email: {
          type: String,
          required: true,

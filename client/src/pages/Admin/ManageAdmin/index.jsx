@@ -111,6 +111,7 @@ const ManageAdmin = () => {
       email: Yup.string()
          .required('Email diperlukan')
          .email('Email tidak valid'),
+      gender: Yup.string().required('Jenis kelamin diperlukan!'),
    })
 
    const handleSubmit = async (values, actions) => {
@@ -308,6 +309,7 @@ const ManageAdmin = () => {
                      initialValues={{
                         name: admin.name || '',
                         email: admin.email || '',
+                        gender: admin.gender || '',
                      }}
                      onSubmit={handleSubmit}
                      validationSchema={validationSchema}
@@ -327,6 +329,16 @@ const ManageAdmin = () => {
                                  label='Emal'
                                  type='email'
                                  required={true}
+                              />
+                              <FormikControl
+                                 control='radio'
+                                 name='gender'
+                                 label='Jenis kelamin'
+                                 required={true}
+                                 options={[
+                                    { key: 1, name: 'Laki-laki', value: 'L' },
+                                    { key: 2, name: 'Perempuan', value: 'P' },
+                                 ]}
                               />
                            </VStack>
                            <Button

@@ -142,3 +142,37 @@ export const deleteStudent = async (req, res) => {
       res.status(500).json({ message: 'Failed delete student' })
    }
 }
+
+export const updatePhoto = async (req, res) => {
+   try {
+      const student = await Students.findById(req.params.id)
+
+      if (req.file) {
+         student.photo = `http://localhost:5000/uploads/${req.file.filename}`
+      }
+
+      const updatedStudent = await student.save()
+      res.status(200).json({
+         status: 'success',
+         user: {
+            _id: updatedStudent._id,
+            nis: updatedStudent.nis || null,
+            name: updatedStudent.name,
+            email: updatedStudent.email,
+            photo: updatedStudent.photo,
+            role: updatedStudent.role,
+            gender: updatedStudent.gender,
+            year_of_entry: updatedStudent.year_of_entry || null,
+         },
+         message: 'Student has been updated',
+      })
+   } catch (error) {
+      console.log(error)
+      let errMsg
+      typeof error !== 'object'
+         ? (errMsg = error)
+         : (errMsg = 'something wrong')
+
+      res.status(500).json({ status: 'error', errors: error, message: errMsg })
+   }
+}

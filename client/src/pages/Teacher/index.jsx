@@ -7,6 +7,7 @@ import ClassroomDetail from '../../components/ClassroomDetail'
 import Navbar from '../../components/Navbar'
 import Classroom from './Classroom'
 import Dashboard from './Dashboard'
+import Profile from '../../components/Profile'
 
 const Teacher = ({ history, location }) => {
    return (
@@ -61,6 +62,7 @@ const Teacher = ({ history, location }) => {
          <Switch>
             <Route path='/t' component={Dashboard} exact />
             <Route path='/t/kelas' component={Classroom} exact />
+            <Route path='/t/profile' component={Profile} exact />
             <Route path='/t/kelas/:id' component={ClassroomDetail} />
             <Route path='/t/*'>NOT FOUND</Route>
          </Switch>

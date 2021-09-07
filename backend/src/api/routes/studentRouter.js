@@ -6,12 +6,27 @@ import {
    getStudents,
    seed,
    updateStudent,
+   updatePhoto,
 } from '../controllers/studentController.js'
-import { isAdmin, isAuth } from '../middleware/jwt.js'
+import { isAdmin, isAuth, isStudent } from '../middleware/jwt.js'
 import { body } from 'express-validator'
 import Students from '../models/studentsModel.js'
+import multer from 'multer'
 
 const studentRouter = express.Router()
+
+const storage = multer.diskStorage({
+   destination(req, file, cb) {
+      cb(null, 'src/photos')
+   },
+   filename(req, file, cb) {
+      const { originalname } = file
+      const format = originalname.slice(originalname.indexOf('.'))
+      cb(null, `${Date.now()}${format}`)
+   },
+})
+
+const uploadMulter = multer({ storage })
 
 studentRouter.get('/seed', seed)
 studentRouter.get('/', isAuth, getStudents)
@@ -33,6 +48,14 @@ studentRouter.post(
    createStudent
 )
 studentRouter.put('/:id', isAuth, isAdmin, updateStudent)
+studentRouter.put(
+   '/:id/photo',
+   isAuth,
+   isStudent,
+   uploadMulter.single('photo'),
+   updatePhoto
+)
+
 studentRouter.delete('/:id', isAuth, isAdmin, deleteStudent)
 
 export default studentRouter

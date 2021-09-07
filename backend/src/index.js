@@ -39,6 +39,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/uploads', express.static(path.join(__dirname, '/src/modules')))
 app.use('/uploads', express.static(path.join(__dirname, '/src/tasks')))
+app.use('/uploads', express.static(path.join(__dirname, '/src/exams')))
+app.use('/uploads', express.static(path.join(__dirname, '/src/photos')))
 
 // Setup mongoose database
 Database()

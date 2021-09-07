@@ -114,7 +114,7 @@ export const updateAdmin = async (req, res) => {
 
       admin.name = req.body.name ? req.body.name : admin.name
       admin.email = req.body.email ? req.body.email : admin.email
-      admin.photo = req.body.photo ? req.body.photo : admin.photo
+      admin.gender = req.body.gender ? req.body.gender : admin.gender
 
       const updatedAdmin = await admin.save()
 
@@ -138,5 +138,37 @@ export const deleteAdmin = async (req, res) => {
       })
    } catch (error) {
       res.status(500).json({ message: 'Failed delete admin' })
+   }
+}
+
+export const updatePhoto = async (req, res) => {
+   try {
+      const admins = await Admins.findById(req.params.id)
+
+      if (req.file) {
+         admins.photo = `http://localhost:5000/uploads/${req.file.filename}`
+      }
+
+      const updatedAdmin = await admins.save()
+      res.status(200).json({
+         status: 'success',
+         user: {
+            _id: updatedAdmin._id,
+            name: updatedAdmin.name,
+            email: updatedAdmin.email,
+            photo: updatedAdmin.photo,
+            role: updatedAdmin.role,
+            gender: updatedAdmin.gender,
+         },
+         message: 'Admin has been updated',
+      })
+   } catch (error) {
+      console.log(error)
+      let errMsg
+      typeof error !== 'object'
+         ? (errMsg = error)
+         : (errMsg = 'something wrong')
+
+      res.status(500).json({ status: 'error', errors: error, message: errMsg })
    }
 }

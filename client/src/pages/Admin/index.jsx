@@ -12,6 +12,7 @@ import Information from './Information'
 import ManageAdmin from './ManageAdmin'
 import ManageStudents from './ManageStudents'
 import ManageTeachers from './ManageTeachers'
+import Profile from '../../components/Profile'
 
 const Admin = ({ history, location }) => {
    return (
@@ -129,6 +130,7 @@ const Admin = ({ history, location }) => {
             <Route path='/a/admin' component={ManageAdmin} exact />
             <Route path='/a/siswa' component={ManageStudents} exact />
             <Route path='/a/guru' component={ManageTeachers} exact />
+            <Route path='/a/profile' component={Profile} exact />
             <Route path='/a/*'>NOT FOUND</Route>
          </Switch>
       </>

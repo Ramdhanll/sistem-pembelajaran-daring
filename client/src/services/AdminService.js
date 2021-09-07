@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { updateUser } from '../contexts/authContext/AuthActions'
 
 export default {
    create: async (values) => {
@@ -20,6 +21,15 @@ export default {
    delete: async (id) => {
       try {
          const { data } = await axios.delete(`/api/admins/${id}`)
+         return data
+      } catch (error) {
+         throw error
+      }
+   },
+   updatePhoto: async (id, values, dispatch) => {
+      try {
+         const { data } = await axios.put(`/api/admins/${id}/photo`, values)
+         dispatch(updateUser(data.user))
          return data
       } catch (error) {
          throw error
