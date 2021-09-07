@@ -126,8 +126,7 @@ const Login = ({ history }) => {
                         />
 
                         <FormikControl
-                           control='input'
-                           type='password'
+                           control='password'
                            name='password'
                            label='Password'
                            required={true}

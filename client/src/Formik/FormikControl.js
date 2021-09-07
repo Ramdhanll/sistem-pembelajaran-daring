@@ -5,6 +5,7 @@ import FormikSelect from './FormikSelect'
 import FormikTextArea from './FormikTextArea'
 import FormikTextEditor from './FormikTextEditor'
 import FormikCheckbox from './FormikCheckbox'
+import FormikPassword from './FormikPassword'
 
 const FormikControl = (props) => {
    const { control, ...rest } = props
@@ -12,6 +13,8 @@ const FormikControl = (props) => {
    switch (control) {
       case 'input':
          return <FormikInput {...rest} />
+      case 'password':
+         return <FormikPassword {...rest} />
       case 'textEditor':
          return <FormikTextEditor {...rest} />
       case 'textarea':

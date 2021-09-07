@@ -10,9 +10,12 @@ export default {
          throw error
       }
    },
-   update: async (id, values) => {
+   update: async (id, values, dispatch) => {
       try {
          const { data } = await axios.put(`/api/students/${id}`, values)
+         if (dispatch) {
+            dispatch(updateUser(data.user))
+         }
          return data
       } catch (error) {
          throw error

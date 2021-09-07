@@ -6,7 +6,6 @@ import {
    getTeachers,
    seed,
    updateTeacher,
-   updatePhoto,
 } from '../controllers/teacherController.js'
 import { isAdmin, isAuth, isTeacher } from '../middleware/jwt.js'
 import { body } from 'express-validator'
@@ -28,14 +27,6 @@ const storage = multer.diskStorage({
 
 const uploadMulter = multer({ storage })
 
-teacherRouter.put(
-   '/:id/photo',
-   isAuth,
-   isTeacher,
-   uploadMulter.single('photo'),
-   updatePhoto
-)
-
 teacherRouter.get('/seed', seed)
 teacherRouter.get('/', isAuth, getTeachers)
 teacherRouter.get('/:id', getTeacher)
@@ -54,7 +45,7 @@ teacherRouter.post(
    }),
    createTeacher
 )
-teacherRouter.put('/:id', isAuth, isAdmin, updateTeacher)
+teacherRouter.put('/:id', isAuth, uploadMulter.single('photo'), updateTeacher)
 teacherRouter.delete('/:id', isAuth, isAdmin, deleteTeacher)
 
 export default teacherRouter

@@ -33,7 +33,6 @@ export const getStudents = async (req, res) => {
          $or: [nameFilter, nisFilter],
       })
 
-      console.log(count)
       const students = await Students.find({
          $or: [nameFilter, nisFilter],
       })
@@ -84,7 +83,7 @@ export const createStudent = async (req, res) => {
    try {
       const student = new Students({
          ...req.body,
-         password: bcrypt.hashSync(req.body.email, 8),
+         password: bcrypt.hashSync(req.body.nis.toString(), 8),
       })
 
       const createdStudent = await student.save()
@@ -95,7 +94,8 @@ export const createStudent = async (req, res) => {
          message: 'Success created student',
       })
    } catch (error) {
-      res.status(500).json({ message: 'Failed create student' })
+      console.log(error)
+      res.status(500).json({ error, message: 'Failed create student' })
    }
 }
 
@@ -115,14 +115,27 @@ export const updateStudent = async (req, res) => {
       student.year_of_entry = req.body.year_of_entry
          ? req.body.year_of_entry
          : student.year_of_entry
-
-      student.photo = req.body.photo ? req.body.photo : student.photo
+      student.password = req.body.password
+         ? bcrypt.hashSync(req.body.password, 8)
+         : student.password
+      if (req.file) {
+         student.photo = `http://localhost:5000/uploads/${req.file.filename}`
+      }
 
       const updatedStudent = await student.save()
 
       res.status(201).json({
          status: 'success',
-         student: updatedStudent,
+         user: {
+            _id: updatedStudent._id,
+            nis: updatedStudent.nis || null,
+            name: updatedStudent.name,
+            email: updatedStudent.email,
+            photo: updatedStudent.photo,
+            role: updatedStudent.role,
+            gender: updatedStudent.gender,
+            year_of_entry: updatedStudent.year_of_entry || null,
+         },
          message: 'Success updated student',
       })
    } catch (error) {
@@ -140,39 +153,5 @@ export const deleteStudent = async (req, res) => {
       })
    } catch (error) {
       res.status(500).json({ message: 'Failed delete student' })
-   }
-}
-
-export const updatePhoto = async (req, res) => {
-   try {
-      const student = await Students.findById(req.params.id)
-
-      if (req.file) {
-         student.photo = `http://localhost:5000/uploads/${req.file.filename}`
-      }
-
-      const updatedStudent = await student.save()
-      res.status(200).json({
-         status: 'success',
-         user: {
-            _id: updatedStudent._id,
-            nis: updatedStudent.nis || null,
-            name: updatedStudent.name,
-            email: updatedStudent.email,
-            photo: updatedStudent.photo,
-            role: updatedStudent.role,
-            gender: updatedStudent.gender,
-            year_of_entry: updatedStudent.year_of_entry || null,
-         },
-         message: 'Student has been updated',
-      })
-   } catch (error) {
-      console.log(error)
-      let errMsg
-      typeof error !== 'object'
-         ? (errMsg = error)
-         : (errMsg = 'something wrong')
-
-      res.status(500).json({ status: 'error', errors: error, message: errMsg })
    }
 }

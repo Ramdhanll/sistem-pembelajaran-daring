@@ -109,17 +109,30 @@ export const updateTeacher = async (req, res) => {
       teacher.name = req.body.name ? req.body.name : teacher.name
       teacher.email = req.body.email ? req.body.email : teacher.email
       teacher.gender = req.body.gender ? req.body.gender : teacher.gender
-      teacher.photo = req.body.photo ? req.body.photo : teacher.photo
+      teacher.password = req.body.password
+         ? bcrypt.hashSync(req.body.password, 8)
+         : teacher.password
+
+      if (req.file) {
+         teacher.photo = `http://localhost:5000/uploads/${req.file.filename}`
+      }
 
       const updatedTeacher = await teacher.save()
 
       res.status(201).json({
          status: 'success',
-         teacher: updatedTeacher,
+         user: {
+            _id: updatedTeacher._id,
+            name: updatedTeacher.name,
+            email: updatedTeacher.email,
+            photo: updatedTeacher.photo,
+            role: updatedTeacher.role,
+            gender: updatedTeacher.gender,
+         },
          message: 'Success updated teacher',
       })
    } catch (error) {
-      res.status(500).json({ message: 'Failed create teacher' })
+      res.status(500).json({ message: 'Failed update teacher' })
    }
 }
 
@@ -133,37 +146,5 @@ export const deleteTeacher = async (req, res) => {
       })
    } catch (error) {
       res.status(500).json({ message: 'Failed delete teacher' })
-   }
-}
-
-export const updatePhoto = async (req, res) => {
-   try {
-      const teachers = await Teachers.findById(req.params.id)
-
-      if (req.file) {
-         teachers.photo = `http://localhost:5000/uploads/${req.file.filename}`
-      }
-
-      const updatedTeachers = await teachers.save()
-      res.status(200).json({
-         status: 'success',
-         user: {
-            _id: updatedTeachers._id,
-            name: updatedTeachers.name,
-            email: updatedTeachers.email,
-            photo: updatedTeachers.photo,
-            role: updatedTeachers.role,
-            gender: updatedTeachers.gender,
-         },
-         message: 'Teachers has been updated',
-      })
-   } catch (error) {
-      console.log(error)
-      let errMsg
-      typeof error !== 'object'
-         ? (errMsg = error)
-         : (errMsg = 'something wrong')
-
-      res.status(500).json({ status: 'error', errors: error, message: errMsg })
    }
 }

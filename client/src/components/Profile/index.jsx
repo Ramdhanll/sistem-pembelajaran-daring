@@ -1,4 +1,11 @@
 import {
+   Modal,
+   ModalOverlay,
+   ModalContent,
+   ModalHeader,
+   ModalCloseButton,
+   ModalBody,
+   ModalFooter,
    Button,
    Box,
    VStack,
@@ -11,15 +18,20 @@ import {
    Td,
    Input,
    useToast,
+   useDisclosure,
 } from '@chakra-ui/react'
 import React, { useContext, useRef, useState } from 'react'
 import { AuthContext } from '../../contexts/authContext/AuthContexts'
 import AdminService from '../../services/AdminService'
 import StudentService from '../../services/StudentService'
 import TeacherService from '../../services/TeacherService'
+import { Form, Formik } from 'formik'
+import * as Yup from 'yup'
+import FormikControl from '../../Formik/FormikControl'
 
 const Profile = () => {
    const toast = useToast()
+   const { isOpen, onClose, onOpen } = useDisclosure()
    const { userState, userDispatch } = useContext(AuthContext)
    const [isLoading, setIsLoading] = useState(false)
    const [photoPrev, setPhotoPrev] = useState(null)
@@ -49,19 +61,11 @@ const Profile = () => {
 
       try {
          if (userState.role === 'student') {
-            await StudentService.updatePhoto(
-               userState._id,
-               reqData,
-               userDispatch
-            )
+            await StudentService.update(userState._id, reqData, userDispatch)
          } else if (userState.role === 'teacher') {
-            await TeacherService.updatePhoto(
-               userState._id,
-               reqData,
-               userDispatch
-            )
+            await TeacherService.update(userState._id, reqData, userDispatch)
          } else if (userState.role === 'admin') {
-            await AdminService.updatePhoto(userState._id, reqData, userDispatch)
+            await AdminService.update(userState._id, reqData, userDispatch)
          }
          setIsLoading(false)
          setPhotoPrev(null)
@@ -85,6 +89,54 @@ const Profile = () => {
          })
       }
    }
+
+   const handleSubmitChangePassword = async (values, actions) => {
+      actions.setSubmitting(true)
+
+      try {
+         if (userState.role === 'student') {
+            await StudentService.update(userState._id, {
+               password: values.password,
+            })
+         } else if (userState.role === 'teacher') {
+            await TeacherService.update(userState._id, {
+               password: values.password,
+            })
+         } else if (userState.role === 'admin') {
+            await AdminService.update(userState._id, {
+               password: values.password,
+            })
+         }
+         actions.setSubmitting(false)
+         onClose()
+         toast({
+            title: 'Berhasil',
+            description: 'berhasil ganti password',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+            position: 'top-right',
+         })
+      } catch (error) {
+         toast({
+            title: 'Gagal',
+            description: 'gagal ganti password',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            position: 'top-right',
+         })
+      }
+   }
+
+   // SECTION FORMIK
+   const validationScheme = Yup.object({
+      password: Yup.string().required('Password diperlukan'),
+      c_password: Yup.string().oneOf(
+         [Yup.ref('password'), null],
+         'Password harus sama'
+      ),
+   })
 
    return (
       <Box
@@ -194,7 +246,65 @@ const Profile = () => {
             >
                Update Photo
             </Button>
+            <Button
+               variant='link'
+               colorScheme='teal'
+               size='sm'
+               onClick={onOpen}
+            >
+               Ganti password
+            </Button>
          </Box>
+
+         {/* Modal add */}
+         <Modal isOpen={isOpen} onClose={onClose} size='sm'>
+            <ModalOverlay />
+            <ModalContent>
+               <ModalHeader>Ganti password</ModalHeader>
+               <ModalCloseButton _focus={{ outline: 'none' }} />
+               <ModalBody>
+                  <Formik
+                     initialValues={{
+                        password: '',
+                        c_password: '',
+                     }}
+                     onSubmit={handleSubmitChangePassword}
+                     validationSchema={validationScheme}
+                  >
+                     {(props) => (
+                        <Form>
+                           <VStack spacing={3}>
+                              <FormikControl
+                                 control='password'
+                                 name='password'
+                                 label='Password'
+                              />
+                              <FormikControl
+                                 control='password'
+                                 name='c_password'
+                                 label='Konfirmasi Password'
+                              />
+                           </VStack>
+                           <Button
+                              variant='solid'
+                              bg='primary'
+                              color='white'
+                              alignSelf='flex-end'
+                              size='sm'
+                              mt='20px'
+                              float='right'
+                              type='submit'
+                              isLoading={props.isSubmitting}
+                           >
+                              Change Password
+                           </Button>
+                        </Form>
+                     )}
+                  </Formik>
+               </ModalBody>
+               <ModalFooter pb='0px'></ModalFooter>
+            </ModalContent>
+         </Modal>
       </Box>
    )
 }

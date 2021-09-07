@@ -6,7 +6,6 @@ import {
    getStudents,
    seed,
    updateStudent,
-   updatePhoto,
 } from '../controllers/studentController.js'
 import { isAdmin, isAuth, isStudent } from '../middleware/jwt.js'
 import { body } from 'express-validator'
@@ -47,14 +46,7 @@ studentRouter.post(
    }),
    createStudent
 )
-studentRouter.put('/:id', isAuth, isAdmin, updateStudent)
-studentRouter.put(
-   '/:id/photo',
-   isAuth,
-   isStudent,
-   uploadMulter.single('photo'),
-   updatePhoto
-)
+studentRouter.put('/:id', isAuth, uploadMulter.single('photo'), updateStudent)
 
 studentRouter.delete('/:id', isAuth, isAdmin, deleteStudent)
 

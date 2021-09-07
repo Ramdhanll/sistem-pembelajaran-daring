@@ -6,7 +6,6 @@ import {
    getAdmins,
    seed,
    updateAdmin,
-   updatePhoto,
 } from '../controllers/adminController.js'
 import { isAdmin, isAuth } from '../middleware/jwt.js'
 import { body } from 'express-validator'
@@ -29,14 +28,6 @@ const storage = multer.diskStorage({
 
 const uploadMulter = multer({ storage })
 
-adminRouter.put(
-   '/:id/photo',
-   isAuth,
-   isAdmin,
-   uploadMulter.single('photo'),
-   updatePhoto
-)
-
 adminRouter.get('/seed', seed)
 adminRouter.get('/', isAuth, getAdmins)
 adminRouter.get('/:id', getAdmin)
@@ -54,7 +45,13 @@ adminRouter.post(
    }),
    createAdmin
 )
-adminRouter.put('/:id', isAuth, isAdmin, updateAdmin)
+adminRouter.put(
+   '/:id',
+   isAuth,
+   isAdmin,
+   uploadMulter.single('photo'),
+   updateAdmin
+)
 adminRouter.delete('/:id', isAuth, isAdmin, deleteAdmin)
 
 export default adminRouter
