@@ -53,9 +53,9 @@
       - [x] display Report detail
    - [x] update Report  
 - Profile
-   - [] slicing figma to code
-   - [] display Profile
-   - [] edit profile
+   - [x] slicing figma to code
+   - [x] display Profile
+   - [x] edit profile
 
 #SECTION Student
    - Information
@@ -76,17 +76,17 @@
       - [x] display Exam detail
       - [x] submited Exam
    - Report
-      - [] slicing figma to code
-      - [] create Report
-      - [] read Report
+      - [x] slicing figma to code
+      - [x] create Report
+      - [x] read Report
          - [] display Report detail
-      - [] update Report  
+      - [x] update Report  
          - [] update due from node-schedule
-      - [] delete Report
+      - [x] delete Report
    - Profile
-      - [] slicing figma to code
-      - [] display Profile
-      - [] edit profile
+      - [x] slicing figma to code
+      - [x] display Profile
+      - [x] edit profile
 
 #SECTION Admin
    - Login
@@ -120,13 +120,3 @@
 db.tasks.find({
    "tasks.student": "6134a88ac9a1c6881a4afd98"
 })
-
-- perkenalan
-- lulusan 
-- kegiatan selama pendidikan
-
-perkenalkan nama saya ramadhani, lulusan universitas muhammadiyah tangerang
-teknik informatika 2021, selama menempuh pendidikan saya sering berlatih membuat 
-aplikasi, dalam membuat aplikasi saya lebih fokus memperdalam bahasa javascript.
-stack technologi yang sering saya gunakan dalam membangun aplikasi 
-yaitu menggunakan MERN stack

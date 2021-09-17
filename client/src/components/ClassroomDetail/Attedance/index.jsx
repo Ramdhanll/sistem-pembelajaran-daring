@@ -248,6 +248,7 @@ const Attedance = () => {
          await AttedanceService.endAttend(attedanceSelected._id)
          setAttedanceSelected({})
          mutate(`/api/attedances/${classroomState?._id}`)
+         onCloseDrawerDetail()
          setIsLoadingTeacher(false)
          setPresents([])
          setPermits([])

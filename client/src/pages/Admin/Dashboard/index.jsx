@@ -8,9 +8,13 @@ import { IoMdPeople } from 'react-icons/io'
 import CardDashboard from '../../../components/CardDashboard'
 import { AuthContext } from '../../../contexts/authContext/AuthContexts'
 import TableInformations from '../../../components/TableInformations'
+import useSWR from 'swr'
 
 const Dashboard = () => {
    const { userState } = useContext(AuthContext)
+   const { data: dataAdmin } = useSWR(`/api/admins`)
+   const { data: dataTeacher } = useSWR(`/api/teachers`)
+   const { data: dataStudent } = useSWR(`/api/students`)
 
    return (
       <Box pt={['25px', '50px']} px={['25px', '30px', '50px', '100px']}>
@@ -41,30 +45,23 @@ const Dashboard = () => {
                justifyContent={['flex-start', 'flex-end']}
             >
                <CardDashboard
-                  icon={<MdLocalLibrary size='40px' color='#FCAD3D' />}
-                  title='Kelas'
-                  description='kelas terdaftar'
-                  num='8'
-               />
-
-               <CardDashboard
                   icon={<RiAdminFill size='40px' color='#FCAD3D' />}
                   title='Admin'
                   description='admin terdaftar'
-                  num='8'
+                  num={dataAdmin?.admins?.length || 0}
                />
                <CardDashboard
                   icon={<GiTeacher size='40px' color='#FCAD3D' />}
                   title='Guru'
                   description='guru terdaftar'
-                  num='8'
+                  num={dataTeacher?.teachers?.length || 0}
                />
 
                <CardDashboard
                   icon={<IoMdPeople size='40px' color='#FCAD3D' />}
                   title='Siswa'
                   description='siswa terdaftar'
-                  num='200'
+                  num={dataStudent?.students?.length || 0}
                />
             </Flex>
          </Flex>
