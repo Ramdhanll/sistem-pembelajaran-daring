@@ -13,6 +13,8 @@ import * as Yup from 'yup'
 import FormikControl from '../../Formik/FormikControl'
 import AuthService from '../../services/AuthService'
 import { AuthContext } from '../../contexts/authContext/AuthContexts'
+import { NavLink } from 'react-router-dom'
+import Logo from '../../images/logo.jpg'
 
 const Login = ({ history }) => {
    const toast = useToast()
@@ -87,13 +89,15 @@ const Login = ({ history }) => {
             alignItems='center'
             flexDirection='column'
          >
-            <Image
+           <NavLink to="/">
+           <Image
                boxSize='50px'
                borderRadius='full'
                objectFit='cover'
-               src='https://images.unsplash.com/photo-1587653559430-aadd3ac46e3f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=819&q=80'
+               src={Logo}
                alt='Segun Adebayo'
             />
+           </NavLink>
 
             <Text
                textAlign='center'

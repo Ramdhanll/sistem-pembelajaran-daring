@@ -381,7 +381,7 @@ const ManageStudents = () => {
                               <FormikControl
                                  control='input'
                                  name='email'
-                                 label='Emal'
+                                 label='Email'
                                  type='email'
                                  required={true}
                               />

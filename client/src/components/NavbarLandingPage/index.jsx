@@ -19,6 +19,7 @@ import { MdMenu } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
 import React, { useContext } from 'react'
 import { AuthContext } from '../../contexts/authContext/AuthContexts'
+import Logo from '../../images/logo.jpg'
 
 const NavbarLandingPage = ({ navVisible }) => {
    const { isOpen, onOpen, onClose } = useDisclosure()
@@ -37,7 +38,7 @@ const NavbarLandingPage = ({ navVisible }) => {
                   boxSize='50px'
                   borderRadius='full'
                   objectFit='cover'
-                  src='https://images.unsplash.com/photo-1587653559430-aadd3ac46e3f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=819&q=80'
+                  src={Logo}
                   alt='Segun Adebayo'
                />
             </NavLink>
