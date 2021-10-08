@@ -28,7 +28,7 @@ const CardClass = ({ classroom }) => {
    const handleConfirm = async () => {
       setIsLoading(true)
       try {
-         await classroomService.delete(classroom._id)
+         await classroomService.deleteClassroom(classroom._id)
          setIsLoading(false)
          onClose()
          setShowDeleted(false)

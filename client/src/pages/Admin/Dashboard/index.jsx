@@ -1,6 +1,5 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
 import React, { useContext } from 'react'
-import { MdLocalLibrary } from 'react-icons/md'
 import { GiTeacher } from 'react-icons/gi'
 import { RiAdminFill } from 'react-icons/ri'
 import { IoMdPeople } from 'react-icons/io'

@@ -26,6 +26,8 @@ const AdminsSchema = new mongoose.Schema(
          type: String,
          default: 'admin',
       },
+      resetToken: String,
+      expireToken: Date,
    },
    {
       timestamps: true,

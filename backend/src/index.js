@@ -28,10 +28,7 @@ const app = express()
 app.use(
    cors({
       credentials: true,
-      origin: [
-         process.env.FRONT_END_URL || 'http://localhost:3000',
-         'http://192.168.100.7:3000',
-      ],
+      origin: ['http://localhost:3000', 'http://192.168.100.7:3000'],
    })
 )
 app.use(cookieParser())

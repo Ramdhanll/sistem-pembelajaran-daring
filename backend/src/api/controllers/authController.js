@@ -10,6 +10,16 @@ import { validationResult } from 'express-validator'
 import e from 'express'
 import Teachers from '../models/teachersModel.js'
 import Admins from '../models/adminsModel.js'
+import nodemailer from 'nodemailer'
+import crypto from 'crypto'
+
+const transporter = nodemailer.createTransport({
+   service: 'gmail',
+   auth: {
+      user: 'aldialfiansyah350@gmail.com',
+      pass: '15051999=',
+   },
+})
 
 export const seed = async (req, res) => {
    await Students.deleteMany({})
@@ -96,6 +106,136 @@ export const status = async (req, res) => {
       },
       message: 'status login',
    })
+}
+
+export const resetPassword = async (req, res) => {
+   console.log(req.body)
+   try {
+      crypto.randomBytes(32, async (err, buffer) => {
+         if (err) throw 'Failed to reset password'
+         const token = buffer.toString('hex')
+
+         // admin
+         const admin = await Admins.findOne({ email: req.body.email })
+         if (admin) {
+            admin.resetToken = token
+            admin.expireToken = Date.now() + 3600000 // waktu sekarang ditambah 3600000 ms = 1 jam
+            await admin.save()
+
+            transporter.sendMail({
+               from: 'aldialfiansyah350@gmail.com',
+               to: admin.email,
+               subject: 'Reset Password',
+               html: `
+                  <p>You request for password reset</p>
+                  <h4>click this <a href="http://localhost:3000/reset-password/${token}">link</a> to reset password</h4>
+               `,
+            })
+         }
+
+         // teacher
+         const teacher = await Teachers.findOne({ email: req.body.email })
+         if (teacher) {
+            teacher.resetToken = token
+            teacher.expireToken = Date.now() + 3600000 // waktu sekarang ditambah 3600000 ms = 1 jam
+            await teacher.save()
+
+            transporter.sendMail({
+               from: 'aldialfiansyah350@gmail.com',
+               to: teacher.email,
+               subject: 'Reset Password',
+               html: `
+                  <p>You request for password reset</p>
+                  <h4>click this <a href="http://localhost:3000/reset-password/${token}">link</a> to reset password</h4>
+               `,
+            })
+         }
+
+         // student
+         const student = await Students.findOne({ email: req.body.email })
+         if (student) {
+            student.resetToken = token
+            student.expireToken = Date.now() + 3600000 // waktu sekarang ditambah 3600000 ms = 1 jam
+            await student.save()
+
+            transporter.sendMail({
+               from: 'aldialfiansyah350@gmail.com',
+               to: student.email,
+               subject: 'Reset Password',
+               html: `
+                  <p>You request for password reset</p>
+                  <h4>click this <a href="http://localhost:3000/reset-password/${token}">link</a> to reset password</h4>
+               `,
+            })
+         }
+
+         if (!admin && !teacher && !student) {
+            return res.status(404).json({
+               status: 'error',
+               message: 'User tidak ditemukan!',
+            })
+         }
+
+         return res
+            .status(200)
+            .json({ status: 'success', message: 'Cek email anda!' })
+      })
+   } catch (error) {
+      return res.status(500).json({
+         status: 'error',
+         errors: [{ msg: error?.name === 'CastError' ? error.message : error }],
+         message: error,
+      })
+   }
+}
+
+export const newPassword = async (req, res) => {
+   const { token, password } = req.body
+   try {
+      // admin
+      const admin = await Admins.findOne({ resetToken: token })
+      if (admin) {
+         admin.password = bcrypt.hashSync(password, 8)
+         admin.resetToken = undefined
+         admin.expireToken = undefined
+         admin.save()
+      }
+
+      // teacher
+      const teacher = await Teachers.findOne({ resetToken: token })
+      if (teacher) {
+         teacher.password = bcrypt.hashSync(password, 8)
+         teacher.resetToken = undefined
+         teacher.expireToken = undefined
+         teacher.save()
+      }
+
+      // student
+      const student = await Students.findOne({ resetToken: token })
+      if (student) {
+         student.password = bcrypt.hashSync(password, 8)
+         student.resetToken = undefined
+         student.expireToken = undefined
+         student.save()
+      }
+
+      if (!admin && !teacher && !student) {
+         return res.status(404).json({
+            status: 'error',
+            message: 'Invalid token!',
+         })
+      }
+
+      return res
+         .status(200)
+         .json({ status: 'success', message: 'Password berhasil diubah!' })
+   } catch (error) {
+      res.status(500).json({
+         status: 'error',
+         errors: [{ msg: error?.name === 'CastError' ? error.message : error }],
+         message: error,
+      })
+   }
 }
 
 /**

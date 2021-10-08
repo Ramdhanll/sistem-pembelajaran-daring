@@ -89,15 +89,15 @@ const Login = ({ history }) => {
             alignItems='center'
             flexDirection='column'
          >
-           <NavLink to="/">
-           <Image
-               boxSize='50px'
-               borderRadius='full'
-               objectFit='cover'
-               src={Logo}
-               alt='Segun Adebayo'
-            />
-           </NavLink>
+            <NavLink to='/'>
+               <Image
+                  boxSize='50px'
+                  borderRadius='full'
+                  objectFit='cover'
+                  src={Logo}
+                  alt='Segun Adebayo'
+               />
+            </NavLink>
 
             <Text
                textAlign='center'
@@ -160,6 +160,9 @@ const Login = ({ history }) => {
                         >
                            Masuk
                         </Button>
+                        <NavLink to='/reset-password'>
+                           <Text color='red'>Lupa Password?</Text>
+                        </NavLink>
                      </VStack>
                   </Form>
                )}

@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const { ObjectId } = mongoose.Types
 
-const attendancesSchema = mongoose.Schema(
+const examsSchema = mongoose.Schema(
    {
       classroom: {
          type: ObjectId,
@@ -46,6 +46,6 @@ const attendancesSchema = mongoose.Schema(
    }
 )
 
-const Exams = mongoose.model('Exams', attendancesSchema)
+const Exams = mongoose.model('Exams', examsSchema)
 
 export default Exams

@@ -25,7 +25,7 @@ const CardModul = ({ module, handleOpenDrawerDetail, handleOpenModalEdit }) => {
    const handleConfirm = async () => {
       setIsLoading(true)
       try {
-         await ModuleService.delete(module._id)
+         await ModuleService.deleteModule(module._id)
          setIsLoading(false)
          onClose()
          setShowDeleted(false)

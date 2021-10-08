@@ -25,7 +25,7 @@ const CardExam = ({ exam, handleOpenDrawerDetail, handleOpenModalEdit }) => {
    const handleConfirm = async () => {
       setIsLoading(true)
       try {
-         await ExamService.delete(exam._id)
+         await ExamService.deleteExam(exam._id)
          setIsLoading(false)
          onClose()
          setShowDeleted(false)

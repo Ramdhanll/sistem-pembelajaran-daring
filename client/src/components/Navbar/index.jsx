@@ -12,7 +12,6 @@ import {
    Flex,
    Menu,
    MenuButton,
-   MenuGroup,
    MenuItem,
    MenuList,
    Text,
@@ -33,7 +32,7 @@ const Navbar = ({ children }) => {
 
    const handleLogout = async () => {
       try {
-         await AuthService.logout(userDispatch)
+         await AuthService.logoutAuth(userDispatch)
 
          history.push('/login')
       } catch (error) {

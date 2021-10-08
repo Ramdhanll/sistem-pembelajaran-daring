@@ -14,6 +14,8 @@ import Admin from './pages/Admin'
 import AdminRoute from './components/AdminRoute'
 import Information from './pages/Information'
 import AuthService from './services/AuthService'
+import ResetPassword from './pages/ResetPassword'
+import NewPassword from './pages/NewPassword'
 
 function App() {
    const { userDispatch } = useContext(AuthContext)
@@ -28,6 +30,8 @@ function App() {
             <Switch>
                <Route path='/' component={LandingPage} exact />
                <Route path='/login' component={Login} />
+               <Route path='/reset-password' component={ResetPassword} exact />
+               <Route path='/reset-password/:token' component={NewPassword} />
                <Route path='/informasi/:id' component={Information} />
                <AdminRoute path='/a' component={Admin} />
                <TeacherRoute path='/t' component={Teacher} />

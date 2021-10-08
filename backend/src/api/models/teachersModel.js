@@ -26,6 +26,8 @@ const teachersSchema = new mongoose.Schema(
          type: String,
          default: 'teacher',
       },
+      resetToken: String,
+      expireToken: Date,
    },
    {
       timestamps: true,

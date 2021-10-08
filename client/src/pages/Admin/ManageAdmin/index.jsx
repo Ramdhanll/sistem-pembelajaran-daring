@@ -23,7 +23,7 @@ import {
    useToast,
    VStack,
 } from '@chakra-ui/react'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md'
 
 import { AuthContext } from '../../../contexts/authContext/AuthContexts'
@@ -43,6 +43,11 @@ const ManageAdmin = () => {
    const { userState } = useContext(AuthContext)
    const [name, setName] = useState('')
    const [pageIndex, setPageIndex] = useState(1)
+
+   useEffect(() => {
+      setPageIndex(1)
+   }, [name])
+
    const { data } = useSWR(`/api/admins?page=${pageIndex}&name=${name}`)
    const [loading, setLoading] = useState(false)
 
@@ -63,7 +68,7 @@ const ManageAdmin = () => {
    const handleDelete = async () => {
       setLoading(true)
       try {
-         await AdminService.delete(idDelete)
+         await AdminService.deleteAdmin(idDelete)
          setLoading(false)
          mutate(`/api/admins?page=${pageIndex}&name=${name}`)
          setIsOpenDelete(false)

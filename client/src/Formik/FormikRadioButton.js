@@ -39,7 +39,6 @@ const FormikRadioButton = (props) => {
                      gridGap={gridGap}
                   >
                      {options.map((value) => (
-                        // <Flex flexDirection='column'>
                         <Radio
                            key={value.key}
                            onChange={onChange}
@@ -48,7 +47,6 @@ const FormikRadioButton = (props) => {
                         >
                            {value.name}
                         </Radio>
-                        // </Flex>
                      ))}
                   </RadioGroup>
                   <FormErrorMessage mt='10px'>

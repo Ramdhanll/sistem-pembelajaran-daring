@@ -24,7 +24,7 @@ import {
    useToast,
    VStack,
 } from '@chakra-ui/react'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { MdAdd, MdDelete, MdEdit, MdRemoveRedEye } from 'react-icons/md'
 
 import { AuthContext } from '../../../contexts/authContext/AuthContexts'
@@ -45,8 +45,13 @@ const ManageTeachers = () => {
    const [teacher, setTeacher] = useState({})
    const [querySearch, setQuerySearch] = useState('')
    const [pageIndex, setPageIndex] = useState(1)
+
+   useEffect(() => {
+      setPageIndex(1)
+   }, [querySearch])
+
    const { data } = useSWR(
-      `/api/teachers?page=${pageIndex}&name=${querySearch}&nis=${querySearch}`
+      `/api/teachers?page=${pageIndex}&name=${querySearch}`
    )
 
    const [loading, setLoading] = useState(false)
@@ -81,11 +86,9 @@ const ManageTeachers = () => {
    const handleDelete = async () => {
       setLoading(true)
       try {
-         await TeacherService.delete(idDelete)
+         await TeacherService.deleteTeacher(idDelete)
          setLoading(false)
-         mutate(
-            `/api/teachers?page=${pageIndex}&name=${querySearch}&nis=${querySearch}`
-         )
+         mutate(`/api/teachers?page=${pageIndex}&name=${querySearch}`)
          setIsOpenDelete(false)
          setIdDelete('')
          toast({
@@ -146,9 +149,7 @@ const ManageTeachers = () => {
             await TeacherService.update(teacher._id, values)
             action = 'mengubah'
          }
-         mutate(
-            `/api/teachers?page=${pageIndex}&name=${querySearch}&nis=${querySearch}`
-         )
+         mutate(`/api/teachers?page=${pageIndex}&name=${querySearch}`)
          onClose()
          setTeacher({})
          actions.setSubmitting(false)

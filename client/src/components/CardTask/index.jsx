@@ -25,7 +25,7 @@ const CardTask = ({ task, handleOpenDrawerDetail, handleOpenModalEdit }) => {
    const handleConfirm = async () => {
       setIsLoading(true)
       try {
-         await TaskService.delete(task._id)
+         await TaskService.deleteTask(task._id)
          setIsLoading(false)
          onClose()
          setShowDeleted(false)

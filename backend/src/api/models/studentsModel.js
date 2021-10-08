@@ -35,6 +35,8 @@ const studentsSchema = new mongoose.Schema(
          type: String,
          default: 'student',
       },
+      resetToken: String,
+      expireToken: Date,
    },
    {
       timestamps: true,

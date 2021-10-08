@@ -21,7 +21,7 @@ import {
    useToast,
    VStack,
 } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md'
 
 import Pagination from '../../../components/Pagination'
@@ -41,6 +41,11 @@ const Information = () => {
    const [pageIndex, setPageIndex] = useState(1)
    const [loading, setLoading] = useState(false)
    const [title, setTitle] = useState('')
+
+   useEffect(() => {
+      setPageIndex(1)
+   }, [title])
+
    const { data } = useSWR(`/api/informations?page=${pageIndex}&title=${title}`)
 
    const handlePagination = (value) => {
@@ -60,7 +65,7 @@ const Information = () => {
    const handleDelete = async () => {
       setLoading(true)
       try {
-         await InformationService.delete(idDelete)
+         await InformationService.deleteInformation(idDelete)
          mutate(`/api/informations?page=${pageIndex}&title=${title}`)
          setLoading(false)
 

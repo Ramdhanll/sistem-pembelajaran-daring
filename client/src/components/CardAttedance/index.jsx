@@ -29,7 +29,7 @@ const CardAttedance = ({
    const handleConfirm = async () => {
       setIsLoading(true)
       try {
-         await AttedanceService.delete(attedance._id)
+         await AttedanceService.deleteAttedance(attedance._id)
          setIsLoading(false)
          onClose()
          setShowDeleted(false)

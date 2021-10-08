@@ -24,7 +24,7 @@ import {
    useToast,
    VStack,
 } from '@chakra-ui/react'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { MdAdd, MdDelete, MdEdit, MdRemoveRedEye } from 'react-icons/md'
 
 import { AuthContext } from '../../../contexts/authContext/AuthContexts'
@@ -45,6 +45,11 @@ const ManageStudents = () => {
    const [student, setStudent] = useState({})
    const [querySearch, setQuerySearch] = useState('')
    const [pageIndex, setPageIndex] = useState(1)
+
+   useEffect(() => {
+      setPageIndex(1)
+   }, [querySearch])
+
    const { data } = useSWR(
       `/api/students?page=${pageIndex}&name=${querySearch}&nis=${querySearch}`
    )
@@ -81,7 +86,7 @@ const ManageStudents = () => {
    const handleDelete = async () => {
       setLoading(true)
       try {
-         await StudentService.delete(idDelete)
+         await StudentService.deleteStudent(idDelete)
          setLoading(false)
          mutate(
             `/api/students?page=${pageIndex}&name=${querySearch}&nis=${querySearch}`

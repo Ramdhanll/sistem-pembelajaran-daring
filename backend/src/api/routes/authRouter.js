@@ -2,7 +2,14 @@ import express from 'express'
 import { body } from 'express-validator'
 import { isAuth, isStudent } from '../middleware/jwt.js'
 import Users from '../models/studentsModel.js'
-import { login, logout, seed, status } from '../controllers/authController.js'
+import {
+   login,
+   logout,
+   newPassword,
+   resetPassword,
+   seed,
+   status,
+} from '../controllers/authController.js'
 
 const authRouter = express.Router()
 
@@ -16,6 +23,8 @@ authRouter.post(
 )
 
 authRouter.get('/status', isAuth, status)
+authRouter.post('/reset-password', resetPassword)
+authRouter.post('/new-password', newPassword)
 authRouter.post('/logout', isAuth, logout)
 
 export default authRouter
