@@ -1,7 +1,8 @@
 import { Box, Flex, Image, Text } from '@chakra-ui/react'
 import React from 'react'
 import NavbarLandingPage from '../../components/NavbarLandingPage'
-
+import Photo1 from '../../images/gambar01.jpg'
+import Photo2 from '../../images/gambar1.jpg'
 const LandingPage = () => {
    return (
       <Box>
@@ -25,22 +26,45 @@ const LandingPage = () => {
                >
                   SMP DHARMA BHAKTI TANGERANG
                </Text>
+
+               <Text
+                  mt={['1px', '1px']}
+                  w='90%'
+                
+                  textAlign='justify'
+               >
+                  Jl. KH Hasyim Ashari No.9, RT.004/006 Kel. Sudimara Pinang, Kec. Pinang, Kota Tangerang, Banten 
+                  15145
+               </Text>
+               
+
+
                <Text
                   mt={['20px', '40px']}
                   w='90%'
-                  fontSize={['md', 'lg', 'xl']}
+                  fontSize={['md', 'lg', 'l']}
                   textAlign='justify'
                >
-                  t aut fugit, sed quia consequuntur magni dolores eos qui
-                  ratione voluptatem sequi nesciunt. Neque porro quisquam est,
-                  qui dolorem ipsum quia dolor sit amet, consectetur,
+                  SMP Dharma Bhakti adalah Sekolah Menangah Pertama yang mempunyai kualitas baik dari sisi 
+                  akademik maupun non akademik, ditunjang dengan tenaga guru yang profesional dan ahli dalam
+                  bidangnya. lingkungan yang sehat,bersih,aman,dan nyaman untuk belajar. Fasilitas yang memadai dan 
+                  sistem mengajar yang sesuai dengan kurikulum yang berlaku. 
+                 
                </Text>
+               <text
+                 mt={['20px', '40px']}
+                 w='90%'
+                 fontSize={['md', 'lg', 'xl']}
+                 textAlign='bold'
+               >
+               SMP Dharma Bhakti Bisa , Kuat , Dan Mandiri Untuk Terus Berprestasi.  
+               </text>
             </Box>
 
             <Box
-               flex='0.5'
+               flex='0.35'
                display='flex'
-               alignItems='center'
+              
                justifyContent='center'
             >
                <Image
@@ -49,7 +73,7 @@ const LandingPage = () => {
                   h={['300px', '400px']}
                   borderRadius='lg'
                   objectFit='cover'
-                  src='https://images.unsplash.com/photo-1554435493-93422e8220c8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=752&q=80'
+                  src={Photo1}
                   alt='Segun Adebayo'
                />
             </Box>
@@ -57,7 +81,7 @@ const LandingPage = () => {
 
          {/* Sejarah */}
          <Box
-            bg='#ECEEF2'
+            bg='#3399ff'
             h='max-content'
             px={['25px', '100px']}
             pt={['40px', '80px']}
@@ -69,14 +93,14 @@ const LandingPage = () => {
                Sejarah
             </Text>
             <Flex mt={['20px', '50px']} flexDirection={['column', 'row']}>
-               <Box flex='0.5'>
+               <Box flex='1.2'>
                   <Image
                      w='full'
                      h={['300px', '400px']}
                      // boxSize={['300px', '400px']}
                      borderRadius='lg'
                      objectFit='cover'
-                     src='https://images.unsplash.com/photo-1581362072978-14998d01fdaa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=331&q=80'
+                     src={Photo2}
                      alt='Segun Adebayo'
                   />
                </Box>
@@ -88,15 +112,11 @@ const LandingPage = () => {
                      ml={['0px', '50px']}
                      mt={['30px', '0px']}
                   >
-                     t aut fugit, sed quia consequuntur magni dolores eos qui
-                     ratione voluptatem sequi nesciunt. Neque porro quisquam
-                     est, qui dolorem ipsum quia dolor sit amet, consectetur, t
-                     aut fugit, sed quia consequuntur magni dolores eos qui
-                     ratione voluptatem sequi nesciunt. Neque porro untur magni
-                     dolores eos qui ratione voluptatem sequi nesciunt. Neque
-                     porro untur magni dolores eos qui ratione voluptatem sequi
-                     nesciunt. Neque porro quisquam est, qui dolorem ipsum quia
-                     dolor sit amet, consectetur,
+                    SMP Dharma Bhakti pertama kali didirikan pada tahun 1989 yang dimotori oleh Bpk Drs H. Yusuf Msi 
+                    selaku Ketua Yayasan dan Bpk Misan Spd selaku Kepala Sekolah dan Bpk Drs Munasir selaku Wakil Kepala Sekolah. Pertama kali didirikan dengan membawa Yayasan Dharma Bhakti yang kemudian diberikan nama SMP Dharma Bhakti yang 
+                    mendapatkan surat Izin operasional dari Pemerintah Kota Tangerang pada Tanggal 06-02-1989 dengan SK Izin Operasional
+                    859/1.02/KEP/E.91.
+                  
                   </Text>
                </Box>
             </Flex>
@@ -125,15 +145,25 @@ const LandingPage = () => {
                      pr='50px'
                      textAlign='justify'
                   >
-                     t aut fugit, sed quia consequuntur magni dolores eos qui
-                     ratione voluptatem sequi nesciunt. Neque porro quisquam
-                     est, qui dolorem ipsum quia dolor sit amet, consectetur, t
-                     aut fugit, sed quia consequuntur magni dolores eos qui
-                     ratione voluptatem sequi nesciunt. Neque porro untur magni
-                     dolores eos qui ratione voluptatem sequi nesciunt. Neque
-                     porro untur magni dolores eos qui ratione voluptatem sequi
-                     nesciunt. Neque porro quisquam est, qui dolorem ipsum quia
-                     dolor sit amet, consectetur,
+                     1. Konsisten disegani, terpercaya, solid, dan profesional memajukan sekolah unggulan, bermutu dan berakhlaqul karimah.
+                  </Text>
+                  
+                  <Text
+                     fontSize={['sm', 'md', 'lg', 'xl']}
+                     mt='20px'
+                     pr='50px'
+                     textAlign='justify'
+                  >
+                     2. Konsisten disegani, terpercaya, solid, dan profesional memajukan sekolah unggulan, bermutu dan berakhlaqul karimah.
+                  </Text>
+                  
+                  <Text
+                     fontSize={['sm', 'md', 'lg', 'xl']}
+                     mt='20px'
+                     pr='50px'
+                     textAlign='justify'
+                  >
+                     3. Konsisten disegani, terpercaya, solid, dan profesional memajukan sekolah unggulan, bermutu dan berakhlaqul karimah.
                   </Text>
                </Box>
 
@@ -148,15 +178,27 @@ const LandingPage = () => {
                      pr='50px'
                      textAlign='justify'
                   >
-                     t aut fugit, sed quia consequuntur magni dolores eos qui
-                     ratione voluptatem sequi nesciunt. Neque porro quisquam
-                     est, qui dolorem ipsum quia dolor sit amet, consectetur, t
-                     aut fugit, sed quia consequuntur magni dolores eos qui
-                     ratione voluptatem sequi nesciunt. Neque porro untur magni
-                     dolores eos qui ratione voluptatem sequi nesciunt. Neque
-                     porro untur magni dolores eos qui ratione voluptatem sequi
-                     nesciunt. Neque porro quisquam est, qui dolorem ipsum quia
-                     dolor sit amet, consectetur,
+                     1. Menyukseskan pembangunan nasional khususnya pendidikan dan kebudayaan.
+                  </Text>
+                  
+                  <Text
+                     fontSize={['sm', 'md', 'lg', 'xl']}
+                     mt='20px'
+                     pr='50px'
+                     textAlign='justify'
+                  >
+                     2. Mewujudkan lulusan yang bermutu yaitu lulusan yang berprestasi akademik dan non akademik, dengan 
+                     pembelajaran dan pelatihan yang intensif.
+                  </Text>
+                  
+                  <Text
+                     fontSize={['sm', 'md', 'lg', 'xl']}
+                     mt='20px'
+                     pr='50px'
+                     textAlign='justify'
+                  >
+                     3. Mewujudkan pendidikan dan tenaga kerja kependidikan yang memenuhi syarat kualifikasi dan kompetensi
+                     professional dengan studi lanjut dan berbagai pelatihan.
                   </Text>
                </Box>
             </Flex>

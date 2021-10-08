@@ -71,7 +71,7 @@ const Navbar = ({ children }) => {
                   bg='#fff'
                >
                   <Text mr='30px'>{userState.name}</Text>
-                  <Avatar name='Dan Abrahmov' src={userState.photo} />
+                  <Avatar name={userState.name} src={userState.photo} />
                </Flex>
             </MenuButton>
             <MenuList>

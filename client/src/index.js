@@ -25,7 +25,7 @@ axios.defaults.withCredentials = true
 
 // PRODUCTION
 axios.defaults.baseURL =
-   process.env.REACT_APP_ENDPOINTS || 'http://192.168.100.7:5000'
+   process.env.REACT_APP_ENDPOINTS || 'http://localhost:5000'
 
 ReactDOM.render(
    <React.StrictMode>

@@ -101,13 +101,13 @@ const CardClass = ({ classroom }) => {
                      minW={['330px', '360px', '380px']}
                   >
                      <Avatar
-                        name={classroom.teacher.name}
-                        src={classroom.teacher.photo}
+                        name={classroom?.teacher?.name}
+                        src={classroom?.teacher?.photo}
                         size='lg'
                      />
                      <VStack spacing={3} alignItems='flex-start'>
                         <Text fontWeight='600' fontSize={['sm', 'md', 'lg']}>
-                           {classroom.teacher.name}
+                           {classroom?.teacher?.name}
                         </Text>
                         <HStack>
                            <HStack spacing={2} alignItems='center'>

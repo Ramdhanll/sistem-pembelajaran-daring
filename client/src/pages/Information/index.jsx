@@ -25,9 +25,9 @@ const Information = (props) => {
             >
                <Text
                   w='max-content'
-                  mt='25px'
-                  fontSize={['3xl', '4xl', '5xl', '6xl']}
-                  fontWeight='700'
+                  mt='20px'
+                  fontSize={['1xl', '1xl', '5xl', '6xl']}
+                  fontWeight='200'
                >
                   {data?.information.title}
                </Text>

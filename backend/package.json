@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon index"
   },
-  "author": "Ramadhani <erdevlop@gmail.com>",
+  "author": "Aldi alfiansyah",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
