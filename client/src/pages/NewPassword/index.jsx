@@ -12,6 +12,7 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../../Formik/FormikControl'
 import { AuthContext } from '../../contexts/authContext/AuthContexts'
+import { NavLink } from 'react-router-dom'
 
 import AuthService from '../../services/AuthService'
 
@@ -43,12 +44,12 @@ const NewPassword = ({ history, match }) => {
       }
 
       try {
-         await AuthService.newPassword(data)
+         const result = await AuthService.newPassword(data)
          actions.setSubmitting(false)
          history.push('/login')
          toast({
             title: 'Berhasil',
-            description: `Password berhasil diubah`,
+            description: result?.message ?? `Password berhasil diubah`,
             status: 'success',
             duration: 3000,
             isClosable: true,
@@ -59,7 +60,8 @@ const NewPassword = ({ history, match }) => {
 
          toast({
             title: 'Tidak Berhasil',
-            description: 'Password gagal diubah',
+            description:
+               error.response.data?.message ?? 'Password gagal diubah',
             status: 'error',
             duration: 5000,
             isClosable: true,
@@ -137,6 +139,12 @@ const NewPassword = ({ history, match }) => {
                         >
                            Ganti Password
                         </Button>
+
+                        <NavLink to='/login'>
+                           <Text textAlign='center' textDecoration='underline'>
+                              kembali login
+                           </Text>
+                        </NavLink>
                      </VStack>
                   </Form>
                )}

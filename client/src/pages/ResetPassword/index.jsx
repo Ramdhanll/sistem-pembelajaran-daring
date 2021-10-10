@@ -11,7 +11,7 @@ import React, { useContext, useEffect } from 'react'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../../Formik/FormikControl'
-
+import { NavLink } from 'react-router-dom'
 import { AuthContext } from '../../contexts/authContext/AuthContexts'
 
 import AuthService from '../../services/AuthService'
@@ -34,11 +34,11 @@ const ResetPassword = ({ history }) => {
    const handleSubmit = async (values, actions) => {
       actions.setSubmitting(true)
       try {
-         await AuthService.resetPassword(values)
+         const result = await AuthService.resetPassword(values)
          actions.setSubmitting(false)
          toast({
             title: 'Berhasil',
-            description: `Silahkan cek email anda `,
+            description: result?.message ?? `Silahkan cek email anda `,
             status: 'success',
             duration: 3000,
             isClosable: true,
@@ -47,7 +47,7 @@ const ResetPassword = ({ history }) => {
       } catch (error) {
          toast({
             title: 'Tidak Berhasil',
-            description: 'User tidak ditemukan',
+            description: error.response.data?.message ?? 'User tidak ditemukan',
             status: 'error',
             duration: 5000,
             isClosable: true,
@@ -126,6 +126,12 @@ const ResetPassword = ({ history }) => {
                         >
                            Reset Password
                         </Button>
+
+                        <NavLink to='/login'>
+                           <Text textAlign='center' textDecoration='underline'>
+                              kembali login
+                           </Text>
+                        </NavLink>
                      </VStack>
                   </Form>
                )}

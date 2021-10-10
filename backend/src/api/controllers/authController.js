@@ -122,15 +122,28 @@ export const resetPassword = async (req, res) => {
             admin.expireToken = Date.now() + 3600000 // waktu sekarang ditambah 3600000 ms = 1 jam
             await admin.save()
 
-            transporter.sendMail({
-               from: 'aldialfiansyah350@gmail.com',
-               to: admin.email,
-               subject: 'Reset Password',
-               html: `
-                  <p>You request for password reset</p>
-                  <h4>click this <a href="http://localhost:3000/reset-password/${token}">link</a> to reset password</h4>
+            transporter
+               .sendMail({
+                  from: 'aldialfiansyah350@gmail.com',
+                  to: admin.email,
+                  subject: 'Reset Password',
+                  html: `
+                  <h3>Request untuk reset password</h3>
+                  <h4>tekan <a href="http://localhost:3000/reset-password/${token}">link</a> ini untuk reset password</h4>
                `,
-            })
+               })
+               .then((e) => {
+                  return res
+                     .status(200)
+                     .json({ status: 'success', message: 'Cek email anda!' })
+               })
+               .catch((e) => {
+                  return res.status(500).json({
+                     status: 'failed',
+                     data: e,
+                     message: 'Pesan gagal dikirim',
+                  })
+               })
          }
 
          // teacher
@@ -140,15 +153,28 @@ export const resetPassword = async (req, res) => {
             teacher.expireToken = Date.now() + 3600000 // waktu sekarang ditambah 3600000 ms = 1 jam
             await teacher.save()
 
-            transporter.sendMail({
-               from: 'aldialfiansyah350@gmail.com',
-               to: teacher.email,
-               subject: 'Reset Password',
-               html: `
-                  <p>You request for password reset</p>
-                  <h4>click this <a href="http://localhost:3000/reset-password/${token}">link</a> to reset password</h4>
+            transporter
+               .sendMail({
+                  from: 'aldialfiansyah350@gmail.com',
+                  to: teacher.email,
+                  subject: 'Reset Password',
+                  html: `
+               <h3>Request untuk reset password</h3>
+               <h4>tekan <a href="http://localhost:3000/reset-password/${token}">link</a> ini untuk reset password</h4>
                `,
-            })
+               })
+               .then((e) => {
+                  return res
+                     .status(200)
+                     .json({ status: 'success', message: 'Cek email anda!' })
+               })
+               .catch((e) => {
+                  return res.status(500).json({
+                     status: 'failed',
+                     data: e,
+                     message: 'Pesan gagal dikirim',
+                  })
+               })
          }
 
          // student
@@ -158,15 +184,28 @@ export const resetPassword = async (req, res) => {
             student.expireToken = Date.now() + 3600000 // waktu sekarang ditambah 3600000 ms = 1 jam
             await student.save()
 
-            transporter.sendMail({
-               from: 'aldialfiansyah350@gmail.com',
-               to: student.email,
-               subject: 'Reset Password',
-               html: `
-                  <p>You request for password reset</p>
-                  <h4>click this <a href="http://localhost:3000/reset-password/${token}">link</a> to reset password</h4>
+            transporter
+               .sendMail({
+                  from: 'aldialfiansyah350@gmail.com',
+                  to: student.email,
+                  subject: 'Reset Password',
+                  html: `
+               <h3>Request untuk reset password</h3>
+               <h4>tekan <a href="http://localhost:3000/reset-password/${token}">link</a> ini untuk reset password</h4>
                `,
-            })
+               })
+               .then((e) => {
+                  return res
+                     .status(200)
+                     .json({ status: 'success', message: 'Cek email anda!' })
+               })
+               .catch((e) => {
+                  return res.status(500).json({
+                     status: 'failed',
+                     data: e,
+                     message: 'Pesan gagal dikirim',
+                  })
+               })
          }
 
          if (!admin && !teacher && !student) {
@@ -175,10 +214,6 @@ export const resetPassword = async (req, res) => {
                message: 'User tidak ditemukan!',
             })
          }
-
-         return res
-            .status(200)
-            .json({ status: 'success', message: 'Cek email anda!' })
       })
    } catch (error) {
       return res.status(500).json({
@@ -222,7 +257,7 @@ export const newPassword = async (req, res) => {
       if (!admin && !teacher && !student) {
          return res.status(404).json({
             status: 'error',
-            message: 'Invalid token!',
+            message: 'Invalid token!, silahkan kirim link verifikasi lagi',
          })
       }
 
