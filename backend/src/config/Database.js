@@ -1,13 +1,18 @@
 import mongoose from 'mongoose'
-
+import dotenv from 'dotenv'
+dotenv.config()
+// mKF52BvRh1vfgLGf
 const Mongoose = () =>
    mongoose
-      .connect(process.env.MONGODB_URI || 'mongodb://localhost/aldi-siakad', {
-         useUnifiedTopology: true,
-         useNewUrlParser: true,
-         useFindAndModify: false,
-         useCreateIndex: true,
-      })
+      .connect(
+         'mongodb+srv://indonesia:indonesiaraya@cluster0.prj7h.mongodb.net/smp?retryWrites=true&w=majority',
+         {
+            useUnifiedTopology: true,
+            useNewUrlParser: true,
+            useFindAndModify: false,
+            useCreateIndex: true,
+         }
+      )
       .then(() => console.log('DB Connected'))
       .catch((e) => console.log(e))
 

@@ -5,16 +5,19 @@ import Tasks from '../models/taskModel.js'
 import Exams from '../models/examModel.js'
 
 export const getClassrooms = async (req, res) => {
-   const teacher = req.query.teacher
-   const members = req.query.members
+   const { teacher, members, subject } = req.query
 
    const teacherFilter = teacher ? { teacher: teacher } : {}
    const membersFilter = members ? { members: { $in: [members] } } : {}
+   const subjectFilter = subject
+      ? { subject: { $regex: subject, $options: 'i' } }
+      : {}
 
    try {
       const classrooms = await Classrooms.find({
          ...teacherFilter,
          ...membersFilter,
+         ...subjectFilter,
       }).populate('teacher', 'name photo')
 
       res.status(200).json({

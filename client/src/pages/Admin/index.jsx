@@ -2,7 +2,7 @@ import { Flex, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { GiTeacher } from 'react-icons/gi'
 import { IoMdPeople } from 'react-icons/io'
-import { MdDashboard } from 'react-icons/md'
+import { MdClass, MdDashboard } from 'react-icons/md'
 import { RiAdminFill } from 'react-icons/ri'
 import { BiNews } from 'react-icons/bi'
 import { NavLink, Switch, Route } from 'react-router-dom'
@@ -12,7 +12,10 @@ import Information from './Information'
 import ManageAdmin from './ManageAdmin'
 import ManageStudents from './ManageStudents'
 import ManageTeachers from './ManageTeachers'
+
 import Profile from '../../components/Profile'
+import ManageClassrooms from './ManageClassrooms'
+import ClassroomDetail from '../../components/ClassroomDetail'
 
 const Admin = ({ history, location }) => {
    return (
@@ -117,6 +120,24 @@ const Admin = ({ history, location }) => {
                         Siswa
                      </Text>
                   </NavLink>
+                  <NavLink
+                     to='/a/kelas'
+                     style={{
+                        marginTop: '20px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: '#969696',
+                     }}
+                     activeStyle={{
+                        color: '#34364A',
+                        fontWeight: '700',
+                     }}
+                  >
+                     <MdClass size='24px' />
+                     <Text fontSize='xl' ml='10px'>
+                        Kelas
+                     </Text>
+                  </NavLink>
                </VStack>
             </Flex>
          </Navbar>
@@ -130,6 +151,8 @@ const Admin = ({ history, location }) => {
             <Route path='/a/admin' component={ManageAdmin} exact />
             <Route path='/a/siswa' component={ManageStudents} exact />
             <Route path='/a/guru' component={ManageTeachers} exact />
+            <Route path='/a/kelas' component={ManageClassrooms} exact />
+            <Route path='/a/kelas/:id' component={ClassroomDetail} />
             <Route path='/a/profile' component={Profile} exact />
             <Route path='/a/*'>NOT FOUND</Route>
          </Switch>
