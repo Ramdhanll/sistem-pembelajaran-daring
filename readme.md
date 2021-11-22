@@ -2,8 +2,8 @@
 
 -  Halaman Admin
 
-   <img src="./screenchoots/admin.png" alt="products page" style="height: 300px;" />
+   <img src="./screenshoots/admin.png" alt="admin page" style="height: 300px;" />
 
 -  Halaman Guru dan Siswa
 
-   <img src="./screenchoots/teacher.png" alt="products page" style="height: 300px;" />
+   <img src="./screenshoots/teacher.png" alt="guru page" style="height: 300px;" />
